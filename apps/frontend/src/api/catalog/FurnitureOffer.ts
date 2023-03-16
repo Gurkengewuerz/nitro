@@ -1,120 +1,106 @@
-import { GetProductOfferComposer, IFurnitureData } from '@nitro/renderer';
-import { GetProductDataForLocalization, SendMessageComposer } from '..';
-import { ICatalogPage } from './ICatalogPage';
-import { IProduct } from './IProduct';
-import { IPurchasableOffer } from './IPurchasableOffer';
-import { Offer } from './Offer';
-import { Product } from './Product';
+import {GetProductOfferComposer, IFurnitureData} from "@nitro/renderer";
 
-export class FurnitureOffer implements IPurchasableOffer
-{
-    private _furniData:IFurnitureData;
-    private _page: ICatalogPage;
-    private _product: IProduct;
+import {GetProductDataForLocalization, SendMessageComposer} from "..";
+import {ICatalogPage} from "./ICatalogPage";
+import {IProduct} from "./IProduct";
+import {IPurchasableOffer} from "./IPurchasableOffer";
+import {Offer} from "./Offer";
+import {Product} from "./Product";
 
-    constructor(furniData: IFurnitureData)
-    {
-        this._furniData = furniData;
-        this._product = (new Product(this._furniData.type, this._furniData.id, this._furniData.customParams, 1, GetProductDataForLocalization(this._furniData.className), this._furniData) as IProduct);
-    }
+export class FurnitureOffer implements IPurchasableOffer {
+  private _furniData: IFurnitureData;
+  private _page: ICatalogPage;
+  private _product: IProduct;
 
-    public activate(): void
-    {
-        SendMessageComposer(new GetProductOfferComposer((this._furniData.rentOfferId > -1) ? this._furniData.rentOfferId : this._furniData.purchaseOfferId));
-    }
+  constructor(furniData: IFurnitureData) {
+    this._furniData = furniData;
+    this._product = new Product(
+      this._furniData.type,
+      this._furniData.id,
+      this._furniData.customParams,
+      1,
+      GetProductDataForLocalization(this._furniData.className),
+      this._furniData
+    ) as IProduct;
+  }
 
-    public get offerId(): number
-    {
-        return (this.isRentOffer) ? this._furniData.rentOfferId : this._furniData.purchaseOfferId;
-    }
+  public activate(): void {
+    SendMessageComposer(new GetProductOfferComposer(this._furniData.rentOfferId > -1 ? this._furniData.rentOfferId : this._furniData.purchaseOfferId));
+  }
 
-    public get priceInActivityPoints(): number
-    {
-        return 0;
-    }
+  public get offerId(): number {
+    return this.isRentOffer ? this._furniData.rentOfferId : this._furniData.purchaseOfferId;
+  }
 
-    public get activityPointType(): number
-    {
-        return 0;
-    }
+  public get priceInActivityPoints(): number {
+    return 0;
+  }
 
-    public get priceInCredits(): number
-    {
-        return 0;
-    }
+  public get activityPointType(): number {
+    return 0;
+  }
 
-    public get page(): ICatalogPage
-    {
-        return this._page;
-    }
+  public get priceInCredits(): number {
+    return 0;
+  }
 
-    public set page(page: ICatalogPage)
-    {
-        this._page = page;
-    }
+  public get page(): ICatalogPage {
+    return this._page;
+  }
 
-    public get priceType(): string
-    {
-        return '';
-    }
+  public set page(page: ICatalogPage) {
+    this._page = page;
+  }
 
-    public get product(): IProduct
-    {
-        return this._product;
-    }
+  public get priceType(): string {
+    return "";
+  }
 
-    public get products(): IProduct[]
-    {
-        return [ this._product ];
-    }
+  public get product(): IProduct {
+    return this._product;
+  }
 
-    public get localizationId(): string
-    {
-        return 'roomItem.name.' + this._furniData.id;
-    }
+  public get products(): IProduct[] {
+    return [this._product];
+  }
 
-    public get bundlePurchaseAllowed(): boolean
-    {
-        return false;
-    }
+  public get localizationId(): string {
+    return "roomItem.name." + this._furniData.id;
+  }
 
-    public get isRentOffer(): boolean
-    {
-        return (this._furniData.rentOfferId > -1);
-    }
+  public get bundlePurchaseAllowed(): boolean {
+    return false;
+  }
 
-    public get giftable(): boolean
-    {
-        return false;
-    }
+  public get isRentOffer(): boolean {
+    return this._furniData.rentOfferId > -1;
+  }
 
-    public get pricingModel(): string
-    {
-        return Offer.PRICING_MODEL_FURNITURE;
-    }
+  public get giftable(): boolean {
+    return false;
+  }
 
-    public get clubLevel(): number
-    {
-        return 0;
-    }
+  public get pricingModel(): string {
+    return Offer.PRICING_MODEL_FURNITURE;
+  }
 
-    public get badgeCode(): string
-    {
-        return '';
-    }
+  public get clubLevel(): number {
+    return 0;
+  }
 
-    public get localizationName(): string
-    {
-        return this._furniData.name;
-    }
+  public get badgeCode(): string {
+    return "";
+  }
 
-    public get localizationDescription(): string
-    {
-        return this._furniData.description;
-    }
+  public get localizationName(): string {
+    return this._furniData.name;
+  }
 
-    public get isLazy(): boolean
-    {
-        return true;
-    }
+  public get localizationDescription(): string {
+    return this._furniData.description;
+  }
+
+  public get isLazy(): boolean {
+    return true;
+  }
 }

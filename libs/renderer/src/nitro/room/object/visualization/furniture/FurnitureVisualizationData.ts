@@ -1,291 +1,287 @@
-import { IAssetData, IAssetVisualizationData, IObjectVisualizationData } from '../../../../../api';
-import { ColorData, LayerData, SizeData } from '../data';
+import {IAssetData, IAssetVisualizationData, IObjectVisualizationData} from "../../../../../api";
+import {ColorData, LayerData, SizeData} from "../data";
 
-export class FurnitureVisualizationData implements IObjectVisualizationData
-{
-    public static LAYER_LETTERS: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+export class FurnitureVisualizationData implements IObjectVisualizationData {
+  public static LAYER_LETTERS: string[] = [
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+  ];
 
-    private _type: string;
-    private _sizes: number[];
-    private _sizeDatas: Map<number, SizeData>;
-    private _lastSize: number;
-    private _lastSizeScale: number;
-    private _lastSizeData: SizeData;
-    private _lastSizeDataScale: number;
+  private _type: string;
+  private _sizes: number[];
+  private _sizeDatas: Map<number, SizeData>;
+  private _lastSize: number;
+  private _lastSizeScale: number;
+  private _lastSizeData: SizeData;
+  private _lastSizeDataScale: number;
 
-    constructor()
-    {
-        this._type = '';
-        this._sizes = [];
-        this._sizeDatas = new Map();
-        this._lastSize = -1;
-        this._lastSizeScale = -1;
-        this._lastSizeData = null;
-        this._lastSizeDataScale = -1;
+  constructor() {
+    this._type = "";
+    this._sizes = [];
+    this._sizeDatas = new Map();
+    this._lastSize = -1;
+    this._lastSizeScale = -1;
+    this._lastSizeData = null;
+    this._lastSizeDataScale = -1;
+  }
+
+  public initialize(asset: IAssetData): boolean {
+    this.reset();
+
+    if (!asset) return false;
+
+    this._type = asset.name;
+
+    if (!this.defineVisualizations(asset.visualizations)) {
+      this.reset();
+
+      return false;
     }
 
-    public initialize(asset: IAssetData): boolean
-    {
-        this.reset();
+    return true;
+  }
 
-        if(!asset) return false;
+  public dispose(): void {
+    if (this._sizeDatas && this._sizeDatas.size) {
+      for (const size of this._sizeDatas.values()) size && size.dispose();
 
-        this._type = asset.name;
+      this._sizeDatas = null;
+    }
 
-        if(!this.defineVisualizations(asset.visualizations))
-        {
-            this.reset();
+    this._lastSizeData = null;
+    this._sizes = null;
+  }
 
-            return false;
+  private reset(): void {
+    this._type = "";
+
+    if (this._sizeDatas && this._sizeDatas.size) {
+      for (const size of this._sizeDatas.values()) size && size.dispose();
+    }
+
+    this._sizeDatas.clear();
+
+    this._sizes = [];
+    this._lastSizeData = null;
+    this._lastSizeDataScale = -1;
+  }
+
+  protected createSizeData(scale: number, layerCount: number, angle: number): SizeData {
+    return new SizeData(layerCount, angle);
+  }
+
+  protected defineVisualizations(visualizations: IAssetVisualizationData[]): boolean {
+    if (!visualizations) return false;
+
+    for (const visualizationId in visualizations) {
+      const visualization = visualizations[visualizationId];
+
+      const layerCount = visualization.layerCount;
+      const angle = visualization.angle;
+
+      let size = visualization.size;
+
+      if (size < 1) size = 1;
+
+      if (this._sizeDatas.get(size)) return false;
+
+      const sizeData = this.createSizeData(size, layerCount, angle);
+
+      if (!sizeData) return false;
+
+      for (const key in visualization) {
+        //@ts-ignore
+        const data = visualization[key];
+
+        if (!this.processVisualElement(sizeData, key, data)) {
+          sizeData.dispose();
+
+          return false;
         }
+      }
 
-        return true;
+      this._sizeDatas.set(size, sizeData);
+
+      this._sizes.push(size);
     }
 
-    public dispose(): void
-    {
-        if(this._sizeDatas && this._sizeDatas.size)
-        {
-            for(const size of this._sizeDatas.values()) size && size.dispose();
+    this._sizes.sort();
 
-            this._sizeDatas = null;
-        }
+    return true;
+  }
 
-        this._lastSizeData = null;
-        this._sizes = null;
+  protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
+    if (!sizeData || !key || !data) return false;
+
+    switch (key) {
+      case "layers":
+        if (!sizeData.processLayers(data)) return false;
+        break;
+      case "directions":
+        if (!sizeData.processDirections(data)) return false;
+        break;
+      case "colors":
+        if (!sizeData.processColors(data)) return false;
+        break;
     }
 
-    private reset(): void
-    {
-        this._type = '';
+    return true;
+  }
 
-        if(this._sizeDatas && this._sizeDatas.size)
-        {
-            for(const size of this._sizeDatas.values()) size && size.dispose();
-        }
+  public getValidSize(scale: number): number {
+    if (scale === this._lastSizeScale) return this._lastSize;
 
-        this._sizeDatas.clear();
+    const sizeIndex = this.getSizeIndex(scale);
 
-        this._sizes = [];
-        this._lastSizeData = null;
-        this._lastSizeDataScale = -1;
+    let newScale = -1;
+
+    if (sizeIndex < this._sizes.length) newScale = this._sizes[sizeIndex];
+
+    this._lastSizeScale = scale;
+    this._lastSize = newScale;
+
+    return newScale;
+  }
+
+  private getSizeIndex(size: number): number {
+    if (size <= 0) return 0;
+
+    let index = 0;
+    let iterator = 1;
+
+    while (iterator < this._sizes.length) {
+      if (this._sizes[iterator] > size) {
+        if (this._sizes[iterator] / size < size / this._sizes[iterator - 1]) index = iterator;
+
+        break;
+      }
+
+      index = iterator;
+
+      iterator++;
     }
 
-    protected createSizeData(scale: number, layerCount: number, angle: number): SizeData
-    {
-        return new SizeData(layerCount, angle);
-    }
+    return index;
+  }
 
-    protected defineVisualizations(visualizations: IAssetVisualizationData[]): boolean
-    {
-        if(!visualizations) return false;
+  protected getSizeData(size: number): SizeData {
+    if (size === this._lastSizeDataScale) return this._lastSizeData;
 
-        for(const visualizationId in visualizations)
-        {
-            const visualization = visualizations[visualizationId];
+    const sizeIndex = this.getSizeIndex(size);
 
-            const layerCount = visualization.layerCount;
-            const angle = visualization.angle;
+    if (sizeIndex < this._sizes.length) this._lastSizeData = this._sizeDatas.get(this._sizes[sizeIndex]);
+    else this._lastSizeData = null;
 
-            let size = visualization.size;
+    this._lastSizeDataScale = size;
 
-            if(size < 1) size = 1;
+    return this._lastSizeData;
+  }
 
-            if(this._sizeDatas.get(size)) return false;
+  public getLayerCount(scale: number): number {
+    const size = this.getSizeData(scale);
 
-            const sizeData = this.createSizeData(size, layerCount, angle);
+    if (!size) return LayerData.DEFAULT_COUNT;
 
-            if(!sizeData) return false;
+    return size.layerCount;
+  }
 
-            for(const key in visualization)
-            {
-                //@ts-ignore
-                const data = visualization[key];
+  public getValidDirection(scale: number, direction: number): number {
+    const size = this.getSizeData(scale);
 
-                if(!this.processVisualElement(sizeData, key, data))
-                {
-                    sizeData.dispose();
+    if (!size) return LayerData.DEFAULT_DIRECTION;
 
-                    return false;
-                }
-            }
+    return size.getValidDirection(direction);
+  }
 
-            this._sizeDatas.set(size, sizeData);
+  public getLayerTag(scale: number, direction: number, layerId: number): string {
+    const size = this.getSizeData(scale);
 
-            this._sizes.push(size);
-        }
+    if (!size) return LayerData.DEFAULT_TAG;
 
-        this._sizes.sort();
+    return size.getLayerTag(direction, layerId);
+  }
 
-        return true;
-    }
+  public getLayerInk(scale: number, direction: number, layerId: number): number {
+    const size = this.getSizeData(scale);
 
-    protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean
-    {
-        if(!sizeData || !key || !data) return false;
+    if (!size) return LayerData.DEFAULT_INK;
 
-        switch(key)
-        {
-            case 'layers':
-                if(!sizeData.processLayers(data)) return false;
-                break;
-            case 'directions':
-                if(!sizeData.processDirections(data)) return false;
-                break;
-            case 'colors':
-                if(!sizeData.processColors(data)) return false;
-                break;
-        }
+    return size.getLayerInk(direction, layerId);
+  }
 
-        return true;
-    }
+  public getLayerAlpha(scale: number, direction: number, layerId: number): number {
+    const size = this.getSizeData(scale);
 
-    public getValidSize(scale: number): number
-    {
-        if(scale === this._lastSizeScale) return this._lastSize;
+    if (!size) return LayerData.DEFAULT_ALPHA;
 
-        const sizeIndex = this.getSizeIndex(scale);
+    return size.getLayerAlpha(direction, layerId);
+  }
 
-        let newScale = -1;
+  public getLayerColor(scale: number, layerId: number, colorId: number): number {
+    const size = this.getSizeData(scale);
 
-        if(sizeIndex < this._sizes.length) newScale = this._sizes[sizeIndex];
+    if (!size) return ColorData.DEFAULT_COLOR;
 
-        this._lastSizeScale = scale;
-        this._lastSize = newScale;
+    return size.getLayerColor(layerId, colorId);
+  }
 
-        return newScale;
-    }
+  public getLayerIgnoreMouse(scale: number, direction: number, layerId: number): boolean {
+    const size = this.getSizeData(scale);
 
-    private getSizeIndex(size: number): number
-    {
-        if(size <= 0) return 0;
+    if (!size) return LayerData.DEFAULT_IGNORE_MOUSE;
 
-        let index = 0;
-        let iterator = 1;
+    return size.getLayerIgnoreMouse(direction, layerId);
+  }
 
-        while(iterator < this._sizes.length)
-        {
-            if(this._sizes[iterator] > size)
-            {
-                if((this._sizes[iterator] / size) < (size / this._sizes[(iterator - 1)])) index = iterator;
+  public getLayerXOffset(scale: number, direction: number, layerId: number): number {
+    const size = this.getSizeData(scale);
 
-                break;
-            }
+    if (!size) return LayerData.DEFAULT_XOFFSET;
 
-            index = iterator;
+    return size.getLayerXOffset(direction, layerId);
+  }
 
-            iterator++;
-        }
+  public getLayerYOffset(scale: number, direction: number, layerId: number): number {
+    const size = this.getSizeData(scale);
 
-        return index;
-    }
+    if (!size) return LayerData.DEFAULT_YOFFSET;
 
-    protected getSizeData(size: number): SizeData
-    {
-        if(size === this._lastSizeDataScale) return this._lastSizeData;
+    return size.getLayerYOffset(direction, layerId);
+  }
 
-        const sizeIndex = this.getSizeIndex(size);
+  public getLayerZOffset(scale: number, direction: number, layerId: number): number {
+    const size = this.getSizeData(scale);
 
-        if(sizeIndex < this._sizes.length) this._lastSizeData = this._sizeDatas.get(this._sizes[sizeIndex]);
-        else this._lastSizeData = null;
+    if (!size) return LayerData.DEFAULT_ZOFFSET;
 
-        this._lastSizeDataScale = size;
+    return size.getLayerZOffset(direction, layerId);
+  }
 
-        return this._lastSizeData;
-    }
-
-    public getLayerCount(scale: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_COUNT;
-
-        return size.layerCount;
-    }
-
-    public getValidDirection(scale: number, direction: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_DIRECTION;
-
-        return size.getValidDirection(direction);
-    }
-
-    public getLayerTag(scale: number, direction: number, layerId: number): string
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_TAG;
-
-        return size.getLayerTag(direction, layerId);
-    }
-
-    public getLayerInk(scale: number, direction: number, layerId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_INK;
-
-        return size.getLayerInk(direction, layerId);
-    }
-
-    public getLayerAlpha(scale: number, direction: number, layerId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_ALPHA;
-
-        return size.getLayerAlpha(direction, layerId);
-    }
-
-    public getLayerColor(scale: number, layerId: number, colorId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return ColorData.DEFAULT_COLOR;
-
-        return size.getLayerColor(layerId, colorId);
-    }
-
-    public getLayerIgnoreMouse(scale: number, direction: number, layerId: number): boolean
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_IGNORE_MOUSE;
-
-        return size.getLayerIgnoreMouse(direction, layerId);
-    }
-
-    public getLayerXOffset(scale: number, direction: number, layerId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_XOFFSET;
-
-        return size.getLayerXOffset(direction, layerId);
-    }
-
-    public getLayerYOffset(scale: number, direction: number, layerId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_YOFFSET;
-
-        return size.getLayerYOffset(direction, layerId);
-    }
-
-    public getLayerZOffset(scale: number, direction: number, layerId: number): number
-    {
-        const size = this.getSizeData(scale);
-
-        if(!size) return LayerData.DEFAULT_ZOFFSET;
-
-        return size.getLayerZOffset(direction, layerId);
-    }
-
-    public get type(): string
-    {
-        return this._type;
-    }
+  public get type(): string {
+    return this._type;
+  }
 }

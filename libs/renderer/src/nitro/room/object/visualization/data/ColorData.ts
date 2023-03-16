@@ -1,43 +1,37 @@
-export class ColorData
-{
-    public static DEFAULT_COLOR: number = 0xFFFFFF;
+export class ColorData {
+  public static DEFAULT_COLOR: number = 0xffffff;
 
-    private _colors: number[];
+  private _colors: number[];
 
-    constructor(layerCount: number)
-    {
-        this._colors = [];
+  constructor(layerCount: number) {
+    this._colors = [];
 
-        this.createColors(layerCount);
-    }
+    this.createColors(layerCount);
+  }
 
-    private createColors(count: number): void
-    {
-        if(!count) return;
+  private createColors(count: number): void {
+    if (!count) return;
 
-        for(let i = 0; i < count; i++) this._colors.push(ColorData.DEFAULT_COLOR);
-    }
+    for (let i = 0; i < count; i++) this._colors.push(ColorData.DEFAULT_COLOR);
+  }
 
-    public dispose(): void
-    {
-        this._colors = [];
-    }
+  public dispose(): void {
+    this._colors = [];
+  }
 
-    public getLayerColor(layerId: number): number
-    {
-        const existing = this._colors[layerId];
+  public getLayerColor(layerId: number): number {
+    const existing = this._colors[layerId];
 
-        if(!existing) return ColorData.DEFAULT_COLOR;
+    if (!existing) return ColorData.DEFAULT_COLOR;
 
-        return existing;
-    }
+    return existing;
+  }
 
-    public setColorLayer(layerId: number, color: number): void
-    {
-        const existing = this._colors[layerId];
+  public setColorLayer(layerId: number, color: number): void {
+    const existing = this._colors[layerId];
 
-        if(!existing) return;
+    if (!existing) return;
 
-        this._colors[layerId] = color;
-    }
+    this._colors[layerId] = color;
+  }
 }

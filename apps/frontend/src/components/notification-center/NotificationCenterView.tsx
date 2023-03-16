@@ -1,77 +1,68 @@
-import { FC, ReactNode, useMemo } from 'react';
-import { NotificationBubbleType } from '../../api';
-import { Column } from '../../common';
-import { useNotification } from '../../hooks';
-import { GetAlertLayout } from './views/alert-layouts/GetAlertLayout';
-import { GetBubbleLayout } from './views/bubble-layouts/GetBubbleLayout';
-import { GetConfirmLayout } from './views/confirm-layouts/GetConfirmLayout';
+import {FC, ReactNode, useMemo} from "react";
 
-export const NotificationCenterView: FC<{}> = props =>
-{
-    const { alerts = [], bubbleAlerts = [], confirms = [], closeAlert = null, closeBubbleAlert = null, closeConfirm = null } = useNotification();
+import {NotificationBubbleType} from "../../api";
+import {Column} from "../../common";
+import {useNotification} from "../../hooks";
+import {GetAlertLayout} from "./views/alert-layouts/GetAlertLayout";
+import {GetBubbleLayout} from "./views/bubble-layouts/GetBubbleLayout";
+import {GetConfirmLayout} from "./views/confirm-layouts/GetConfirmLayout";
 
-    const getAlerts = useMemo(() =>
-    {
-        if(!alerts || !alerts.length) return null;
+export const NotificationCenterView: FC<{}> = props => {
+  const {alerts = [], bubbleAlerts = [], confirms = [], closeAlert = null, closeBubbleAlert = null, closeConfirm = null} = useNotification();
 
-        const elements: ReactNode[] = [];
+  const getAlerts = useMemo(() => {
+    if (!alerts || !alerts.length) return null;
 
-        for(const alert of alerts)
-        {
-            const element = GetAlertLayout(alert, () => closeAlert(alert));
+    const elements: ReactNode[] = [];
 
-            elements.push(element);
-        }
+    for (const alert of alerts) {
+      const element = GetAlertLayout(alert, () => closeAlert(alert));
 
-        return elements;
-    }, [ alerts, closeAlert ]);
+      elements.push(element);
+    }
 
-    const getBubbleAlerts = useMemo(() =>
-    {
-        if(!bubbleAlerts || !bubbleAlerts.length) return null;
+    return elements;
+  }, [alerts, closeAlert]);
 
-        const elements: ReactNode[] = [];
+  const getBubbleAlerts = useMemo(() => {
+    if (!bubbleAlerts || !bubbleAlerts.length) return null;
 
-        for(const alert of bubbleAlerts)
-        {
-            const element = GetBubbleLayout(alert, () => closeBubbleAlert(alert));
+    const elements: ReactNode[] = [];
 
-            if(alert.notificationType === NotificationBubbleType.CLUBGIFT)
-            {
-                elements.unshift(element);
+    for (const alert of bubbleAlerts) {
+      const element = GetBubbleLayout(alert, () => closeBubbleAlert(alert));
 
-                continue;
-            }
+      if (alert.notificationType === NotificationBubbleType.CLUBGIFT) {
+        elements.unshift(element);
 
-            elements.push(element);
-        }
+        continue;
+      }
 
-        return elements;
-    }, [ bubbleAlerts, closeBubbleAlert ]);
+      elements.push(element);
+    }
 
-    const getConfirms = useMemo(() =>
-    {
-        if(!confirms || !confirms.length) return null;
+    return elements;
+  }, [bubbleAlerts, closeBubbleAlert]);
 
-        const elements: ReactNode[] = [];
+  const getConfirms = useMemo(() => {
+    if (!confirms || !confirms.length) return null;
 
-        for(const confirm of confirms)
-        {
-            const element = GetConfirmLayout(confirm, () => closeConfirm(confirm));
+    const elements: ReactNode[] = [];
 
-            elements.push(element);
-        }
+    for (const confirm of confirms) {
+      const element = GetConfirmLayout(confirm, () => closeConfirm(confirm));
 
-        return elements;
-    }, [ confirms, closeConfirm ]);
+      elements.push(element);
+    }
 
-    return (
-        <>
-            <Column gap={ 1 }>
-                { getBubbleAlerts }
-            </Column>
-            { getConfirms }
-            { getAlerts }
-        </>
-    );
-}
+    return elements;
+  }, [confirms, closeConfirm]);
+
+  return (
+    <>
+      <Column gap={1}>{getBubbleAlerts}</Column>
+      {getConfirms}
+      {getAlerts}
+    </>
+  );
+};

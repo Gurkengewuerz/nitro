@@ -1,4 +1,3 @@
-import { RenderTexture } from '@pixi/core';
+import {RenderTexture} from "@pixi/core";
 
-export class NitroRenderTexture extends RenderTexture
-{}
+export class NitroRenderTexture extends RenderTexture {}

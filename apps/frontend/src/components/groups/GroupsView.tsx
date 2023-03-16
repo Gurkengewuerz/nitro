@@ -1,63 +1,57 @@
-import { GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker } from '@nitro/renderer';
-import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom } from '../../api';
-import { useGroup, useMessageEvent } from '../../hooks';
-import { GroupCreatorView } from './views/GroupCreatorView';
-import { GroupInformationStandaloneView } from './views/GroupInformationStandaloneView';
-import { GroupManagerView } from './views/GroupManagerView';
-import { GroupMembersView } from './views/GroupMembersView';
+import {GroupPurchasedEvent, GroupSettingsComposer, ILinkEventTracker} from "@nitro/renderer";
+import {FC, useEffect, useState} from "react";
 
-export const GroupsView: FC<{}> = props =>
-{
-    const [ isCreatorVisible, setCreatorVisible ] = useState<boolean>(false);
-    const {} = useGroup();
+import {AddEventLinkTracker, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom} from "../../api";
+import {useGroup, useMessageEvent} from "../../hooks";
+import {GroupCreatorView} from "./views/GroupCreatorView";
+import {GroupInformationStandaloneView} from "./views/GroupInformationStandaloneView";
+import {GroupManagerView} from "./views/GroupManagerView";
+import {GroupMembersView} from "./views/GroupMembersView";
 
-    useMessageEvent<GroupPurchasedEvent>(GroupPurchasedEvent, event =>
-    {
-        const parser = event.getParser();
+export const GroupsView: FC<{}> = props => {
+  const [isCreatorVisible, setCreatorVisible] = useState<boolean>(false);
+  const {} = useGroup();
 
-        setCreatorVisible(false);
-        TryVisitRoom(parser.roomId);
-    });
+  useMessageEvent<GroupPurchasedEvent>(GroupPurchasedEvent, event => {
+    const parser = event.getParser();
 
-    useEffect(() =>
-    {
-        const linkTracker: ILinkEventTracker = {
-            linkReceived: (url: string) =>
-            {
-                const parts = url.split('/');
-        
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
-                {
-                    case 'create':
-                        setCreatorVisible(true);
-                        return;
-                    case 'manage':
-                        if(!parts[2]) return;
-        
-                        setCreatorVisible(false);
-                        SendMessageComposer(new GroupSettingsComposer(Number(parts[2])));
-                        return;
-                }
-            },
-            eventUrlPrefix: 'groups/'
-        };
+    setCreatorVisible(false);
+    TryVisitRoom(parser.roomId);
+  });
 
-        AddEventLinkTracker(linkTracker);
+  useEffect(() => {
+    const linkTracker: ILinkEventTracker = {
+      linkReceived: (url: string) => {
+        const parts = url.split("/");
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, []);
-    
-    return (
-        <>
-            { isCreatorVisible &&
-                <GroupCreatorView onClose={ () => setCreatorVisible(false) } /> }
-            { !isCreatorVisible &&
-                <GroupManagerView /> }
-            <GroupMembersView />
-            <GroupInformationStandaloneView />
-        </>
-    );
+        if (parts.length < 2) return;
+
+        switch (parts[1]) {
+          case "create":
+            setCreatorVisible(true);
+            return;
+          case "manage":
+            if (!parts[2]) return;
+
+            setCreatorVisible(false);
+            SendMessageComposer(new GroupSettingsComposer(Number(parts[2])));
+            return;
+        }
+      },
+      eventUrlPrefix: "groups/",
+    };
+
+    AddEventLinkTracker(linkTracker);
+
+    return () => RemoveLinkEventTracker(linkTracker);
+  }, []);
+
+  return (
+    <>
+      {isCreatorVisible && <GroupCreatorView onClose={() => setCreatorVisible(false)} />}
+      {!isCreatorVisible && <GroupManagerView />}
+      <GroupMembersView />
+      <GroupInformationStandaloneView />
+    </>
+  );
 };

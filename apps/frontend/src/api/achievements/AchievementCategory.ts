@@ -1,40 +1,34 @@
-import { AchievementData } from '@nitro/renderer';
-import { AchievementUtilities } from './AchievementUtilities';
-import { IAchievementCategory } from './IAchievementCategory';
+import {AchievementData} from "@nitro/renderer";
 
-export class AchievementCategory implements IAchievementCategory
-{
-    private _code: string;
-    private _achievements: AchievementData[];
+import {AchievementUtilities} from "./AchievementUtilities";
+import {IAchievementCategory} from "./IAchievementCategory";
 
-    constructor(code: string)
-    {
-        this._code = code;
-        this._achievements = [];
-    }
+export class AchievementCategory implements IAchievementCategory {
+  private _code: string;
+  private _achievements: AchievementData[];
 
-    public getProgress(): number
-    {
-        return AchievementUtilities.getAchievementCategoryProgress(this);
-    }
+  constructor(code: string) {
+    this._code = code;
+    this._achievements = [];
+  }
 
-    public getMaxProgress(): number
-    {
-        return AchievementUtilities.getAchievementCategoryMaxProgress(this);
-    }
+  public getProgress(): number {
+    return AchievementUtilities.getAchievementCategoryProgress(this);
+  }
 
-    public get code(): string
-    {
-        return this._code;
-    }
+  public getMaxProgress(): number {
+    return AchievementUtilities.getAchievementCategoryMaxProgress(this);
+  }
 
-    public get achievements(): AchievementData[]
-    {
-        return this._achievements;
-    }
+  public get code(): string {
+    return this._code;
+  }
 
-    public set achievements(achievements: AchievementData[])
-    {
-        this._achievements = achievements;
-    }
+  public get achievements(): AchievementData[] {
+    return this._achievements;
+  }
+
+  public set achievements(achievements: AchievementData[]) {
+    this._achievements = achievements;
+  }
 }

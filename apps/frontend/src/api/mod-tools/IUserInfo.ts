@@ -1,6 +1,5 @@
-export interface IUserInfo
-{
-    nameKey: string;
-    nameKeyFallback: string;
-    value: string;
+export interface IUserInfo {
+  nameKey: string;
+  nameKeyFallback: string;
+  value: string;
 }

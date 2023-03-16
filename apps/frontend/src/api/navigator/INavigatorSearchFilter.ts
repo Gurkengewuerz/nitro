@@ -1,5 +1,4 @@
-export interface INavigatorSearchFilter
-{
-    name: string;
-    query: string;
+export interface INavigatorSearchFilter {
+  name: string;
+  query: string;
 }

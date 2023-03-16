@@ -1,52 +1,49 @@
-import { RoomSessionPollEvent } from '@nitro/renderer';
-import { DispatchUiEvent, RoomWidgetPollUpdateEvent } from '../../../api';
-import { useRoomSessionManagerEvent } from '../../events';
-import { useRoom } from '../useRoom';
+import {RoomSessionPollEvent} from "@nitro/renderer";
 
-const usePollWidgetState = () =>
-{
-    const { roomSession = null } = useRoom();
+import {DispatchUiEvent, RoomWidgetPollUpdateEvent} from "../../../api";
+import {useRoomSessionManagerEvent} from "../../events";
+import {useRoom} from "../useRoom";
 
-    const startPoll = (pollId: number) => roomSession.sendPollStartMessage(pollId);
+const usePollWidgetState = () => {
+  const {roomSession = null} = useRoom();
 
-    const rejectPoll = (pollId: number) => roomSession.sendPollRejectMessage(pollId);
+  const startPoll = (pollId: number) => roomSession.sendPollStartMessage(pollId);
 
-    const answerPoll = (pollId: number, questionId: number, answers: string[]) => roomSession.sendPollAnswerMessage(pollId, questionId, answers);
+  const rejectPoll = (pollId: number) => roomSession.sendPollRejectMessage(pollId);
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.OFFER, event =>
-    {
-        const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.OFFER, event.id);
+  const answerPoll = (pollId: number, questionId: number, answers: string[]) => roomSession.sendPollAnswerMessage(pollId, questionId, answers);
 
-        pollEvent.summary = event.summary;
-        pollEvent.headline = event.headline;
+  useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.OFFER, event => {
+    const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.OFFER, event.id);
 
-        DispatchUiEvent(pollEvent);
-    });
+    pollEvent.summary = event.summary;
+    pollEvent.headline = event.headline;
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.ERROR, event =>
-    {
-        const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.ERROR, event.id);
+    DispatchUiEvent(pollEvent);
+  });
 
-        pollEvent.summary = event.summary;
-        pollEvent.headline = event.headline;
+  useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.ERROR, event => {
+    const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.ERROR, event.id);
 
-        DispatchUiEvent(pollEvent);
-    });
+    pollEvent.summary = event.summary;
+    pollEvent.headline = event.headline;
 
-    useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.CONTENT, event =>
-    {
-        const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.CONTENT, event.id);
+    DispatchUiEvent(pollEvent);
+  });
 
-        pollEvent.startMessage = event.startMessage;
-        pollEvent.endMessage = event.endMessage;
-        pollEvent.numQuestions = event.numQuestions;
-        pollEvent.questionArray = event.questionArray;
-        pollEvent.npsPoll = event.npsPoll;
+  useRoomSessionManagerEvent<RoomSessionPollEvent>(RoomSessionPollEvent.CONTENT, event => {
+    const pollEvent = new RoomWidgetPollUpdateEvent(RoomWidgetPollUpdateEvent.CONTENT, event.id);
 
-        DispatchUiEvent(pollEvent);
-    });
+    pollEvent.startMessage = event.startMessage;
+    pollEvent.endMessage = event.endMessage;
+    pollEvent.numQuestions = event.numQuestions;
+    pollEvent.questionArray = event.questionArray;
+    pollEvent.npsPoll = event.npsPoll;
 
-    return { startPoll, rejectPoll, answerPoll };
-}
+    DispatchUiEvent(pollEvent);
+  });
+
+  return {startPoll, rejectPoll, answerPoll};
+};
 
 export const usePollWidget = usePollWidgetState;

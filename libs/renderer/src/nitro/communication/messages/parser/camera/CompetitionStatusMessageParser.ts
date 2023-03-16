@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class CompetitionStatusMessageParser implements IMessageParser
-{
-    private _ok: boolean = false;
-    private _errorReason: string = null;
+export class CompetitionStatusMessageParser implements IMessageParser {
+  private _ok: boolean = false;
+  private _errorReason: string = null;
 
-    public flush(): boolean
-    {
-        this._ok = false;
-        this._errorReason = null;
+  public flush(): boolean {
+    this._ok = false;
+    this._errorReason = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._ok = wrapper.readBoolean();
-        this._errorReason = wrapper.readString();
+    this._ok = wrapper.readBoolean();
+    this._errorReason = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get ok(): boolean
-    {
-        return this._ok;
-    }
+  public get ok(): boolean {
+    return this._ok;
+  }
 
-    public get errorReason(): string
-    {
-        return this._errorReason;
-    }
+  public get errorReason(): string {
+    return this._errorReason;
+  }
 }

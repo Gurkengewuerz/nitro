@@ -1,12 +1,12 @@
-import { FC } from 'react';
-import { LayoutTrophyView } from '../../../../common';
-import { useFurnitureBadgeDisplayWidget } from '../../../../hooks';
+import {FC} from "react";
 
-export const FurnitureBadgeDisplayView: FC<{}> = props =>
-{
-    const { objectId = -1, color = '1', badgeName = '', badgeDesc = '', date = '', senderName = '', onClose = null } = useFurnitureBadgeDisplayWidget();
+import {LayoutTrophyView} from "../../../../common";
+import {useFurnitureBadgeDisplayWidget} from "../../../../hooks";
 
-    if(objectId === -1) return null;
+export const FurnitureBadgeDisplayView: FC<{}> = props => {
+  const {objectId = -1, color = "1", badgeName = "", badgeDesc = "", date = "", senderName = "", onClose = null} = useFurnitureBadgeDisplayWidget();
 
-    return <LayoutTrophyView color={ color } message={ badgeDesc } date={ date } senderName={ senderName } customTitle={ badgeName } onCloseClick={ onClose } />;
-}
+  if (objectId === -1) return null;
+
+  return <LayoutTrophyView color={color} message={badgeDesc} date={date} senderName={senderName} customTitle={badgeName} onCloseClick={onClose} />;
+};

@@ -1,9 +1,9 @@
-import { FC } from 'react';
-import { useFurnitureRoomLinkWidget } from '../../../../hooks';
+import {FC} from "react";
 
-export const FurnitureRoomLinkView: FC<{}> = props =>
-{
-    const {} = useFurnitureRoomLinkWidget();
+import {useFurnitureRoomLinkWidget} from "../../../../hooks";
 
-    return null;
-}
+export const FurnitureRoomLinkView: FC<{}> = props => {
+  const {} = useFurnitureRoomLinkWidget();
+
+  return null;
+};

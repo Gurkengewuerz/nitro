@@ -1,173 +1,156 @@
-import { Resource, Texture } from '@pixi/core';
-import { Matrix } from '@pixi/math';
-import { IGraphicAsset } from '../../../../../api';
-import { NitroSprite, NitroTexture, TextureUtils } from '../../../../../pixi-proxy';
-import { FurnitureAnimatedVisualization } from './FurnitureAnimatedVisualization';
+import {Resource, Texture} from "@pixi/core";
+import {Matrix} from "@pixi/math";
 
-export class IsometricImageFurniVisualization extends FurnitureAnimatedVisualization
-{
-    protected static THUMBNAIL: string = 'THUMBNAIL';
+import {IGraphicAsset} from "../../../../../api";
+import {NitroSprite, NitroTexture, TextureUtils} from "../../../../../pixi-proxy";
+import {FurnitureAnimatedVisualization} from "./FurnitureAnimatedVisualization";
 
-    private _thumbnailAssetNameNormal: string;
-    private _thumbnailImageNormal: Texture<Resource>;
-    private _thumbnailDirection: number;
-    private _thumbnailChanged: boolean;
-    protected _hasOutline: boolean;
+export class IsometricImageFurniVisualization extends FurnitureAnimatedVisualization {
+  protected static THUMBNAIL: string = "THUMBNAIL";
 
-    constructor()
-    {
-        super();
+  private _thumbnailAssetNameNormal: string;
+  private _thumbnailImageNormal: Texture<Resource>;
+  private _thumbnailDirection: number;
+  private _thumbnailChanged: boolean;
+  protected _hasOutline: boolean;
 
-        this._thumbnailAssetNameNormal = null;
-        this._thumbnailImageNormal = null;
-        this._thumbnailDirection = -1;
-        this._thumbnailChanged = false;
-        this._hasOutline = false;
+  constructor() {
+    super();
+
+    this._thumbnailAssetNameNormal = null;
+    this._thumbnailImageNormal = null;
+    this._thumbnailDirection = -1;
+    this._thumbnailChanged = false;
+    this._hasOutline = false;
+  }
+
+  public get hasThumbnailImage(): boolean {
+    return !(this._thumbnailImageNormal == null);
+  }
+
+  public setThumbnailImages(k: Texture<Resource>): void {
+    this._thumbnailImageNormal = k;
+    this._thumbnailChanged = true;
+  }
+
+  protected updateModel(scale: number): boolean {
+    const flag = super.updateModel(scale);
+
+    if (!this._thumbnailChanged && this._thumbnailDirection === this.direction) return flag;
+
+    this.refreshThumbnail();
+
+    return true;
+  }
+
+  private refreshThumbnail(): void {
+    if (this.asset == null) return;
+
+    if (this._thumbnailImageNormal) {
+      this.addThumbnailAsset(this._thumbnailImageNormal, 64);
+    } else {
+      this.asset.disposeAsset(this.getThumbnailAssetName(64));
     }
 
-    public get hasThumbnailImage(): boolean
-    {
-        return !(this._thumbnailImageNormal == null);
-    }
+    this._thumbnailChanged = false;
+    this._thumbnailDirection = this.direction;
+  }
 
-    public setThumbnailImages(k: Texture<Resource>): void
-    {
-        this._thumbnailImageNormal = k;
-        this._thumbnailChanged = true;
-    }
+  private addThumbnailAsset(k: Texture<Resource>, scale: number): void {
+    let layerId = 0;
 
-    protected updateModel(scale: number): boolean
-    {
-        const flag = super.updateModel(scale);
+    while (layerId < this.totalSprites) {
+      if (this.getLayerTag(scale, this.direction, layerId) === IsometricImageFurniVisualization.THUMBNAIL) {
+        const assetName = this.cacheSpriteAssetName(scale, layerId, false) + this.getFrameNumber(scale, layerId);
+        const asset = this.getAsset(assetName, layerId);
 
-        if(!this._thumbnailChanged && (this._thumbnailDirection === this.direction)) return flag;
+        if (asset) {
+          const _local_6 = this.generateTransformedThumbnail(k, asset);
+          const _local_7 = this.getThumbnailAssetName(scale);
 
-        this.refreshThumbnail();
-
-        return true;
-    }
-
-    private refreshThumbnail(): void
-    {
-        if(this.asset == null) return;
-
-        if(this._thumbnailImageNormal)
-        {
-            this.addThumbnailAsset(this._thumbnailImageNormal, 64);
-        }
-        else
-        {
-            this.asset.disposeAsset(this.getThumbnailAssetName(64));
-        }
-
-        this._thumbnailChanged = false;
-        this._thumbnailDirection = this.direction;
-    }
-
-    private addThumbnailAsset(k: Texture<Resource>, scale: number): void
-    {
-        let layerId = 0;
-
-        while(layerId < this.totalSprites)
-        {
-            if(this.getLayerTag(scale, this.direction, layerId) === IsometricImageFurniVisualization.THUMBNAIL)
-            {
-                const assetName = (this.cacheSpriteAssetName(scale, layerId, false) + this.getFrameNumber(scale, layerId));
-                const asset = this.getAsset(assetName, layerId);
-
-                if(asset)
-                {
-                    const _local_6 = this.generateTransformedThumbnail(k, asset);
-                    const _local_7 = this.getThumbnailAssetName(scale);
-
-                    this.asset.disposeAsset(_local_7);
-                    this.asset.addAsset(_local_7, _local_6, true, asset.offsetX, asset.offsetY, false, false);
-                }
-
-                return;
-            }
-
-            layerId++;
-        }
-    }
-
-    protected generateTransformedThumbnail(texture: Texture<Resource>, asset: IGraphicAsset): Texture<Resource>
-    {
-        if(this._hasOutline)
-        {
-            const container = new NitroSprite();
-            const background = new NitroSprite(NitroTexture.WHITE);
-
-            background.tint = 0x000000;
-            background.width = (texture.width + 40);
-            background.height = (texture.height + 40);
-
-            const sprite = new NitroSprite(texture);
-            const offsetX = ((background.width - sprite.width) / 2);
-            const offsetY = ((background.height - sprite.height) / 2);
-
-            sprite.position.set(offsetX, offsetY);
-
-            container.addChild(background, sprite);
-
-            texture = TextureUtils.generateTexture(container);
+          this.asset.disposeAsset(_local_7);
+          this.asset.addAsset(_local_7, _local_6, true, asset.offsetX, asset.offsetY, false, false);
         }
 
-        const scale = 1.1;
-        const matrix = new Matrix();
-        const difference = (asset.width / texture.width);
+        return;
+      }
 
-        switch(this.direction)
-        {
-            case 2:
-                matrix.a = difference;
-                matrix.b = (-0.5 * difference);
-                matrix.c = 0;
-                matrix.d = (difference * scale);
-                matrix.tx = 0;
-                matrix.ty = ((0.5 * difference) * texture.width);
-                break;
-            case 0:
-            case 4:
-                matrix.a = difference;
-                matrix.b = (0.5 * difference);
-                matrix.c = 0;
-                matrix.d = (difference * scale);
-                matrix.tx = 0;
-                matrix.ty = 0;
-                break;
-            default:
-                matrix.a = difference;
-                matrix.b = 0;
-                matrix.c = 0;
-                matrix.d = difference;
-                matrix.tx = 0;
-                matrix.ty = 0;
-        }
+      layerId++;
+    }
+  }
 
-        const sprite = new NitroSprite(texture);
+  protected generateTransformedThumbnail(texture: Texture<Resource>, asset: IGraphicAsset): Texture<Resource> {
+    if (this._hasOutline) {
+      const container = new NitroSprite();
+      const background = new NitroSprite(NitroTexture.WHITE);
 
-        sprite.transform.setFromMatrix(matrix);
+      background.tint = 0x000000;
+      background.width = texture.width + 40;
+      background.height = texture.height + 40;
 
-        return TextureUtils.generateTexture(sprite);
+      const sprite = new NitroSprite(texture);
+      const offsetX = (background.width - sprite.width) / 2;
+      const offsetY = (background.height - sprite.height) / 2;
+
+      sprite.position.set(offsetX, offsetY);
+
+      container.addChild(background, sprite);
+
+      texture = TextureUtils.generateTexture(container);
     }
 
-    protected getSpriteAssetName(scale: number, layerId: number): string
-    {
-        if(this._thumbnailImageNormal && (this.getLayerTag(scale, this.direction, layerId) === IsometricImageFurniVisualization.THUMBNAIL)) return this.getThumbnailAssetName(scale);
+    const scale = 1.1;
+    const matrix = new Matrix();
+    const difference = asset.width / texture.width;
 
-        return super.getSpriteAssetName(scale, layerId);
+    switch (this.direction) {
+      case 2:
+        matrix.a = difference;
+        matrix.b = -0.5 * difference;
+        matrix.c = 0;
+        matrix.d = difference * scale;
+        matrix.tx = 0;
+        matrix.ty = 0.5 * difference * texture.width;
+        break;
+      case 0:
+      case 4:
+        matrix.a = difference;
+        matrix.b = 0.5 * difference;
+        matrix.c = 0;
+        matrix.d = difference * scale;
+        matrix.tx = 0;
+        matrix.ty = 0;
+        break;
+      default:
+        matrix.a = difference;
+        matrix.b = 0;
+        matrix.c = 0;
+        matrix.d = difference;
+        matrix.tx = 0;
+        matrix.ty = 0;
     }
 
-    protected getThumbnailAssetName(scale: number): string
-    {
-        this._thumbnailAssetNameNormal = this.getFullThumbnailAssetName(this.object.id, 64);
+    const sprite = new NitroSprite(texture);
 
-        return this._thumbnailAssetNameNormal;
-    }
+    sprite.transform.setFromMatrix(matrix);
 
-    protected getFullThumbnailAssetName(k: number, _arg_2: number): string
-    {
-        return [this._type, k, 'thumb', _arg_2].join('_');
-    }
+    return TextureUtils.generateTexture(sprite);
+  }
+
+  protected getSpriteAssetName(scale: number, layerId: number): string {
+    if (this._thumbnailImageNormal && this.getLayerTag(scale, this.direction, layerId) === IsometricImageFurniVisualization.THUMBNAIL)
+      return this.getThumbnailAssetName(scale);
+
+    return super.getSpriteAssetName(scale, layerId);
+  }
+
+  protected getThumbnailAssetName(scale: number): string {
+    this._thumbnailAssetNameNormal = this.getFullThumbnailAssetName(this.object.id, 64);
+
+    return this._thumbnailAssetNameNormal;
+  }
+
+  protected getFullThumbnailAssetName(k: number, _arg_2: number): string {
+    return [this._type, k, "thumb", _arg_2].join("_");
+  }
 }

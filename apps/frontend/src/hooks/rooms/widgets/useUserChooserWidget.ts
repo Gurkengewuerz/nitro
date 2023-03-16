@@ -1,80 +1,75 @@
-import { RoomObjectCategory } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomEngine, GetRoomSession, RoomObjectItem } from '../../../api';
-import { useUserAddedEvent, useUserRemovedEvent } from '../engine';
-import { useRoom } from '../useRoom';
+import {RoomObjectCategory} from "@nitro/renderer";
+import {useState} from "react";
 
-const useUserChooserWidgetState = () =>
-{
-    const [ items, setItems ] = useState<RoomObjectItem[]>(null);
-    const { roomSession = null } = useRoom();
+import {GetRoomEngine, GetRoomSession, RoomObjectItem} from "../../../api";
+import {useUserAddedEvent, useUserRemovedEvent} from "../engine";
+import {useRoom} from "../useRoom";
 
-    const onClose = () => setItems(null);
+const useUserChooserWidgetState = () => {
+  const [items, setItems] = useState<RoomObjectItem[]>(null);
+  const {roomSession = null} = useRoom();
 
-    const selectItem = (item: RoomObjectItem) => item && GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
+  const onClose = () => setItems(null);
 
-    const populateChooser = () =>
-    {
-        const roomSession = GetRoomSession();
-        const roomObjects = GetRoomEngine().getRoomObjects(roomSession.roomId, RoomObjectCategory.UNIT);
+  const selectItem = (item: RoomObjectItem) => item && GetRoomEngine().selectRoomObject(GetRoomSession().roomId, item.id, item.category);
 
-        setItems(roomObjects
-            .map(roomObject =>
-            {
-                if(roomObject.id < 0) return null;
-                
-                const userData = roomSession.userDataManager.getUserDataByIndex(roomObject.id);
+  const populateChooser = () => {
+    const roomSession = GetRoomSession();
+    const roomObjects = GetRoomEngine().getRoomObjects(roomSession.roomId, RoomObjectCategory.UNIT);
 
-                if(!userData) return null;
+    setItems(
+      roomObjects
+        .map(roomObject => {
+          if (roomObject.id < 0) return null;
 
-                return new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name);
-            })
-            .sort((a, b) => ((a.name < b.name) ? -1 : 1)));
-    }
+          const userData = roomSession.userDataManager.getUserDataByIndex(roomObject.id);
 
-    useUserAddedEvent(!!items, event =>
-    {
-        if(event.id < 0) return;
+          if (!userData) return null;
 
-        const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
+          return new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name);
+        })
+        .sort((a, b) => (a.name < b.name ? -1 : 1))
+    );
+  };
 
-        if(!userData) return;
+  useUserAddedEvent(!!items, event => {
+    if (event.id < 0) return;
 
-        setItems(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
+    const userData = GetRoomSession().userDataManager.getUserDataByIndex(event.id);
 
-            newValue.push(new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name));
-            newValue.sort((a, b) => ((a.name < b.name) ? -1 : 1));
+    if (!userData) return;
 
-            return newValue;
-        });
+    setItems(prevValue => {
+      const newValue = [...prevValue];
+
+      newValue.push(new RoomObjectItem(userData.roomIndex, RoomObjectCategory.UNIT, userData.name));
+      newValue.sort((a, b) => (a.name < b.name ? -1 : 1));
+
+      return newValue;
     });
+  });
 
-    useUserRemovedEvent(!!items, event =>
-    {
-        if(event.id < 0) return;
+  useUserRemovedEvent(!!items, event => {
+    if (event.id < 0) return;
 
-        setItems(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
+    setItems(prevValue => {
+      const newValue = [...prevValue];
 
-            for(let i = 0; i < newValue.length; i++)
-            {
-                const existingValue = newValue[i];
+      for (let i = 0; i < newValue.length; i++) {
+        const existingValue = newValue[i];
 
-                if((existingValue.id !== event.id) || (existingValue.category !== event.category)) continue;
+        if (existingValue.id !== event.id || existingValue.category !== event.category) continue;
 
-                newValue.splice(i, 1);
+        newValue.splice(i, 1);
 
-                break;
-            }
+        break;
+      }
 
-            return newValue;
-        });
+      return newValue;
     });
+  });
 
-    return { items, onClose, selectItem, populateChooser };
-}
+  return {items, onClose, selectItem, populateChooser};
+};
 
 export const useUserChooserWidget = useUserChooserWidgetState;

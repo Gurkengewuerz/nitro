@@ -1,55 +1,47 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class NewConsoleMessageParser implements IMessageParser
-{
-    private _senderId: number;
-    private _messageText: string;
-    private _secondsSinceSent: number;
-    private _extraData: string;
+export class NewConsoleMessageParser implements IMessageParser {
+  private _senderId: number;
+  private _messageText: string;
+  private _secondsSinceSent: number;
+  private _extraData: string;
 
-    public flush(): boolean
-    {
-        this._senderId = 0;
-        this._messageText = null;
-        this._secondsSinceSent = 0;
-        this._extraData = null;
+  public flush(): boolean {
+    this._senderId = 0;
+    this._messageText = null;
+    this._secondsSinceSent = 0;
+    this._extraData = null;
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    this._senderId = wrapper.readInt();
+    this._messageText = wrapper.readString();
+    this._secondsSinceSent = wrapper.readInt();
+
+    if (wrapper.bytesAvailable) {
+      this._extraData = wrapper.readString();
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    return true;
+  }
 
-        this._senderId = wrapper.readInt();
-        this._messageText = wrapper.readString();
-        this._secondsSinceSent = wrapper.readInt();
+  public get senderId(): number {
+    return this._senderId;
+  }
 
-        if(wrapper.bytesAvailable)
-        {
-            this._extraData = wrapper.readString();
-        }
+  public get messageText(): string {
+    return this._messageText;
+  }
 
-        return true;
-    }
+  public get secondsSinceSent(): number {
+    return this._secondsSinceSent;
+  }
 
-    public get senderId(): number
-    {
-        return this._senderId;
-    }
-
-    public get messageText(): string
-    {
-        return this._messageText;
-    }
-
-    public get secondsSinceSent(): number
-    {
-        return this._secondsSinceSent;
-    }
-
-    public get extraData(): string
-    {
-        return this._extraData;
-    }
+  public get extraData(): string {
+    return this._extraData;
+  }
 }

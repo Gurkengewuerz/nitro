@@ -1,16 +1,12 @@
-import { FC } from 'react';
-import { MessengerThread } from '../../../../../api';
-import { FriendsMessengerThreadGroup } from './FriendsMessengerThreadGroup';
+import {FC} from "react";
 
-export const FriendsMessengerThreadView: FC<{ thread: MessengerThread }> = props =>
-{
-    const { thread = null } = props;
+import {MessengerThread} from "../../../../../api";
+import {FriendsMessengerThreadGroup} from "./FriendsMessengerThreadGroup";
 
-    thread.setRead();
+export const FriendsMessengerThreadView: FC<{thread: MessengerThread}> = props => {
+  const {thread = null} = props;
 
-    return (
-        <>
-            { (thread.groups.length > 0) && thread.groups.map((group, index) => <FriendsMessengerThreadGroup key={ index } thread={ thread } group={ group } />) }
-        </>
-    );
-}
+  thread.setRead();
+
+  return <>{thread.groups.length > 0 && thread.groups.map((group, index) => <FriendsMessengerThreadGroup key={index} thread={thread} group={group} />)}</>;
+};

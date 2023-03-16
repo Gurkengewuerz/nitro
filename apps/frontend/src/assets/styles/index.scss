@@ -1,9 +1,9 @@
-@import './fonts';
-@import './bootstrap/bootstrap';
-@import './scrollbars';
-@import './slider';
-@import './icons';
-@import './utils';
+@import "./fonts";
+@import "./bootstrap/bootstrap";
+@import "./scrollbars";
+@import "./slider";
+@import "./icons";
+@import "./utils";
 
 .btn-sm {
   min-height: 28px;
@@ -21,6 +21,6 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }

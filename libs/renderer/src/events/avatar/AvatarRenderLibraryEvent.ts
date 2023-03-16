@@ -1,21 +1,18 @@
-import { IAvatarAssetDownloadLibrary } from '../../api';
-import { NitroEvent } from '../core';
+import {IAvatarAssetDownloadLibrary} from "../../api";
+import {NitroEvent} from "../core";
 
-export class AvatarRenderLibraryEvent extends NitroEvent
-{
-    public static DOWNLOAD_COMPLETE: string = 'ARLE_DOWNLOAD_COMPLETE';
+export class AvatarRenderLibraryEvent extends NitroEvent {
+  public static DOWNLOAD_COMPLETE: string = "ARLE_DOWNLOAD_COMPLETE";
 
-    private _library: IAvatarAssetDownloadLibrary;
+  private _library: IAvatarAssetDownloadLibrary;
 
-    constructor(type: string, library: IAvatarAssetDownloadLibrary)
-    {
-        super(type);
+  constructor(type: string, library: IAvatarAssetDownloadLibrary) {
+    super(type);
 
-        this._library = library;
-    }
+    this._library = library;
+  }
 
-    public get library(): IAvatarAssetDownloadLibrary
-    {
-        return this._library;
-    }
+  public get library(): IAvatarAssetDownloadLibrary {
+    return this._library;
+  }
 }

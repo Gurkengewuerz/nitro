@@ -1,41 +1,36 @@
-import { IFurnitureData, IProductData } from '@nitro/renderer';
-import { IPurchasableOffer } from './IPurchasableOffer';
+import {IFurnitureData, IProductData} from "@nitro/renderer";
 
-export class PlacedObjectPurchaseData
-{
-    constructor(
-        public readonly roomId: number,
-        public readonly objectId: number,
-        public readonly category: number,
-        public readonly wallLocation: string,
-        public readonly x: number,
-        public readonly y: number,
-        public readonly direction: number,
-        public readonly offer: IPurchasableOffer) 
-    {}
+import {IPurchasableOffer} from "./IPurchasableOffer";
 
-    public get offerId(): number
-    {
-        return this.offer.offerId;
-    }
+export class PlacedObjectPurchaseData {
+  constructor(
+    public readonly roomId: number,
+    public readonly objectId: number,
+    public readonly category: number,
+    public readonly wallLocation: string,
+    public readonly x: number,
+    public readonly y: number,
+    public readonly direction: number,
+    public readonly offer: IPurchasableOffer
+  ) {}
 
-    public get productClassId(): number
-    {
-        return this.offer.product.productClassId;
-    }
+  public get offerId(): number {
+    return this.offer.offerId;
+  }
 
-    public get productData(): IProductData
-    {
-        return this.offer.product.productData;
-    }
+  public get productClassId(): number {
+    return this.offer.product.productClassId;
+  }
 
-    public get furniData(): IFurnitureData
-    {
-        return this.offer.product.furnitureData;
-    }
+  public get productData(): IProductData {
+    return this.offer.product.productData;
+  }
 
-    public get extraParam(): string
-    {
-        return this.offer.product.extraParam;
-    }
+  public get furniData(): IFurnitureData {
+    return this.offer.product.furnitureData;
+  }
+
+  public get extraParam(): string {
+    return this.offer.product.extraParam;
+  }
 }

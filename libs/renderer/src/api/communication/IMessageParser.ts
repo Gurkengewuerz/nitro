@@ -1,7 +1,6 @@
-import { IMessageDataWrapper } from './IMessageDataWrapper';
+import {IMessageDataWrapper} from "./IMessageDataWrapper";
 
-export interface IMessageParser
-{
-    flush(): boolean;
-    parse(wrapper: IMessageDataWrapper): boolean;
+export interface IMessageParser {
+  flush(): boolean;
+  parse(wrapper: IMessageDataWrapper): boolean;
 }

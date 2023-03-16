@@ -1,4 +1,3 @@
-import { NitroEvent } from '@nitro/renderer';
+import {NitroEvent} from "@nitro/renderer";
 
-export class RoomWidgetUpdateEvent extends NitroEvent
-{}
+export class RoomWidgetUpdateEvent extends NitroEvent {}

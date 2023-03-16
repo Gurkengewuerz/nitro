@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { TriggerDefinition } from './TriggerDefinition';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {TriggerDefinition} from "./TriggerDefinition";
 
-export class WiredFurniTriggerParser implements IMessageParser
-{
-    private _definition: TriggerDefinition;
+export class WiredFurniTriggerParser implements IMessageParser {
+  private _definition: TriggerDefinition;
 
-    public flush(): boolean
-    {
-        this._definition = null;
+  public flush(): boolean {
+    this._definition = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._definition = new TriggerDefinition(wrapper);
+    this._definition = new TriggerDefinition(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get definition(): TriggerDefinition
-    {
-        return this._definition;
-    }
+  public get definition(): TriggerDefinition {
+    return this._definition;
+  }
 }

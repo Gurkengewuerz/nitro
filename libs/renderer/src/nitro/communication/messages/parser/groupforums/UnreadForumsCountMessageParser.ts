@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class UnreadForumsCountMessageParser implements IMessageParser
-{
-    private _count: number;
+export class UnreadForumsCountMessageParser implements IMessageParser {
+  private _count: number;
 
-    public flush(): boolean
-    {
-        this._count = 0;
+  public flush(): boolean {
+    this._count = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._count = wrapper.readInt();
+    this._count = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get count(): number
-    {
-        return this._count;
-    }
+  public get count(): number {
+    return this._count;
+  }
 }

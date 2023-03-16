@@ -1,20 +1,17 @@
-import { FC } from 'react';
-import { Column, ColumnProps } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
-import { CatalogPriceDisplayWidgetView } from './CatalogPriceDisplayWidgetView';
+import {FC} from "react";
 
-interface CatalogSimplePriceWidgetViewProps extends ColumnProps
-{
+import {Column, ColumnProps} from "../../../../../common";
+import {useCatalog} from "../../../../../hooks";
+import {CatalogPriceDisplayWidgetView} from "./CatalogPriceDisplayWidgetView";
 
-}
-export const CatalogTotalPriceWidget: FC<CatalogSimplePriceWidgetViewProps> = props =>
-{
-    const { gap = 1, ...rest } = props;
-    const { currentOffer = null } = useCatalog();
+interface CatalogSimplePriceWidgetViewProps extends ColumnProps {}
+export const CatalogTotalPriceWidget: FC<CatalogSimplePriceWidgetViewProps> = props => {
+  const {gap = 1, ...rest} = props;
+  const {currentOffer = null} = useCatalog();
 
-    return (
-        <Column gap={ gap } { ...rest }>
-            <CatalogPriceDisplayWidgetView offer={ currentOffer } />
-        </Column>
-    );
-}
+  return (
+    <Column gap={gap} {...rest}>
+      <CatalogPriceDisplayWidgetView offer={currentOffer} />
+    </Column>
+  );
+};

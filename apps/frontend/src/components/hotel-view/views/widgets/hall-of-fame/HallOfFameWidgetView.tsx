@@ -1,37 +1,35 @@
-import { CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer } from '@nitro/renderer';
-import { FC, useEffect, useState } from 'react';
-import { SendMessageComposer } from '../../../../../api';
-import { useMessageEvent } from '../../../../../hooks';
-import { HallOfFameItemView } from '../hall-of-fame-item/HallOfFameItemView';
-import { HallOfFameWidgetViewProps } from './HallOfFameWidgetView.types';
+import {CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer} from "@nitro/renderer";
+import {FC, useEffect, useState} from "react";
 
-export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props =>
-{
-    const { slot = -1, conf = null } = props;
-    const [ data, setData ] = useState<CommunityGoalHallOfFameData>(null);
+import {SendMessageComposer} from "../../../../../api";
+import {useMessageEvent} from "../../../../../hooks";
+import {HallOfFameItemView} from "../hall-of-fame-item/HallOfFameItemView";
+import {HallOfFameWidgetViewProps} from "./HallOfFameWidgetView.types";
 
-    useMessageEvent<CommunityGoalHallOfFameMessageEvent>(CommunityGoalHallOfFameMessageEvent, event =>
-    {
-        const parser = event.getParser();
+export const HallOfFameWidgetView: FC<HallOfFameWidgetViewProps> = props => {
+  const {slot = -1, conf = null} = props;
+  const [data, setData] = useState<CommunityGoalHallOfFameData>(null);
 
-        setData(parser.data);
-    });
+  useMessageEvent<CommunityGoalHallOfFameMessageEvent>(CommunityGoalHallOfFameMessageEvent, event => {
+    const parser = event.getParser();
 
-    useEffect(() =>
-    {
-        const campaign: string = conf ? conf['campaign'] : '';  
-        SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(campaign));
-    }, [ conf ]);
+    setData(parser.data);
+  });
 
-    if(!data) return null;
+  useEffect(() => {
+    const campaign: string = conf ? conf["campaign"] : "";
+    SendMessageComposer(new GetCommunityGoalHallOfFameMessageComposer(campaign));
+  }, [conf]);
 
-    return (
-        <div className="hall-of-fame d-flex">
-            { data.hof && (data.hof.length > 0) && data.hof.map((entry, index) =>
-            {
-                return <HallOfFameItemView key={ index } data={ entry } level={ (index + 1) } />;
-            }
-            ) }
-        </div>
-    );
-}
+  if (!data) return null;
+
+  return (
+    <div className="hall-of-fame d-flex">
+      {data.hof &&
+        data.hof.length > 0 &&
+        data.hof.map((entry, index) => {
+          return <HallOfFameItemView key={index} data={entry} level={index + 1} />;
+        })}
+    </div>
+  );
+};

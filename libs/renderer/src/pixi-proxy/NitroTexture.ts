@@ -1,4 +1,3 @@
-import { Texture } from '@pixi/core';
+import {Texture} from "@pixi/core";
 
-export class NitroTexture extends Texture
-{}
+export class NitroTexture extends Texture {}

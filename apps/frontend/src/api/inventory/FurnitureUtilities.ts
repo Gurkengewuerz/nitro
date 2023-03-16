@@ -1,172 +1,146 @@
-import { FurnitureListItemParser, IObjectData } from '@nitro/renderer';
-import { GetRoomEngine } from '../nitro';
-import { FurniCategory } from './FurniCategory';
-import { FurnitureItem } from './FurnitureItem';
-import { GroupItem } from './GroupItem';
+import {FurnitureListItemParser, IObjectData} from "@nitro/renderer";
 
-export const createGroupItem = (type: number, category: number, stuffData: IObjectData, extra: number = NaN) => new GroupItem(type, category, GetRoomEngine(), stuffData, extra);
+import {GetRoomEngine} from "../nitro";
+import {FurniCategory} from "./FurniCategory";
+import {FurnitureItem} from "./FurnitureItem";
+import {GroupItem} from "./GroupItem";
 
-const addSingleFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
-{
-    const groupItems: GroupItem[] = [];
+export const createGroupItem = (type: number, category: number, stuffData: IObjectData, extra: number = NaN) =>
+  new GroupItem(type, category, GetRoomEngine(), stuffData, extra);
 
-    for(const groupItem of set)
-    {
-        if(groupItem.type === item.type) groupItems.push(groupItem);
-    }
+const addSingleFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) => {
+  const groupItems: GroupItem[] = [];
 
-    for(const groupItem of groupItems)
-    {
-        if(groupItem.getItemById(item.id)) return groupItem;
-    }
+  for (const groupItem of set) {
+    if (groupItem.type === item.type) groupItems.push(groupItem);
+  }
 
-    const groupItem = createGroupItem(item.type, item.category, item.stuffData, item.extra);
+  for (const groupItem of groupItems) {
+    if (groupItem.getItemById(item.id)) return groupItem;
+  }
 
-    groupItem.push(item);
+  const groupItem = createGroupItem(item.type, item.category, item.stuffData, item.extra);
 
-    if(unseen)
-    {
-        groupItem.hasUnseenItems = true;
+  groupItem.push(item);
 
-        set.unshift(groupItem);
-    }
-    else
-    {
-        set.push(groupItem);
-    }
+  if (unseen) {
+    groupItem.hasUnseenItems = true;
 
-    return groupItem;
-}
+    set.unshift(groupItem);
+  } else {
+    set.push(groupItem);
+  }
 
-const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
-{
-    let existingGroup: GroupItem = null;
+  return groupItem;
+};
 
-    for(const groupItem of set)
-    {
-        if((groupItem.type === item.type) && (groupItem.isWallItem === item.isWallItem) && groupItem.isGroupable)
-        {
-            if(item.category === FurniCategory.POSTER)
-            {
-                if(groupItem.stuffData.getLegacyString() === item.stuffData.getLegacyString())
-                {
-                    existingGroup = groupItem;
+const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) => {
+  let existingGroup: GroupItem = null;
 
-                    break;
-                }
-            }
+  for (const groupItem of set) {
+    if (groupItem.type === item.type && groupItem.isWallItem === item.isWallItem && groupItem.isGroupable) {
+      if (item.category === FurniCategory.POSTER) {
+        if (groupItem.stuffData.getLegacyString() === item.stuffData.getLegacyString()) {
+          existingGroup = groupItem;
 
-            else if(item.category === FurniCategory.GUILD_FURNI)
-            {
-                if(item.stuffData.compare(groupItem.stuffData))
-                {
-                    existingGroup = groupItem;
-
-                    break;
-                }
-            }
-
-            else
-            {
-                existingGroup = groupItem;
-
-                break;
-            }
+          break;
         }
-    }
+      } else if (item.category === FurniCategory.GUILD_FURNI) {
+        if (item.stuffData.compare(groupItem.stuffData)) {
+          existingGroup = groupItem;
 
-    if(existingGroup)
-    {
-        existingGroup.push(item);
-
-        if(unseen)
-        {
-            existingGroup.hasUnseenItems = true;
-
-            const index = set.indexOf(existingGroup);
-
-            if(index >= 0) set.splice(index, 1);
-            
-            set.unshift(existingGroup);
+          break;
         }
+      } else {
+        existingGroup = groupItem;
 
-        return existingGroup;
+        break;
+      }
     }
+  }
 
-    existingGroup = createGroupItem(item.type, item.category, item.stuffData, item.extra);
-
+  if (existingGroup) {
     existingGroup.push(item);
 
-    if(unseen)
-    {
-        existingGroup.hasUnseenItems = true;
+    if (unseen) {
+      existingGroup.hasUnseenItems = true;
 
-        set.unshift(existingGroup);
-    }
-    else
-    {
-        set.push(existingGroup);
+      const index = set.indexOf(existingGroup);
+
+      if (index >= 0) set.splice(index, 1);
+
+      set.unshift(existingGroup);
     }
 
     return existingGroup;
-}
+  }
 
-export const addFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) =>
-{
-    if(!item.isGroupable)
-    {
-        addSingleFurnitureItem(set, item, unseen);
+  existingGroup = createGroupItem(item.type, item.category, item.stuffData, item.extra);
+
+  existingGroup.push(item);
+
+  if (unseen) {
+    existingGroup.hasUnseenItems = true;
+
+    set.unshift(existingGroup);
+  } else {
+    set.push(existingGroup);
+  }
+
+  return existingGroup;
+};
+
+export const addFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen: boolean) => {
+  if (!item.isGroupable) {
+    addSingleFurnitureItem(set, item, unseen);
+  } else {
+    addGroupableFurnitureItem(set, item, unseen);
+  }
+};
+
+export const mergeFurniFragments = (
+  fragment: Map<number, FurnitureListItemParser>,
+  totalFragments: number,
+  fragmentNumber: number,
+  fragments: Map<number, FurnitureListItemParser>[]
+) => {
+  if (totalFragments === 1) return fragment;
+
+  fragments[fragmentNumber] = fragment;
+
+  for (const frag of fragments) {
+    if (!frag) return null;
+  }
+
+  const merged: Map<number, FurnitureListItemParser> = new Map();
+
+  for (const frag of fragments) {
+    for (const [key, value] of frag) merged.set(key, value);
+
+    frag.clear();
+  }
+
+  fragments = null;
+
+  return merged;
+};
+
+export const getAllItemIds = (groupItems: GroupItem[]) => {
+  const itemIds: number[] = [];
+
+  for (const groupItem of groupItems) {
+    let totalCount = groupItem.getTotalCount();
+
+    if (groupItem.category === FurniCategory.POST_IT) totalCount = 1;
+
+    let i = 0;
+
+    while (i < totalCount) {
+      itemIds.push(groupItem.getItemByIndex(i).id);
+
+      i++;
     }
-    else
-    {
-        addGroupableFurnitureItem(set, item, unseen);
-    }
-}
+  }
 
-export const mergeFurniFragments = (fragment: Map<number, FurnitureListItemParser>, totalFragments: number, fragmentNumber: number, fragments: Map<number, FurnitureListItemParser>[]) =>
-{
-    if(totalFragments === 1) return fragment;
-
-    fragments[fragmentNumber] = fragment;
-
-    for(const frag of fragments)
-    {
-        if(!frag) return null;
-    }
-
-    const merged: Map<number, FurnitureListItemParser> = new Map();
-
-    for(const frag of fragments)
-    {
-        for(const [ key, value ] of frag) merged.set(key, value);
-
-        frag.clear();
-    }
-
-    fragments = null;
-
-    return merged;
-}
-
-export const getAllItemIds = (groupItems: GroupItem[]) =>
-{
-    const itemIds: number[] = [];
-
-    for(const groupItem of groupItems)
-    {
-        let totalCount = groupItem.getTotalCount();
-
-        if(groupItem.category === FurniCategory.POST_IT) totalCount = 1;
-
-        let i = 0;
-
-        while(i < totalCount)
-        {
-            itemIds.push(groupItem.getItemByIndex(i).id);
-
-            i++;
-        }
-    }
-
-    return itemIds;
-}
+  return itemIds;
+};

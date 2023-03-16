@@ -1,185 +1,174 @@
-import { AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer } from '@nitro/renderer';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useBetween } from 'use-between';
-import { AchievementCategory, AchievementUtilities, CloneObject, SendMessageComposer } from '../../api';
-import { useMessageEvent } from '../events';
+import {AchievementData, AchievementEvent, AchievementsEvent, AchievementsScoreEvent, RequestAchievementsMessageComposer} from "@nitro/renderer";
+import {useCallback, useEffect, useMemo, useState} from "react";
+import {useBetween} from "use-between";
 
-const useAchievementsState = () =>
-{
-    const [ needsUpdate, setNeedsUpdate ] = useState<boolean>(true);
-    const [ achievementCategories, setAchievementCategories ] = useState<AchievementCategory[]>([]);
-    const [ selectedCategoryCode, setSelectedCategoryCode ] = useState<string>(null);
-    const [ selectedAchievementId, setSelectedAchievementId ] = useState<number>(-1);
-    const [ achievementScore, setAchievementScore ] = useState<number>(0);
+import {AchievementCategory, AchievementUtilities, CloneObject, SendMessageComposer} from "../../api";
+import {useMessageEvent} from "../events";
 
-    const getTotalUnseen = useMemo(() =>
-    {
-        let unseen = 0;
+const useAchievementsState = () => {
+  const [needsUpdate, setNeedsUpdate] = useState<boolean>(true);
+  const [achievementCategories, setAchievementCategories] = useState<AchievementCategory[]>([]);
+  const [selectedCategoryCode, setSelectedCategoryCode] = useState<string>(null);
+  const [selectedAchievementId, setSelectedAchievementId] = useState<number>(-1);
+  const [achievementScore, setAchievementScore] = useState<number>(0);
 
-        achievementCategories.forEach(category => unseen += AchievementUtilities.getAchievementCategoryTotalUnseen(category));
+  const getTotalUnseen = useMemo(() => {
+    let unseen = 0;
 
-        return unseen;
-    }, [ achievementCategories ]);
+    achievementCategories.forEach(category => (unseen += AchievementUtilities.getAchievementCategoryTotalUnseen(category)));
 
-    const getProgress = useMemo(() =>
-    {
-        let progress = 0;
+    return unseen;
+  }, [achievementCategories]);
 
-        achievementCategories.forEach(category => (progress += category.getProgress()));
+  const getProgress = useMemo(() => {
+    let progress = 0;
 
-        return progress;
-    }, [ achievementCategories ]);
+    achievementCategories.forEach(category => (progress += category.getProgress()));
 
-    const getMaxProgress = useMemo(() =>
-    {
-        let progress = 0;
+    return progress;
+  }, [achievementCategories]);
 
-        achievementCategories.forEach(category => (progress += category.getMaxProgress()));
+  const getMaxProgress = useMemo(() => {
+    let progress = 0;
 
-        return progress;
-    }, [ achievementCategories ]);
+    achievementCategories.forEach(category => (progress += category.getMaxProgress()));
 
-    const scaledProgressPercent = useMemo(() =>
-    {
-        return ~~((((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0)) + 0);
-    }, [ getProgress, getMaxProgress ]);
+    return progress;
+  }, [achievementCategories]);
 
-    const selectedCategory = useMemo(() =>
-    {
-        if(selectedCategoryCode === null) return null;
+  const scaledProgressPercent = useMemo(() => {
+    return ~~(((getProgress - 0) * (100 - 0)) / (getMaxProgress - 0) + 0);
+  }, [getProgress, getMaxProgress]);
 
-        return achievementCategories.find(category => (category.code === selectedCategoryCode));
-    }, [ achievementCategories, selectedCategoryCode ]);
+  const selectedCategory = useMemo(() => {
+    if (selectedCategoryCode === null) return null;
 
-    const selectedAchievement = useMemo(() =>
-    {
-        if((selectedAchievementId === -1) || !selectedCategory) return null;
+    return achievementCategories.find(category => category.code === selectedCategoryCode);
+  }, [achievementCategories, selectedCategoryCode]);
 
-        return selectedCategory.achievements.find(achievement => (achievement.achievementId === selectedAchievementId));
-    }, [ selectedCategory, selectedAchievementId ]);
+  const selectedAchievement = useMemo(() => {
+    if (selectedAchievementId === -1 || !selectedCategory) return null;
 
-    const setAchievementSeen = useCallback((categoryCode: string, achievementId: number) =>
-    {
-        setAchievementCategories(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
+    return selectedCategory.achievements.find(achievement => achievement.achievementId === selectedAchievementId);
+  }, [selectedCategory, selectedAchievementId]);
 
-            for(const category of newValue)
-            {
-                if(category.code !== categoryCode) continue;
+  const setAchievementSeen = useCallback((categoryCode: string, achievementId: number) => {
+    setAchievementCategories(prevValue => {
+      const newValue = [...prevValue];
 
-                for(const achievement of category.achievements)
-                {
-                    if(achievement.achievementId !== achievementId) continue;
+      for (const category of newValue) {
+        if (category.code !== categoryCode) continue;
 
-                    achievement.unseen = 0;
-                }
-            }
+        for (const achievement of category.achievements) {
+          if (achievement.achievementId !== achievementId) continue;
 
-            return newValue;
-        });
-    }, []);
+          achievement.unseen = 0;
+        }
+      }
 
-    useMessageEvent<AchievementEvent>(AchievementEvent, event =>
-    {
-        const parser = event.getParser();
-        const achievement = parser.achievement;
-
-        setAchievementCategories(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
-            const categoryIndex = newValue.findIndex(existing => (existing.code === achievement.category));
-
-            if(categoryIndex === -1)
-            {
-                const category = new AchievementCategory(achievement.category);
-
-                category.achievements.push(achievement);
-
-                newValue.push(category);
-            }
-            else
-            {
-                const category = CloneObject(newValue[categoryIndex]);
-                const newAchievements = [ ...category.achievements ];
-                const achievementIndex = newAchievements.findIndex(existing => (existing.achievementId === achievement.achievementId));
-                let previousAchievement: AchievementData = null;
-
-                if(achievementIndex === -1)
-                {
-                    newAchievements.push(achievement);
-                }
-                else
-                {
-                    previousAchievement = newAchievements[achievementIndex];
-
-                    newAchievements[achievementIndex] = achievement;
-                }
-
-                if(!AchievementUtilities.getAchievementIsIgnored(achievement))
-                {
-                    achievement.unseen++;
-
-                    if(previousAchievement) achievement.unseen += previousAchievement.unseen;
-                }
-
-                category.achievements = newAchievements;
-
-                newValue[categoryIndex] = category;
-            }
-
-            return newValue;
-        });
+      return newValue;
     });
+  }, []);
 
-    useMessageEvent<AchievementsEvent>(AchievementsEvent, event =>
-    {
-        const parser = event.getParser();
-        const categories: AchievementCategory[] = [];
-        
-        for(const achievement of parser.achievements)
-        {
-            const categoryName = achievement.category;
+  useMessageEvent<AchievementEvent>(AchievementEvent, event => {
+    const parser = event.getParser();
+    const achievement = parser.achievement;
 
-            let existing = categories.find(category => (category.code === categoryName));
+    setAchievementCategories(prevValue => {
+      const newValue = [...prevValue];
+      const categoryIndex = newValue.findIndex(existing => existing.code === achievement.category);
 
-            if(!existing)
-            {
-                existing = new AchievementCategory(categoryName);
+      if (categoryIndex === -1) {
+        const category = new AchievementCategory(achievement.category);
 
-                categories.push(existing);
-            }
+        category.achievements.push(achievement);
 
-            existing.achievements.push(achievement);
+        newValue.push(category);
+      } else {
+        const category = CloneObject(newValue[categoryIndex]);
+        const newAchievements = [...category.achievements];
+        const achievementIndex = newAchievements.findIndex(existing => existing.achievementId === achievement.achievementId);
+        let previousAchievement: AchievementData = null;
+
+        if (achievementIndex === -1) {
+          newAchievements.push(achievement);
+        } else {
+          previousAchievement = newAchievements[achievementIndex];
+
+          newAchievements[achievementIndex] = achievement;
         }
 
-        setAchievementCategories(categories);
+        if (!AchievementUtilities.getAchievementIsIgnored(achievement)) {
+          achievement.unseen++;
+
+          if (previousAchievement) achievement.unseen += previousAchievement.unseen;
+        }
+
+        category.achievements = newAchievements;
+
+        newValue[categoryIndex] = category;
+      }
+
+      return newValue;
     });
+  });
 
-    useMessageEvent<AchievementsScoreEvent>(AchievementsScoreEvent, event =>
-    {
-        const parser = event.getParser();
+  useMessageEvent<AchievementsEvent>(AchievementsEvent, event => {
+    const parser = event.getParser();
+    const categories: AchievementCategory[] = [];
 
-        setAchievementScore(parser.score);
-    });
+    for (const achievement of parser.achievements) {
+      const categoryName = achievement.category;
 
-    useEffect(() =>
-    {
-        if(!needsUpdate) return;
+      let existing = categories.find(category => category.code === categoryName);
 
-        SendMessageComposer(new RequestAchievementsMessageComposer());
+      if (!existing) {
+        existing = new AchievementCategory(categoryName);
 
-        setNeedsUpdate(false);
-    }, [ needsUpdate ]);
+        categories.push(existing);
+      }
 
-    useEffect(() =>
-    {
-        if(!selectedCategoryCode || (selectedAchievementId === -1)) return;
+      existing.achievements.push(achievement);
+    }
 
-        setAchievementSeen(selectedCategoryCode, selectedAchievementId);
-    }, [ selectedCategoryCode, selectedAchievementId, setAchievementSeen ]);
+    setAchievementCategories(categories);
+  });
 
-    return { achievementCategories, selectedCategoryCode, setSelectedCategoryCode, selectedAchievementId, setSelectedAchievementId, achievementScore, getTotalUnseen, getProgress, getMaxProgress, scaledProgressPercent, selectedCategory, selectedAchievement, setAchievementSeen };
-}
+  useMessageEvent<AchievementsScoreEvent>(AchievementsScoreEvent, event => {
+    const parser = event.getParser();
+
+    setAchievementScore(parser.score);
+  });
+
+  useEffect(() => {
+    if (!needsUpdate) return;
+
+    SendMessageComposer(new RequestAchievementsMessageComposer());
+
+    setNeedsUpdate(false);
+  }, [needsUpdate]);
+
+  useEffect(() => {
+    if (!selectedCategoryCode || selectedAchievementId === -1) return;
+
+    setAchievementSeen(selectedCategoryCode, selectedAchievementId);
+  }, [selectedCategoryCode, selectedAchievementId, setAchievementSeen]);
+
+  return {
+    achievementCategories,
+    selectedCategoryCode,
+    setSelectedCategoryCode,
+    selectedAchievementId,
+    setSelectedAchievementId,
+    achievementScore,
+    getTotalUnseen,
+    getProgress,
+    getMaxProgress,
+    scaledProgressPercent,
+    selectedCategory,
+    selectedAchievement,
+    setAchievementSeen,
+  };
+};
 
 export const useAchievements = () => useBetween(useAchievementsState);

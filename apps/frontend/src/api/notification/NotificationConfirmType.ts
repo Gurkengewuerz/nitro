@@ -1,4 +1,3 @@
-export class NotificationConfirmType
-{
-    public static DEFAULT: string = 'default';
+export class NotificationConfirmType {
+  public static DEFAULT: string = "default";
 }

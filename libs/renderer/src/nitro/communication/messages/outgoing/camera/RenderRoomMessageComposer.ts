@@ -1,43 +1,38 @@
-import { RenderTexture } from '@pixi/core';
-import { IMessageComposer } from '../../../../../api';
-import { TextureUtils } from '../../../../../pixi-proxy';
+import {RenderTexture} from "@pixi/core";
 
-export class RenderRoomMessageComposer implements IMessageComposer<ConstructorParameters<typeof RenderRoomMessageComposer>>
-{
-    private _data: any;
+import {IMessageComposer} from "../../../../../api";
+import {TextureUtils} from "../../../../../pixi-proxy";
 
-    constructor(k: any = '', _arg_2: string = '', _arg_3: string = '', _arg_4: number = -1, _arg_5: number = -1)
-    {
-        this._data = [];
-    }
+export class RenderRoomMessageComposer implements IMessageComposer<ConstructorParameters<typeof RenderRoomMessageComposer>> {
+  private _data: any;
 
-    public getMessageArray()
-    {
-        return this._data;
-    }
+  constructor(k: any = "", _arg_2: string = "", _arg_3: string = "", _arg_4: number = -1, _arg_5: number = -1) {
+    this._data = [];
+  }
 
-    public dispose(): void
-    {
-        this._data = [];
-    }
+  public getMessageArray() {
+    return this._data;
+  }
 
-    public assignBitmap(texture: RenderTexture): void
-    {
-        const url = TextureUtils.generateImageUrl(texture);
+  public dispose(): void {
+    this._data = [];
+  }
 
-        if(!url) return;
+  public assignBitmap(texture: RenderTexture): void {
+    const url = TextureUtils.generateImageUrl(texture);
 
-        const base64Data = url.split(',')[1];
-        const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+    if (!url) return;
 
-        this._data.push(binaryData.byteLength, binaryData.buffer);
-    }
+    const base64Data = url.split(",")[1];
+    const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
 
-    public assignBase64(base64: string): void
-    {
-        const base64Data = base64.split(',')[1];
-        const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+    this._data.push(binaryData.byteLength, binaryData.buffer);
+  }
 
-        this._data.push(binaryData.byteLength, binaryData.buffer);
-    }
+  public assignBase64(base64: string): void {
+    const base64Data = base64.split(",")[1];
+    const binaryData = Uint8Array.from(atob(base64Data), c => c.charCodeAt(0));
+
+    this._data.push(binaryData.byteLength, binaryData.buffer);
+  }
 }

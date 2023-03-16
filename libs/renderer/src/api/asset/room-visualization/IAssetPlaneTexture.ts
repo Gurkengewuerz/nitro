@@ -1,7 +1,6 @@
-import { IAssetPlaneTextureBitmap } from './IAssetPlaneTextureBitmap';
+import {IAssetPlaneTextureBitmap} from "./IAssetPlaneTextureBitmap";
 
-export interface IAssetPlaneTexture
-{
-    id?: string;
-    bitmaps?: IAssetPlaneTextureBitmap[];
+export interface IAssetPlaneTexture {
+  id?: string;
+  bitmaps?: IAssetPlaneTextureBitmap[];
 }

@@ -1,19 +1,18 @@
-﻿import { RenderTexture } from '@pixi/core';
-import { IImageResult } from '../../api';
-import { TextureUtils } from '../../pixi-proxy';
+﻿import {RenderTexture} from "@pixi/core";
 
-export class ImageResult implements IImageResult
-{
-    public id: number = 0;
-    public data: RenderTexture = null;
-    public image: HTMLImageElement = null;
+import {IImageResult} from "../../api";
+import {TextureUtils} from "../../pixi-proxy";
 
-    public getImage(): HTMLImageElement
-    {
-        if(this.image) return this.image;
+export class ImageResult implements IImageResult {
+  public id: number = 0;
+  public data: RenderTexture = null;
+  public image: HTMLImageElement = null;
 
-        if(!this.data) return null;
+  public getImage(): HTMLImageElement {
+    if (this.image) return this.image;
 
-        return TextureUtils.generateImage(this.data);
-    }
+    if (!this.data) return null;
+
+    return TextureUtils.generateImage(this.data);
+  }
 }

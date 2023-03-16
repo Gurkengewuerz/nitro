@@ -1,71 +1,73 @@
-import { ApplyTonerComposer, ColorConverter, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitro/renderer';
-import { useEffect, useState } from 'react';
-import { CanManipulateFurniture, ColorUtils, DispatchUiEvent, GetRoomEngine, RoomWidgetUpdateBackgroundColorPreviewEvent, SendMessageComposer } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../engine';
-import { useRoom } from '../../useRoom';
+import {ApplyTonerComposer, ColorConverter, RoomEngineTriggerWidgetEvent, RoomObjectVariable} from "@nitro/renderer";
+import {useEffect, useState} from "react";
 
-const useFurnitureBackgroundColorWidgetState = () =>
-{
-    const [ objectId, setObjectId ] = useState(-1);
-    const [ category, setCategory ] = useState(-1);
-    const [ color, setColor ] = useState(0);
-    const { roomSession = null } = useRoom();
+import {
+  CanManipulateFurniture,
+  ColorUtils,
+  DispatchUiEvent,
+  GetRoomEngine,
+  RoomWidgetUpdateBackgroundColorPreviewEvent,
+  SendMessageComposer,
+} from "../../../../api";
+import {useRoomEngineEvent} from "../../../events";
+import {useFurniRemovedEvent} from "../../engine";
+import {useRoom} from "../../useRoom";
 
-    const applyToner = () =>
-    {
-        const hsl = ColorConverter.rgbToHSL(color);
-        const [ _, hue, saturation, lightness ] = ColorUtils.int_to_8BitVals(hsl);
-        SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
-    }
+const useFurnitureBackgroundColorWidgetState = () => {
+  const [objectId, setObjectId] = useState(-1);
+  const [category, setCategory] = useState(-1);
+  const [color, setColor] = useState(0);
+  const {roomSession = null} = useRoom();
 
-    const toggleToner = () => roomSession.useMultistateItem(objectId);
+  const applyToner = () => {
+    const hsl = ColorConverter.rgbToHSL(color);
+    const [_, hue, saturation, lightness] = ColorUtils.int_to_8BitVals(hsl);
+    SendMessageComposer(new ApplyTonerComposer(objectId, hue, saturation, lightness));
+  };
 
-    const onClose = () =>
-    {
-        DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
+  const toggleToner = () => roomSession.useMultistateItem(objectId);
 
-        setObjectId(-1);
-        setCategory(-1);
-        setColor(0);
-    }
+  const onClose = () => {
+    DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.CLEAR_PREVIEW));
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event =>
-    {
-        if(!CanManipulateFurniture(roomSession, event.objectId, event.category)) return;
+    setObjectId(-1);
+    setCategory(-1);
+    setColor(0);
+  };
 
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-        const model = roomObject.model;
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_BACKGROUND_COLOR, event => {
+    if (!CanManipulateFurniture(roomSession, event.objectId, event.category)) return;
 
-        setObjectId(event.objectId);
-        setCategory(event.category)
-        const hue = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE));
-        const saturation = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION));
-        const light = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS));
+    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+    const model = roomObject.model;
 
-        const hsl = ColorUtils.eight_bitVals_to_int(0, hue,saturation,light);
+    setObjectId(event.objectId);
+    setCategory(event.category);
+    const hue = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_HUE));
+    const saturation = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_SATURATION));
+    const light = parseInt(model.getValue<string>(RoomObjectVariable.FURNITURE_ROOM_BACKGROUND_COLOR_LIGHTNESS));
 
-        const rgbColor = ColorConverter.hslToRGB(hsl);
-        setColor(rgbColor);
-    });
+    const hsl = ColorUtils.eight_bitVals_to_int(0, hue, saturation, light);
 
-    useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
-    {
-        if((event.id !== objectId) || (event.category !== category)) return;
+    const rgbColor = ColorConverter.hslToRGB(hsl);
+    setColor(rgbColor);
+  });
 
-        onClose();
-    });
+  useFurniRemovedEvent(objectId !== -1 && category !== -1, event => {
+    if (event.id !== objectId || event.category !== category) return;
 
-    useEffect(() =>
-    {
-        if((objectId === -1) || (category === -1)) return;
+    onClose();
+  });
 
-        const hls = ColorConverter.rgbToHSL(color);
-        const [ _, hue, saturation, lightness ] = ColorUtils.int_to_8BitVals(hls);
-        DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
-    }, [ objectId, category, color ]);
+  useEffect(() => {
+    if (objectId === -1 || category === -1) return;
 
-    return { objectId, color, setColor, applyToner, toggleToner, onClose };
-}
+    const hls = ColorConverter.rgbToHSL(color);
+    const [_, hue, saturation, lightness] = ColorUtils.int_to_8BitVals(hls);
+    DispatchUiEvent(new RoomWidgetUpdateBackgroundColorPreviewEvent(RoomWidgetUpdateBackgroundColorPreviewEvent.PREVIEW, hue, saturation, lightness));
+  }, [objectId, category, color]);
+
+  return {objectId, color, setColor, applyToner, toggleToner, onClose};
+};
 
 export const useFurnitureBackgroundColorWidget = useFurnitureBackgroundColorWidgetState;

@@ -1,22 +1,21 @@
-import { IFurnitureData, RoomObjectCategory, RoomObjectVariable } from '@nitro/renderer';
-import { GetRoomEngine } from '../room';
-import { GetSessionDataManager } from './GetSessionDataManager';
+import {IFurnitureData, RoomObjectCategory, RoomObjectVariable} from "@nitro/renderer";
 
-export function GetFurnitureDataForRoomObject(roomId: number, objectId: number, category: number): IFurnitureData
-{
-    const roomObject = GetRoomEngine().getRoomObject(roomId, objectId, category);
+import {GetRoomEngine} from "../room";
+import {GetSessionDataManager} from "./GetSessionDataManager";
 
-    if(!roomObject) return;
+export function GetFurnitureDataForRoomObject(roomId: number, objectId: number, category: number): IFurnitureData {
+  const roomObject = GetRoomEngine().getRoomObject(roomId, objectId, category);
 
-    const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
+  if (!roomObject) return;
 
-    switch(category)
-    {
-        case RoomObjectCategory.FLOOR:
-            return GetSessionDataManager().getFloorItemData(typeId);
-        case RoomObjectCategory.WALL:
-            return GetSessionDataManager().getWallItemData(typeId);
-    }
+  const typeId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_TYPE_ID);
 
-    return null;
+  switch (category) {
+    case RoomObjectCategory.FLOOR:
+      return GetSessionDataManager().getFloorItemData(typeId);
+    case RoomObjectCategory.WALL:
+      return GetSessionDataManager().getWallItemData(typeId);
+  }
+
+  return null;
 }

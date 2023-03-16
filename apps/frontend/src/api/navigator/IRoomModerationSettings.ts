@@ -1,6 +1,5 @@
-export interface IRoomModerationSettings
-{
-    allowMute: number;
-    allowKick: number;
-    allowBan: number;
+export interface IRoomModerationSettings {
+  allowMute: number;
+  allowKick: number;
+  allowBan: number;
 }

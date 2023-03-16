@@ -1,10 +1,10 @@
-import { HabboClubLevelEnum } from '@nitro/renderer';
-import { GetConfiguration } from '..';
-import { GetSessionDataManager } from './GetSessionDataManager';
+import {HabboClubLevelEnum} from "@nitro/renderer";
 
-export function GetClubMemberLevel(): number
-{
-    if(GetConfiguration<boolean>('hc.disabled', false)) return HabboClubLevelEnum.VIP;
-    
-    return GetSessionDataManager().clubLevel;
+import {GetConfiguration} from "..";
+import {GetSessionDataManager} from "./GetSessionDataManager";
+
+export function GetClubMemberLevel(): number {
+  if (GetConfiguration<boolean>("hc.disabled", false)) return HabboClubLevelEnum.VIP;
+
+  return GetSessionDataManager().clubLevel;
 }

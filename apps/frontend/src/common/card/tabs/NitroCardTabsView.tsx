@@ -1,22 +1,21 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from '../..';
+import {FC, useMemo} from "react";
 
-export const NitroCardTabsView: FC<FlexProps> = props =>
-{
-    const { justifyContent = 'center', gap = 1, classNames = [], children = null, ...rest } = props;
+import {Flex, FlexProps} from "../..";
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'container-fluid', 'nitro-card-tabs', 'pt-1' ];
+export const NitroCardTabsView: FC<FlexProps> = props => {
+  const {justifyContent = "center", gap = 1, classNames = [], children = null, ...rest} = props;
 
-        if(classNames.length) newClassNames.push(...classNames);
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["container-fluid", "nitro-card-tabs", "pt-1"];
 
-        return newClassNames;
-    }, [ classNames ]);
+    if (classNames.length) newClassNames.push(...classNames);
 
-    return (
-        <Flex justifyContent={ justifyContent } gap={ gap } classNames={ getClassNames } { ...rest }>
-            { children }
-        </Flex>
-    );
-}
+    return newClassNames;
+  }, [classNames]);
+
+  return (
+    <Flex justifyContent={justifyContent} gap={gap} classNames={getClassNames} {...rest}>
+      {children}
+    </Flex>
+  );
+};

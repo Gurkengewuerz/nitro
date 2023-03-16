@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class HabboBroadcastMessageParser implements IMessageParser
-{
-    private _message: string;
+export class HabboBroadcastMessageParser implements IMessageParser {
+  private _message: string;
 
-    public flush(): boolean
-    {
-        this._message = null;
+  public flush(): boolean {
+    this._message = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._message = wrapper.readString();
+    this._message = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get message(): string
-    {
-        return this._message;
-    }
+  public get message(): string {
+    return this._message;
+  }
 }

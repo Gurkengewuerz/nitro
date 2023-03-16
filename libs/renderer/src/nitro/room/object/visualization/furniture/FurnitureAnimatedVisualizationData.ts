@@ -1,90 +1,87 @@
-import { AnimationFrame, AnimationSizeData, SizeData } from '../data';
-import { FurnitureVisualizationData } from './FurnitureVisualizationData';
+import {AnimationFrame, AnimationSizeData, SizeData} from "../data";
+import {FurnitureVisualizationData} from "./FurnitureVisualizationData";
 
-export class FurnitureAnimatedVisualizationData extends FurnitureVisualizationData
-{
-    protected createSizeData(scale: number, layerCount: number, angle: number): SizeData
-    {
-        return new AnimationSizeData(layerCount, angle);
+export class FurnitureAnimatedVisualizationData extends FurnitureVisualizationData {
+  protected createSizeData(scale: number, layerCount: number, angle: number): SizeData {
+    return new AnimationSizeData(layerCount, angle);
+  }
+
+  protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
+    if (!sizeData || !key || !data) return false;
+
+    switch (key) {
+      case "animations":
+        if (!(sizeData instanceof AnimationSizeData) || !sizeData.defineAnimations(data)) return false;
+        break;
+      default:
+        if (!super.processVisualElement(sizeData, key, data)) return false;
+        break;
     }
 
-    protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean
-    {
-        if(!sizeData || !key || !data) return false;
+    return true;
+  }
 
-        switch(key)
-        {
-            case 'animations':
-                if(!(sizeData instanceof AnimationSizeData) || !sizeData.defineAnimations(data)) return false;
-                break;
-            default:
-                if(!super.processVisualElement(sizeData, key, data)) return false;
-                break;
-        }
+  public hasAnimation(scale: number, animationId: number): boolean {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return true;
-    }
+    if (!size) return null;
 
-    public hasAnimation(scale: number, animationId: number): boolean
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.hasAnimation(animationId);
+  }
 
-        if(!size) return null;
+  public getAnimationCount(scale: number): number {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.hasAnimation(animationId);
-    }
+    if (!size) return null;
 
-    public getAnimationCount(scale: number): number
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.getAnimationCount();
+  }
 
-        if(!size) return null;
+  public getAnimationId(scale: number, animationId: number): number {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.getAnimationCount();
-    }
+    if (!size) return null;
 
-    public getAnimationId(scale: number, animationId: number): number
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.getAnimationId(animationId);
+  }
 
-        if(!size) return null;
+  public isImmediateChange(scale: number, animationId: number, _arg_3: number): boolean {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.getAnimationId(animationId);
-    }
+    if (!size) return null;
 
-    public isImmediateChange(scale: number, animationId: number, _arg_3: number): boolean
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.isImmediateChange(animationId, _arg_3);
+  }
 
-        if(!size) return null;
+  public getStartFrame(scale: number, animationId: number, direction: number): number {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.isImmediateChange(animationId, _arg_3);
-    }
+    if (!size) return null;
 
-    public getStartFrame(scale: number, animationId: number, direction: number): number
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.getStartFrame(animationId, direction);
+  }
 
-        if(!size) return null;
+  public getFrame(scale: number, animationId: number, direction: number, layerId: number, frameCount: number): AnimationFrame {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.getStartFrame(animationId, direction);
-    }
+    if (!size) return null;
 
-    public getFrame(scale: number, animationId: number, direction: number, layerId: number, frameCount: number): AnimationFrame
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
+    return size.getFrame(animationId, direction, layerId, frameCount);
+  }
 
-        if(!size) return null;
+  public getFrameFromSequence(
+    scale: number,
+    animationId: number,
+    direction: number,
+    layerId: number,
+    sequenceId: number,
+    offset: number,
+    frameCount: number
+  ): AnimationFrame {
+    const size = this.getSizeData(scale) as AnimationSizeData;
 
-        return size.getFrame(animationId, direction, layerId, frameCount);
-    }
+    if (!size) return null;
 
-    public getFrameFromSequence(scale: number, animationId: number, direction: number, layerId: number, sequenceId: number, offset: number, frameCount: number): AnimationFrame
-    {
-        const size = this.getSizeData(scale) as AnimationSizeData;
-
-        if(!size) return null;
-
-        return size.getFrameFromSequence(animationId, direction, layerId, sequenceId, offset, frameCount);
-    }
+    return size.getFrameFromSequence(animationId, direction, layerId, sequenceId, offset, frameCount);
+  }
 }

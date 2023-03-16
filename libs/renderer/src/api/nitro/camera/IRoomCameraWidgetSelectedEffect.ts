@@ -1,7 +1,6 @@
-import { IRoomCameraWidgetEffect } from './IRoomCameraWidgetEffect';
+import {IRoomCameraWidgetEffect} from "./IRoomCameraWidgetEffect";
 
-export interface IRoomCameraWidgetSelectedEffect
-{
-    effect: IRoomCameraWidgetEffect;
-    alpha: number;
+export interface IRoomCameraWidgetSelectedEffect {
+  effect: IRoomCameraWidgetEffect;
+  alpha: number;
 }

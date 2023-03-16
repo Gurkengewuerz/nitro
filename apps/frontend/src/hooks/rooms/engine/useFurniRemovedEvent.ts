@@ -1,19 +1,17 @@
-import { useEffect } from 'react';
-import { RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER } from '../../../api';
+import {useEffect} from "react";
 
-export const useFurniRemovedEvent = (isActive: boolean, handler: (event: RoomWidgetUpdateRoomObjectEvent) => void) =>
-{
-    useEffect(() =>
-    {
-        if(!isActive) return;
+import {RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER} from "../../../api";
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event);
+export const useFurniRemovedEvent = (isActive: boolean, handler: (event: RoomWidgetUpdateRoomObjectEvent) => void) => {
+  useEffect(() => {
+    if (!isActive) return;
 
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
+    const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event);
 
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ isActive, handler ]);
-}
+    UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
+
+    return () => {
+      UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.FURNI_REMOVED, onRoomWidgetUpdateRoomObjectEvent);
+    };
+  }, [isActive, handler]);
+};

@@ -1,22 +1,19 @@
-import { FC, useMemo } from 'react';
-import { Base, BaseProps } from './Base';
+import {FC, useMemo} from "react";
 
-export interface ButtonGroupProps extends BaseProps<HTMLDivElement>
-{
-}
+import {Base, BaseProps} from "./Base";
 
-export const ButtonGroup: FC<ButtonGroupProps> = props =>
-{
-    const { classNames = [], ...rest } = props;
+export interface ButtonGroupProps extends BaseProps<HTMLDivElement> {}
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'btn-group' ];
+export const ButtonGroup: FC<ButtonGroupProps> = props => {
+  const {classNames = [], ...rest} = props;
 
-        if(classNames.length) newClassNames.push(...classNames);
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["btn-group"];
 
-        return newClassNames;
-    }, [ classNames ]);
+    if (classNames.length) newClassNames.push(...classNames);
 
-    return <Base classNames={ getClassNames } { ...rest } />;
-}
+    return newClassNames;
+  }, [classNames]);
+
+  return <Base classNames={getClassNames} {...rest} />;
+};

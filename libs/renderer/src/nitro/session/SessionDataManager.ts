@@ -1,729 +1,678 @@
-import { Resource, Texture } from '@pixi/core';
-import { GetAssetManager, IFurnitureData, IFurnitureDataListener, IGroupInformationManager, IMessageComposer, INitroCommunicationManager, INitroEvent, IProductData, IProductDataListener, ISessionDataManager, NitroConfiguration, NoobnessLevelEnum, SecurityLevel } from '../../api';
-import { NitroManager } from '../../core';
-import { MysteryBoxKeysUpdateEvent, NitroSettingsEvent, SessionDataPreferencesEvent, UserNameUpdateEvent } from '../../events';
-import { AccountSafetyLockStatusChangeMessageEvent, AccountSafetyLockStatusChangeParser, AvailabilityStatusMessageEvent, ChangeUserNameResultMessageEvent, EmailStatusResultEvent, FigureUpdateEvent, GetUserTagsComposer, InClientLinkEvent, MysteryBoxKeysEvent, NoobnessLevelMessageEvent, PetRespectComposer, PetScratchFailedMessageEvent, RoomReadyMessageEvent, RoomUnitChatComposer, UserInfoEvent, UserNameChangeMessageEvent, UserPermissionsEvent, UserRespectComposer, UserTagsMessageEvent } from '../communication';
-import { Nitro } from '../Nitro';
-import { HabboWebTools } from '../utils/HabboWebTools';
-import { BadgeImageManager } from './badge/BadgeImageManager';
-import { FurnitureDataLoader } from './furniture/FurnitureDataLoader';
-import { GroupInformationManager } from './GroupInformationManager';
-import { IgnoredUsersManager } from './IgnoredUsersManager';
-import { ProductDataLoader } from './product/ProductDataLoader';
-
-export class SessionDataManager extends NitroManager implements ISessionDataManager
-{
-    private _communication: INitroCommunicationManager;
-
-    private _userId: number;
-    private _name: string;
-    private _figure: string;
-    private _gender: string;
-    private _realName: string;
-    private _respectsReceived: number;
-    private _respectsLeft: number;
-    private _respectsPetLeft: number;
-    private _canChangeName: boolean;
-    private _safetyLocked: boolean;
-
-    private _ignoredUsersManager: IgnoredUsersManager;
-    private _groupInformationManager: IGroupInformationManager;
-
-    private _clubLevel: number;
-    private _securityLevel: number;
-    private _isAmbassador: boolean;
-    private _noobnessLevel: number;
-    private _isEmailVerified: boolean;
-
-    private _systemOpen: boolean;
-    private _systemShutdown: boolean;
-    private _isAuthenticHabbo: boolean;
-    private _isRoomCameraFollowDisabled: boolean;
-    private _uiFlags: number;
-
-    private _floorItems: Map<number, IFurnitureData>;
-    private _wallItems: Map<number, IFurnitureData>;
-    private _products: Map<string, IProductData>;
-    private _furnitureData: FurnitureDataLoader;
-    private _productData: ProductDataLoader;
-
-    private _furnitureReady: boolean;
-    private _productsReady: boolean;
-    private _furnitureListenersNotified: boolean;
-    private _pendingFurnitureListeners: IFurnitureDataListener[];
-    private _pendingProductListeners: IProductDataListener[];
-    private _tags: string[];
-
-    private _badgeImageManager: BadgeImageManager;
-
-    constructor(communication: INitroCommunicationManager)
-    {
-        super();
-
-        this._communication = communication;
-
-        this.resetUserInfo();
-
-        this._ignoredUsersManager = new IgnoredUsersManager(this);
-        this._groupInformationManager = new GroupInformationManager(this);
-
-        this._clubLevel = 0;
-        this._securityLevel = 0;
-        this._isAmbassador = false;
-        this._noobnessLevel = -1;
-        this._isEmailVerified = false;
-
-        this._systemOpen = false;
-        this._systemShutdown = false;
-        this._isAuthenticHabbo = false;
-        this._isRoomCameraFollowDisabled = false;
-        this._uiFlags = 0;
-
-        this._floorItems = new Map();
-        this._wallItems = new Map();
-        this._products = new Map();
-        this._furnitureData = null;
-
-        this._furnitureReady = false;
-        this._productsReady = false;
-        this._furnitureListenersNotified = false;
-        this._pendingFurnitureListeners = [];
-        this._pendingProductListeners = [];
-        this._tags = [];
-
-        this._badgeImageManager = null;
-
-        this.onFurnitureDataReadyEvent = this.onFurnitureDataReadyEvent.bind(this);
-        this.onProductDataReadyEvent = this.onProductDataReadyEvent.bind(this);
-        this.onNitroSettingsEvent = this.onNitroSettingsEvent.bind(this);
-    }
+import {Resource, Texture} from "@pixi/core";
+
+import {
+  GetAssetManager,
+  IFurnitureData,
+  IFurnitureDataListener,
+  IGroupInformationManager,
+  IMessageComposer,
+  INitroCommunicationManager,
+  INitroEvent,
+  IProductData,
+  IProductDataListener,
+  ISessionDataManager,
+  NitroConfiguration,
+  NoobnessLevelEnum,
+  SecurityLevel,
+} from "../../api";
+import {NitroManager} from "../../core";
+import {MysteryBoxKeysUpdateEvent, NitroSettingsEvent, SessionDataPreferencesEvent, UserNameUpdateEvent} from "../../events";
+import {Nitro} from "../Nitro";
+import {
+  AccountSafetyLockStatusChangeMessageEvent,
+  AccountSafetyLockStatusChangeParser,
+  AvailabilityStatusMessageEvent,
+  ChangeUserNameResultMessageEvent,
+  EmailStatusResultEvent,
+  FigureUpdateEvent,
+  GetUserTagsComposer,
+  InClientLinkEvent,
+  MysteryBoxKeysEvent,
+  NoobnessLevelMessageEvent,
+  PetRespectComposer,
+  PetScratchFailedMessageEvent,
+  RoomReadyMessageEvent,
+  RoomUnitChatComposer,
+  UserInfoEvent,
+  UserNameChangeMessageEvent,
+  UserPermissionsEvent,
+  UserRespectComposer,
+  UserTagsMessageEvent,
+} from "../communication";
+import {HabboWebTools} from "../utils/HabboWebTools";
+import {GroupInformationManager} from "./GroupInformationManager";
+import {IgnoredUsersManager} from "./IgnoredUsersManager";
+import {BadgeImageManager} from "./badge/BadgeImageManager";
+import {FurnitureDataLoader} from "./furniture/FurnitureDataLoader";
+import {ProductDataLoader} from "./product/ProductDataLoader";
+
+export class SessionDataManager extends NitroManager implements ISessionDataManager {
+  private _communication: INitroCommunicationManager;
+
+  private _userId: number;
+  private _name: string;
+  private _figure: string;
+  private _gender: string;
+  private _realName: string;
+  private _respectsReceived: number;
+  private _respectsLeft: number;
+  private _respectsPetLeft: number;
+  private _canChangeName: boolean;
+  private _safetyLocked: boolean;
+
+  private _ignoredUsersManager: IgnoredUsersManager;
+  private _groupInformationManager: IGroupInformationManager;
+
+  private _clubLevel: number;
+  private _securityLevel: number;
+  private _isAmbassador: boolean;
+  private _noobnessLevel: number;
+  private _isEmailVerified: boolean;
+
+  private _systemOpen: boolean;
+  private _systemShutdown: boolean;
+  private _isAuthenticHabbo: boolean;
+  private _isRoomCameraFollowDisabled: boolean;
+  private _uiFlags: number;
+
+  private _floorItems: Map<number, IFurnitureData>;
+  private _wallItems: Map<number, IFurnitureData>;
+  private _products: Map<string, IProductData>;
+  private _furnitureData: FurnitureDataLoader;
+  private _productData: ProductDataLoader;
+
+  private _furnitureReady: boolean;
+  private _productsReady: boolean;
+  private _furnitureListenersNotified: boolean;
+  private _pendingFurnitureListeners: IFurnitureDataListener[];
+  private _pendingProductListeners: IProductDataListener[];
+  private _tags: string[];
+
+  private _badgeImageManager: BadgeImageManager;
+
+  constructor(communication: INitroCommunicationManager) {
+    super();
+
+    this._communication = communication;
+
+    this.resetUserInfo();
+
+    this._ignoredUsersManager = new IgnoredUsersManager(this);
+    this._groupInformationManager = new GroupInformationManager(this);
+
+    this._clubLevel = 0;
+    this._securityLevel = 0;
+    this._isAmbassador = false;
+    this._noobnessLevel = -1;
+    this._isEmailVerified = false;
 
-    protected onInit(): void
-    {
-        this.loadFurnitureData();
-        this.loadProductData();
-        this.loadBadgeImageManager();
-
-        (this._ignoredUsersManager && this._ignoredUsersManager.init());
-        (this._groupInformationManager && this._groupInformationManager.init());
-
-        this._communication.registerMessageEvent(new FigureUpdateEvent(this.onUserFigureEvent.bind(this)));
-        this._communication.registerMessageEvent(new UserInfoEvent(this.onUserInfoEvent.bind(this)));
-        this._communication.registerMessageEvent(new UserPermissionsEvent(this.onUserPermissionsEvent.bind(this)));
-        this._communication.registerMessageEvent(new AvailabilityStatusMessageEvent(this.onAvailabilityStatusMessageEvent.bind(this)));
-        this._communication.registerMessageEvent(new PetScratchFailedMessageEvent(this.onPetRespectFailed.bind(this)));
-        this._communication.registerMessageEvent(new ChangeUserNameResultMessageEvent(this.onChangeNameUpdateEvent.bind(this)));
-        this._communication.registerMessageEvent(new UserNameChangeMessageEvent(this.onUserNameChangeMessageEvent.bind(this)));
-        this._communication.registerMessageEvent(new UserTagsMessageEvent(this.onUserTags.bind(this)));
-        this._communication.registerMessageEvent(new RoomReadyMessageEvent(this.onRoomModelNameEvent.bind(this)));
-        this._communication.registerMessageEvent(new InClientLinkEvent(this.onInClientLinkEvent.bind(this)));
-        this._communication.registerMessageEvent(new MysteryBoxKeysEvent(this.onMysteryBoxKeysEvent.bind(this)));
-        this._communication.registerMessageEvent(new NoobnessLevelMessageEvent(this.onNoobnessLevelMessageEvent.bind(this)));
-        this._communication.registerMessageEvent(new AccountSafetyLockStatusChangeMessageEvent(this.onAccountSafetyLockStatusChangeMessageEvent.bind(this)));
-        this._communication.registerMessageEvent(new EmailStatusResultEvent(this.onEmailStatus.bind(this)));
-
-        Nitro.instance.events.addEventListener(NitroSettingsEvent.SETTINGS_UPDATED, this.onNitroSettingsEvent);
-    }
+    this._systemOpen = false;
+    this._systemShutdown = false;
+    this._isAuthenticHabbo = false;
+    this._isRoomCameraFollowDisabled = false;
+    this._uiFlags = 0;
 
-    protected onDispose(): void
-    {
-        this.destroyFurnitureData();
+    this._floorItems = new Map();
+    this._wallItems = new Map();
+    this._products = new Map();
+    this._furnitureData = null;
 
-        if(this._ignoredUsersManager)
-        {
-            this._ignoredUsersManager.dispose();
+    this._furnitureReady = false;
+    this._productsReady = false;
+    this._furnitureListenersNotified = false;
+    this._pendingFurnitureListeners = [];
+    this._pendingProductListeners = [];
+    this._tags = [];
 
-            this._ignoredUsersManager = null;
-        }
+    this._badgeImageManager = null;
 
-        if(this._groupInformationManager)
-        {
-            this._groupInformationManager.dispose();
+    this.onFurnitureDataReadyEvent = this.onFurnitureDataReadyEvent.bind(this);
+    this.onProductDataReadyEvent = this.onProductDataReadyEvent.bind(this);
+    this.onNitroSettingsEvent = this.onNitroSettingsEvent.bind(this);
+  }
 
-            this._groupInformationManager = null;
-        }
+  protected onInit(): void {
+    this.loadFurnitureData();
+    this.loadProductData();
+    this.loadBadgeImageManager();
 
-        Nitro.instance.events.removeEventListener(NitroSettingsEvent.SETTINGS_UPDATED, this.onNitroSettingsEvent);
+    this._ignoredUsersManager && this._ignoredUsersManager.init();
+    this._groupInformationManager && this._groupInformationManager.init();
 
-        super.onDispose();
-    }
+    this._communication.registerMessageEvent(new FigureUpdateEvent(this.onUserFigureEvent.bind(this)));
+    this._communication.registerMessageEvent(new UserInfoEvent(this.onUserInfoEvent.bind(this)));
+    this._communication.registerMessageEvent(new UserPermissionsEvent(this.onUserPermissionsEvent.bind(this)));
+    this._communication.registerMessageEvent(new AvailabilityStatusMessageEvent(this.onAvailabilityStatusMessageEvent.bind(this)));
+    this._communication.registerMessageEvent(new PetScratchFailedMessageEvent(this.onPetRespectFailed.bind(this)));
+    this._communication.registerMessageEvent(new ChangeUserNameResultMessageEvent(this.onChangeNameUpdateEvent.bind(this)));
+    this._communication.registerMessageEvent(new UserNameChangeMessageEvent(this.onUserNameChangeMessageEvent.bind(this)));
+    this._communication.registerMessageEvent(new UserTagsMessageEvent(this.onUserTags.bind(this)));
+    this._communication.registerMessageEvent(new RoomReadyMessageEvent(this.onRoomModelNameEvent.bind(this)));
+    this._communication.registerMessageEvent(new InClientLinkEvent(this.onInClientLinkEvent.bind(this)));
+    this._communication.registerMessageEvent(new MysteryBoxKeysEvent(this.onMysteryBoxKeysEvent.bind(this)));
+    this._communication.registerMessageEvent(new NoobnessLevelMessageEvent(this.onNoobnessLevelMessageEvent.bind(this)));
+    this._communication.registerMessageEvent(new AccountSafetyLockStatusChangeMessageEvent(this.onAccountSafetyLockStatusChangeMessageEvent.bind(this)));
+    this._communication.registerMessageEvent(new EmailStatusResultEvent(this.onEmailStatus.bind(this)));
 
-    private resetUserInfo(): void
-    {
-        this._userId = 0;
-        this._name = null;
-        this._figure = null;
-        this._gender = null;
-        this._realName = null;
-        this._canChangeName = false;
-        this._safetyLocked = false;
-    }
+    Nitro.instance.events.addEventListener(NitroSettingsEvent.SETTINGS_UPDATED, this.onNitroSettingsEvent);
+  }
 
-    private loadFurnitureData(): void
-    {
-        this.destroyFurnitureData();
+  protected onDispose(): void {
+    this.destroyFurnitureData();
 
-        this._furnitureData = new FurnitureDataLoader(this._floorItems, this._wallItems, Nitro.instance.localization);
+    if (this._ignoredUsersManager) {
+      this._ignoredUsersManager.dispose();
 
-        this._furnitureData.addEventListener(FurnitureDataLoader.FURNITURE_DATA_READY, this.onFurnitureDataReadyEvent);
+      this._ignoredUsersManager = null;
+    }
+
+    if (this._groupInformationManager) {
+      this._groupInformationManager.dispose();
 
-        this._furnitureData.loadFurnitureData(NitroConfiguration.getValue<string>('furnidata.url'));
+      this._groupInformationManager = null;
     }
 
-    private loadProductData(): void
-    {
-        this.destroyProductData();
+    Nitro.instance.events.removeEventListener(NitroSettingsEvent.SETTINGS_UPDATED, this.onNitroSettingsEvent);
 
-        this._productData = new ProductDataLoader(this._products);
+    super.onDispose();
+  }
 
-        this._productData.addEventListener(ProductDataLoader.PDP_PRODUCT_DATA_READY, this.onProductDataReadyEvent);
+  private resetUserInfo(): void {
+    this._userId = 0;
+    this._name = null;
+    this._figure = null;
+    this._gender = null;
+    this._realName = null;
+    this._canChangeName = false;
+    this._safetyLocked = false;
+  }
 
-        this._productData.loadProductData(NitroConfiguration.getValue<string>('productdata.url'));
-    }
+  private loadFurnitureData(): void {
+    this.destroyFurnitureData();
 
-    private loadBadgeImageManager(): void
-    {
-        if(this._badgeImageManager) return;
+    this._furnitureData = new FurnitureDataLoader(this._floorItems, this._wallItems, Nitro.instance.localization);
 
-        this._badgeImageManager = new BadgeImageManager(GetAssetManager(), this);
-        this._badgeImageManager.init();
-    }
+    this._furnitureData.addEventListener(FurnitureDataLoader.FURNITURE_DATA_READY, this.onFurnitureDataReadyEvent);
 
-    public hasProductData(listener: IProductDataListener): boolean
-    {
-        if(this._productsReady) return true;
+    this._furnitureData.loadFurnitureData(NitroConfiguration.getValue<string>("furnidata.url"));
+  }
 
-        if(listener && (this._pendingProductListeners.indexOf(listener) === -1)) this._pendingProductListeners.push(listener);
+  private loadProductData(): void {
+    this.destroyProductData();
 
-        return false;
-    }
+    this._productData = new ProductDataLoader(this._products);
 
-    public getAllFurnitureData(listener: IFurnitureDataListener): IFurnitureData[]
-    {
-        if(!this._furnitureReady)
-        {
-            if(this._pendingFurnitureListeners.indexOf(listener) === -1) this._pendingFurnitureListeners.push(listener);
+    this._productData.addEventListener(ProductDataLoader.PDP_PRODUCT_DATA_READY, this.onProductDataReadyEvent);
 
-            return null;
-        }
+    this._productData.loadProductData(NitroConfiguration.getValue<string>("productdata.url"));
+  }
 
-        const furnitureData: IFurnitureData[] = [];
+  private loadBadgeImageManager(): void {
+    if (this._badgeImageManager) return;
 
-        for(const data of this._floorItems.values())
-        {
-            if(!data) continue;
+    this._badgeImageManager = new BadgeImageManager(GetAssetManager(), this);
+    this._badgeImageManager.init();
+  }
 
-            furnitureData.push(data);
-        }
+  public hasProductData(listener: IProductDataListener): boolean {
+    if (this._productsReady) return true;
 
-        for(const data of this._wallItems.values())
-        {
-            if(!data) continue;
+    if (listener && this._pendingProductListeners.indexOf(listener) === -1) this._pendingProductListeners.push(listener);
 
-            furnitureData.push(data);
-        }
+    return false;
+  }
 
-        return furnitureData;
+  public getAllFurnitureData(listener: IFurnitureDataListener): IFurnitureData[] {
+    if (!this._furnitureReady) {
+      if (this._pendingFurnitureListeners.indexOf(listener) === -1) this._pendingFurnitureListeners.push(listener);
+
+      return null;
     }
+
+    const furnitureData: IFurnitureData[] = [];
 
-    public removePendingFurniDataListener(listener: IFurnitureDataListener): void
-    {
-        if(!this._pendingFurnitureListeners) return;
+    for (const data of this._floorItems.values()) {
+      if (!data) continue;
 
-        const index = this._pendingFurnitureListeners.indexOf(listener);
+      furnitureData.push(data);
+    }
 
-        if(index === -1) return;
+    for (const data of this._wallItems.values()) {
+      if (!data) continue;
 
-        this._pendingFurnitureListeners.splice(index, 1);
+      furnitureData.push(data);
     }
 
-    private onUserFigureEvent(event: FigureUpdateEvent): void
-    {
-        if(!event || !event.connection) return;
+    return furnitureData;
+  }
 
-        this._figure = event.getParser().figure;
-        this._gender = event.getParser().gender;
+  public removePendingFurniDataListener(listener: IFurnitureDataListener): void {
+    if (!this._pendingFurnitureListeners) return;
 
-        HabboWebTools.updateFigure(this._figure);
-    }
+    const index = this._pendingFurnitureListeners.indexOf(listener);
 
-    private onUserInfoEvent(event: UserInfoEvent): void
-    {
-        if(!event || !event.connection) return;
+    if (index === -1) return;
 
-        this.resetUserInfo();
+    this._pendingFurnitureListeners.splice(index, 1);
+  }
 
-        const userInfo = event.getParser().userInfo;
+  private onUserFigureEvent(event: FigureUpdateEvent): void {
+    if (!event || !event.connection) return;
 
-        if(!userInfo) return;
+    this._figure = event.getParser().figure;
+    this._gender = event.getParser().gender;
 
-        this._userId = userInfo.userId;
-        this._name = userInfo.username;
-        this._figure = userInfo.figure;
-        this._gender = userInfo.gender;
-        this._realName = userInfo.realName;
-        this._respectsReceived = userInfo.respectsReceived;
-        this._respectsLeft = userInfo.respectsRemaining;
-        this._respectsPetLeft = userInfo.respectsPetRemaining;
-        this._canChangeName = userInfo.canChangeName;
-        this._safetyLocked = userInfo.safetyLocked;
+    HabboWebTools.updateFigure(this._figure);
+  }
 
-        (this._ignoredUsersManager && this._ignoredUsersManager.requestIgnoredUsers());
-    }
+  private onUserInfoEvent(event: UserInfoEvent): void {
+    if (!event || !event.connection) return;
 
-    private onUserPermissionsEvent(event: UserPermissionsEvent): void
-    {
-        if(!event || !event.connection) return;
+    this.resetUserInfo();
 
-        this._clubLevel = event.getParser().clubLevel;
-        this._securityLevel = event.getParser().securityLevel;
-        this._isAmbassador = event.getParser().isAmbassador;
-    }
+    const userInfo = event.getParser().userInfo;
 
-    private onAvailabilityStatusMessageEvent(event: AvailabilityStatusMessageEvent): void
-    {
-        if(!event || !event.connection) return;
+    if (!userInfo) return;
 
-        const parser = event.getParser();
+    this._userId = userInfo.userId;
+    this._name = userInfo.username;
+    this._figure = userInfo.figure;
+    this._gender = userInfo.gender;
+    this._realName = userInfo.realName;
+    this._respectsReceived = userInfo.respectsReceived;
+    this._respectsLeft = userInfo.respectsRemaining;
+    this._respectsPetLeft = userInfo.respectsPetRemaining;
+    this._canChangeName = userInfo.canChangeName;
+    this._safetyLocked = userInfo.safetyLocked;
 
-        if(!parser) return;
+    this._ignoredUsersManager && this._ignoredUsersManager.requestIgnoredUsers();
+  }
 
-        this._systemOpen = parser.isOpen;
-        this._systemShutdown = parser.onShutdown;
-        this._isAuthenticHabbo = parser.isAuthenticUser;
-    }
+  private onUserPermissionsEvent(event: UserPermissionsEvent): void {
+    if (!event || !event.connection) return;
 
-    private onPetRespectFailed(event: PetScratchFailedMessageEvent): void
-    {
-        if(!event || !event.connection) return;
+    this._clubLevel = event.getParser().clubLevel;
+    this._securityLevel = event.getParser().securityLevel;
+    this._isAmbassador = event.getParser().isAmbassador;
+  }
 
-        this._respectsPetLeft++;
-    }
+  private onAvailabilityStatusMessageEvent(event: AvailabilityStatusMessageEvent): void {
+    if (!event || !event.connection) return;
 
-    private onChangeNameUpdateEvent(event: ChangeUserNameResultMessageEvent): void
-    {
-        if(!event || !event.connection) return;
+    const parser = event.getParser();
 
-        const parser = event.getParser();
+    if (!parser) return;
 
-        if(!parser) return;
+    this._systemOpen = parser.isOpen;
+    this._systemShutdown = parser.onShutdown;
+    this._isAuthenticHabbo = parser.isAuthenticUser;
+  }
 
-        if(parser.resultCode !== ChangeUserNameResultMessageEvent.NAME_OK) return;
+  private onPetRespectFailed(event: PetScratchFailedMessageEvent): void {
+    if (!event || !event.connection) return;
 
-        this._canChangeName = false;
+    this._respectsPetLeft++;
+  }
 
-        this.events.dispatchEvent(new UserNameUpdateEvent(parser.name));
-    }
+  private onChangeNameUpdateEvent(event: ChangeUserNameResultMessageEvent): void {
+    if (!event || !event.connection) return;
 
-    private onUserNameChangeMessageEvent(event: UserNameChangeMessageEvent): void
-    {
-        if(!event || !event.connection) return;
+    const parser = event.getParser();
 
-        const parser = event.getParser();
+    if (!parser) return;
 
-        if(!parser) return;
+    if (parser.resultCode !== ChangeUserNameResultMessageEvent.NAME_OK) return;
 
-        if(parser.webId !== this.userId) return;
+    this._canChangeName = false;
 
-        this._name = parser.newName;
-        this._canChangeName = false;
+    this.events.dispatchEvent(new UserNameUpdateEvent(parser.name));
+  }
 
-        this.events.dispatchEvent(new UserNameUpdateEvent(this._name));
-    }
+  private onUserNameChangeMessageEvent(event: UserNameChangeMessageEvent): void {
+    if (!event || !event.connection) return;
 
-    private onUserTags(event: UserTagsMessageEvent): void
-    {
-        if(!event || !event.connection) return;
+    const parser = event.getParser();
 
-        const parser = event.getParser();
+    if (!parser) return;
 
-        if(!parser) return;
+    if (parser.webId !== this.userId) return;
 
-        this._tags = parser.tags;
-    }
+    this._name = parser.newName;
+    this._canChangeName = false;
 
-    private onRoomModelNameEvent(event: RoomReadyMessageEvent): void
-    {
-        if(!event) return;
+    this.events.dispatchEvent(new UserNameUpdateEvent(this._name));
+  }
 
-        const parser = event.getParser();
+  private onUserTags(event: UserTagsMessageEvent): void {
+    if (!event || !event.connection) return;
 
-        if(!parser) return;
+    const parser = event.getParser();
 
-        HabboWebTools.roomVisited(parser.roomId);
-    }
+    if (!parser) return;
 
-    private onFurnitureDataReadyEvent(event: INitroEvent): void
-    {
-        this._furnitureData.removeEventListener(FurnitureDataLoader.FURNITURE_DATA_READY, this.onFurnitureDataReadyEvent);
+    this._tags = parser.tags;
+  }
 
-        this._furnitureReady = true;
+  private onRoomModelNameEvent(event: RoomReadyMessageEvent): void {
+    if (!event) return;
 
-        if(!this._furnitureListenersNotified)
-        {
-            this._furnitureListenersNotified = true;
+    const parser = event.getParser();
 
-            if(this._pendingFurnitureListeners && this._pendingFurnitureListeners.length)
-            {
-                for(const listener of this._pendingFurnitureListeners) listener && listener.loadFurnitureData();
-            }
-        }
+    if (!parser) return;
 
-        this._pendingProductListeners = [];
-    }
+    HabboWebTools.roomVisited(parser.roomId);
+  }
 
-    private onProductDataReadyEvent(event: INitroEvent): void
-    {
-        this._productData.removeEventListener(ProductDataLoader.PDP_PRODUCT_DATA_READY, this.onProductDataReadyEvent);
+  private onFurnitureDataReadyEvent(event: INitroEvent): void {
+    this._furnitureData.removeEventListener(FurnitureDataLoader.FURNITURE_DATA_READY, this.onFurnitureDataReadyEvent);
 
-        this._productsReady = true;
+    this._furnitureReady = true;
 
-        for(const listener of this._pendingProductListeners) listener && listener.loadProductData();
+    if (!this._furnitureListenersNotified) {
+      this._furnitureListenersNotified = true;
 
-        this._pendingProductListeners = [];
+      if (this._pendingFurnitureListeners && this._pendingFurnitureListeners.length) {
+        for (const listener of this._pendingFurnitureListeners) listener && listener.loadFurnitureData();
+      }
     }
 
-    private onInClientLinkEvent(event: InClientLinkEvent): void
-    {
-        if(!event) return;
+    this._pendingProductListeners = [];
+  }
 
-        const parser = event.getParser();
+  private onProductDataReadyEvent(event: INitroEvent): void {
+    this._productData.removeEventListener(ProductDataLoader.PDP_PRODUCT_DATA_READY, this.onProductDataReadyEvent);
 
-        if(!parser) return;
+    this._productsReady = true;
 
-        Nitro.instance.createLinkEvent(parser.link);
-    }
+    for (const listener of this._pendingProductListeners) listener && listener.loadProductData();
 
-    private onMysteryBoxKeysEvent(event: MysteryBoxKeysEvent): void
-    {
-        if(!event) return;
+    this._pendingProductListeners = [];
+  }
 
-        const parser = event.getParser();
+  private onInClientLinkEvent(event: InClientLinkEvent): void {
+    if (!event) return;
 
-        if(!parser) return;
+    const parser = event.getParser();
 
-        this.events.dispatchEvent(new MysteryBoxKeysUpdateEvent(parser.boxColor, parser.keyColor));
-    }
+    if (!parser) return;
 
-    private onNoobnessLevelMessageEvent(event: NoobnessLevelMessageEvent): void
-    {
-        this._noobnessLevel = event.getParser().noobnessLevel;
-
-        if(this._noobnessLevel !== NoobnessLevelEnum.OLD_IDENTITY)
-        {
-            NitroConfiguration.setValue<number>('new.identity', 1);
-        }
-    }
+    Nitro.instance.createLinkEvent(parser.link);
+  }
+
+  private onMysteryBoxKeysEvent(event: MysteryBoxKeysEvent): void {
+    if (!event) return;
 
-    private onAccountSafetyLockStatusChangeMessageEvent(event: AccountSafetyLockStatusChangeMessageEvent): void
-    {
-        if(!event) return;
+    const parser = event.getParser();
 
-        const parser = event.getParser();
+    if (!parser) return;
 
-        if(!parser) return;
+    this.events.dispatchEvent(new MysteryBoxKeysUpdateEvent(parser.boxColor, parser.keyColor));
+  }
 
-        this._safetyLocked = (parser.status == AccountSafetyLockStatusChangeParser.SAFETY_LOCK_STATUS_LOCKED);
+  private onNoobnessLevelMessageEvent(event: NoobnessLevelMessageEvent): void {
+    this._noobnessLevel = event.getParser().noobnessLevel;
+
+    if (this._noobnessLevel !== NoobnessLevelEnum.OLD_IDENTITY) {
+      NitroConfiguration.setValue<number>("new.identity", 1);
     }
+  }
 
-    private onEmailStatus(event: EmailStatusResultEvent): void
-    {
-        if(!event) return;
+  private onAccountSafetyLockStatusChangeMessageEvent(event: AccountSafetyLockStatusChangeMessageEvent): void {
+    if (!event) return;
 
-        const parser = event.getParser();
+    const parser = event.getParser();
 
-        if(!parser) return;
+    if (!parser) return;
 
-        this._isEmailVerified = parser.isVerified;
-    }
+    this._safetyLocked = parser.status == AccountSafetyLockStatusChangeParser.SAFETY_LOCK_STATUS_LOCKED;
+  }
 
-    private onNitroSettingsEvent(event: NitroSettingsEvent): void
-    {
-        this._isRoomCameraFollowDisabled = event.cameraFollow;
-        this._uiFlags = event.flags;
+  private onEmailStatus(event: EmailStatusResultEvent): void {
+    if (!event) return;
 
-        this.events.dispatchEvent(new SessionDataPreferencesEvent(this._uiFlags));
-    }
+    const parser = event.getParser();
 
-    private destroyFurnitureData(): void
-    {
-        if(!this._furnitureData) return;
+    if (!parser) return;
 
-        this._furnitureData.dispose();
+    this._isEmailVerified = parser.isVerified;
+  }
 
-        this._furnitureData = null;
-    }
+  private onNitroSettingsEvent(event: NitroSettingsEvent): void {
+    this._isRoomCameraFollowDisabled = event.cameraFollow;
+    this._uiFlags = event.flags;
 
-    private destroyProductData(): void
-    {
-        if(!this._productData) return;
+    this.events.dispatchEvent(new SessionDataPreferencesEvent(this._uiFlags));
+  }
 
-        this._productData.dispose();
+  private destroyFurnitureData(): void {
+    if (!this._furnitureData) return;
 
-        this._productData = null;
-    }
+    this._furnitureData.dispose();
 
-    public getFloorItemData(id: number): IFurnitureData
-    {
-        const existing = this._floorItems.get(id);
+    this._furnitureData = null;
+  }
 
-        if(!existing) return null;
+  private destroyProductData(): void {
+    if (!this._productData) return;
 
-        return existing;
-    }
+    this._productData.dispose();
 
-    public getFloorItemDataByName(name: string): IFurnitureData
-    {
-        if(!name || !this._floorItems || !this._floorItems.size) return null;
+    this._productData = null;
+  }
 
-        for(const item of this._floorItems.values())
-        {
-            if(!item || (item.className !== name)) continue;
+  public getFloorItemData(id: number): IFurnitureData {
+    const existing = this._floorItems.get(id);
 
-            return item;
-        }
-    }
+    if (!existing) return null;
+
+    return existing;
+  }
 
-    public getWallItemData(id: number): IFurnitureData
-    {
-        const existing = this._wallItems.get(id);
+  public getFloorItemDataByName(name: string): IFurnitureData {
+    if (!name || !this._floorItems || !this._floorItems.size) return null;
 
-        if(!existing) return null;
+    for (const item of this._floorItems.values()) {
+      if (!item || item.className !== name) continue;
 
-        return existing;
+      return item;
     }
+  }
 
-    public getWallItemDataByName(name: string): IFurnitureData
-    {
-        if(!name || !this._wallItems || !this._wallItems.size) return null;
+  public getWallItemData(id: number): IFurnitureData {
+    const existing = this._wallItems.get(id);
 
-        for(const item of this._wallItems.values())
-        {
-            if(!item || (item.className !== name)) continue;
+    if (!existing) return null;
 
-            return item;
-        }
-    }
+    return existing;
+  }
 
-    public getProductData(type: string): IProductData
-    {
-        if(!this._productsReady) this.loadProductData();
+  public getWallItemDataByName(name: string): IFurnitureData {
+    if (!name || !this._wallItems || !this._wallItems.size) return null;
 
-        return this._products.get(type);
-    }
+    for (const item of this._wallItems.values()) {
+      if (!item || item.className !== name) continue;
 
-    public getBadgeUrl(name: string): string
-    {
-        return this._badgeImageManager.getBadgeUrl(name);
+      return item;
     }
+  }
 
-    public getGroupBadgeUrl(name: string): string
-    {
-        return this._badgeImageManager.getBadgeUrl(name, BadgeImageManager.GROUP_BADGE);
-    }
+  public getProductData(type: string): IProductData {
+    if (!this._productsReady) this.loadProductData();
 
-    public getBadgeImage(name: string): Texture<Resource>
-    {
-        return this._badgeImageManager.getBadgeImage(name);
-    }
+    return this._products.get(type);
+  }
 
-    public getGroupBadgeImage(name: string): Texture<Resource>
-    {
-        return this._badgeImageManager.getBadgeImage(name, BadgeImageManager.GROUP_BADGE);
-    }
+  public getBadgeUrl(name: string): string {
+    return this._badgeImageManager.getBadgeUrl(name);
+  }
 
-    public getUserTags(roomUnitId: number): string[]
-    {
-        if(roomUnitId < 0) return;
+  public getGroupBadgeUrl(name: string): string {
+    return this._badgeImageManager.getBadgeUrl(name, BadgeImageManager.GROUP_BADGE);
+  }
 
-        this.send(new GetUserTagsComposer(roomUnitId));
-    }
+  public getBadgeImage(name: string): Texture<Resource> {
+    return this._badgeImageManager.getBadgeImage(name);
+  }
 
-    public loadBadgeImage(name: string): string
-    {
-        return this._badgeImageManager.loadBadgeImage(name);
-    }
+  public getGroupBadgeImage(name: string): Texture<Resource> {
+    return this._badgeImageManager.getBadgeImage(name, BadgeImageManager.GROUP_BADGE);
+  }
 
-    public loadGroupBadgeImage(name: string): string
-    {
-        return this._badgeImageManager.loadBadgeImage(name, BadgeImageManager.GROUP_BADGE);
-    }
+  public getUserTags(roomUnitId: number): string[] {
+    if (roomUnitId < 0) return;
 
-    public hasSecurity(level: number): boolean
-    {
-        return this._securityLevel >= level;
-    }
+    this.send(new GetUserTagsComposer(roomUnitId));
+  }
 
-    public giveRespect(userId: number): void
-    {
-        if((userId < 0) || (this._respectsLeft <= 0)) return;
+  public loadBadgeImage(name: string): string {
+    return this._badgeImageManager.loadBadgeImage(name);
+  }
 
-        this.send(new UserRespectComposer(userId));
+  public loadGroupBadgeImage(name: string): string {
+    return this._badgeImageManager.loadBadgeImage(name, BadgeImageManager.GROUP_BADGE);
+  }
 
-        this._respectsLeft--;
-    }
+  public hasSecurity(level: number): boolean {
+    return this._securityLevel >= level;
+  }
 
-    public givePetRespect(petId: number): void
-    {
-        if((petId < 0) || (this._respectsPetLeft <= 0)) return;
+  public giveRespect(userId: number): void {
+    if (userId < 0 || this._respectsLeft <= 0) return;
 
-        this.send(new PetRespectComposer(petId));
+    this.send(new UserRespectComposer(userId));
 
-        this._respectsPetLeft--;
-    }
+    this._respectsLeft--;
+  }
 
-    public sendSpecialCommandMessage(text: string, styleId: number = 0): void
-    {
-        this.send(new RoomUnitChatComposer(text));
-    }
+  public givePetRespect(petId: number): void {
+    if (petId < 0 || this._respectsPetLeft <= 0) return;
 
-    public ignoreUser(name: string): void
-    {
-        (this._ignoredUsersManager && this._ignoredUsersManager.ignoreUser(name));
-    }
+    this.send(new PetRespectComposer(petId));
 
-    public unignoreUser(name: string): void
-    {
-        (this._ignoredUsersManager && this._ignoredUsersManager.unignoreUser(name));
-    }
+    this._respectsPetLeft--;
+  }
 
-    public isUserIgnored(name: string): boolean
-    {
-        return (this._ignoredUsersManager && this._ignoredUsersManager.isIgnored(name));
-    }
+  public sendSpecialCommandMessage(text: string, styleId: number = 0): void {
+    this.send(new RoomUnitChatComposer(text));
+  }
 
-    public getGroupBadge(groupId: number): string
-    {
-        return (this._groupInformationManager && this._groupInformationManager.getGroupBadge(groupId));
-    }
+  public ignoreUser(name: string): void {
+    this._ignoredUsersManager && this._ignoredUsersManager.ignoreUser(name);
+  }
 
-    public send(composer: IMessageComposer<unknown[]>): void
-    {
-        this._communication.connection.send(composer);
-    }
+  public unignoreUser(name: string): void {
+    this._ignoredUsersManager && this._ignoredUsersManager.unignoreUser(name);
+  }
 
-    public get communication(): INitroCommunicationManager
-    {
-        return this._communication;
-    }
+  public isUserIgnored(name: string): boolean {
+    return this._ignoredUsersManager && this._ignoredUsersManager.isIgnored(name);
+  }
 
-    public get userId(): number
-    {
-        return this._userId;
-    }
+  public getGroupBadge(groupId: number): string {
+    return this._groupInformationManager && this._groupInformationManager.getGroupBadge(groupId);
+  }
 
-    public get userName(): string
-    {
-        return this._name;
-    }
+  public send(composer: IMessageComposer<unknown[]>): void {
+    this._communication.connection.send(composer);
+  }
 
-    public get figure(): string
-    {
-        return this._figure;
-    }
+  public get communication(): INitroCommunicationManager {
+    return this._communication;
+  }
 
-    public get gender(): string
-    {
-        return this._gender;
-    }
+  public get userId(): number {
+    return this._userId;
+  }
 
-    public get realName(): string
-    {
-        return this._realName;
-    }
+  public get userName(): string {
+    return this._name;
+  }
 
-    public get ignoredUsersManager(): IgnoredUsersManager
-    {
-        return this._ignoredUsersManager;
-    }
+  public get figure(): string {
+    return this._figure;
+  }
 
-    public get groupInformationManager(): IGroupInformationManager
-    {
-        return this._groupInformationManager;
-    }
+  public get gender(): string {
+    return this._gender;
+  }
 
-    public get respectsReceived(): number
-    {
-        return this._respectsReceived;
-    }
+  public get realName(): string {
+    return this._realName;
+  }
 
-    public get respectsLeft(): number
-    {
-        return this._respectsLeft;
-    }
+  public get ignoredUsersManager(): IgnoredUsersManager {
+    return this._ignoredUsersManager;
+  }
 
-    public get respectsPetLeft(): number
-    {
-        return this._respectsPetLeft;
-    }
+  public get groupInformationManager(): IGroupInformationManager {
+    return this._groupInformationManager;
+  }
 
-    public get canChangeName(): boolean
-    {
-        return this._canChangeName;
-    }
+  public get respectsReceived(): number {
+    return this._respectsReceived;
+  }
 
-    public get clubLevel(): number
-    {
-        return this._clubLevel;
-    }
+  public get respectsLeft(): number {
+    return this._respectsLeft;
+  }
 
-    public get securityLevel(): number
-    {
-        return this._securityLevel;
-    }
+  public get respectsPetLeft(): number {
+    return this._respectsPetLeft;
+  }
 
-    public get isAmbassador(): boolean
-    {
-        return this._isAmbassador;
-    }
+  public get canChangeName(): boolean {
+    return this._canChangeName;
+  }
 
-    public get isEmailVerified(): boolean
-    {
-        return this._isEmailVerified;
-    }
+  public get clubLevel(): number {
+    return this._clubLevel;
+  }
 
-    public get isNoob(): boolean
-    {
-        return (this._noobnessLevel !== NoobnessLevelEnum.OLD_IDENTITY);
-    }
+  public get securityLevel(): number {
+    return this._securityLevel;
+  }
 
-    public get isRealNoob(): boolean
-    {
-        return (this._noobnessLevel === NoobnessLevelEnum.REAL_NOOB);
-    }
+  public get isAmbassador(): boolean {
+    return this._isAmbassador;
+  }
 
-    public get isSystemOpen(): boolean
-    {
-        return this._systemOpen;
-    }
+  public get isEmailVerified(): boolean {
+    return this._isEmailVerified;
+  }
 
-    public get isSystemShutdown(): boolean
-    {
-        return this._systemShutdown;
-    }
+  public get isNoob(): boolean {
+    return this._noobnessLevel !== NoobnessLevelEnum.OLD_IDENTITY;
+  }
 
-    public get isAuthenticHabbo(): boolean
-    {
-        return this._isAuthenticHabbo;
-    }
+  public get isRealNoob(): boolean {
+    return this._noobnessLevel === NoobnessLevelEnum.REAL_NOOB;
+  }
 
-    public get isModerator(): boolean
-    {
-        return (this._securityLevel >= SecurityLevel.MODERATOR);
-    }
+  public get isSystemOpen(): boolean {
+    return this._systemOpen;
+  }
 
-    public get isCameraFollowDisabled(): boolean
-    {
-        return this._isRoomCameraFollowDisabled;
-    }
+  public get isSystemShutdown(): boolean {
+    return this._systemShutdown;
+  }
 
-    public get uiFlags(): number
-    {
-        return this._uiFlags;
-    }
+  public get isAuthenticHabbo(): boolean {
+    return this._isAuthenticHabbo;
+  }
 
-    public get tags(): string[]
-    {
-        return this._tags;
-    }
+  public get isModerator(): boolean {
+    return this._securityLevel >= SecurityLevel.MODERATOR;
+  }
+
+  public get isCameraFollowDisabled(): boolean {
+    return this._isRoomCameraFollowDisabled;
+  }
+
+  public get uiFlags(): number {
+    return this._uiFlags;
+  }
+
+  public get tags(): string[] {
+    return this._tags;
+  }
 }

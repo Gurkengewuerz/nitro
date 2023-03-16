@@ -1,29 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class ChatReviewSessionStartedMessageParser implements IMessageParser
-{
-    private _votingTimeout: number;
-    private _chatRecord: string;
+export class ChatReviewSessionStartedMessageParser implements IMessageParser {
+  private _votingTimeout: number;
+  private _chatRecord: string;
 
-    flush(): boolean
-    {
-        return true;
-    }
+  flush(): boolean {
+    return true;
+  }
 
-    parse(wrapper: IMessageDataWrapper): boolean
-    {
-        this._votingTimeout = wrapper.readInt();
-        this._chatRecord = wrapper.readString();
-        return true;
-    }
+  parse(wrapper: IMessageDataWrapper): boolean {
+    this._votingTimeout = wrapper.readInt();
+    this._chatRecord = wrapper.readString();
+    return true;
+  }
 
-    public get votingTimeout(): number
-    {
-        return this._votingTimeout;
-    }
+  public get votingTimeout(): number {
+    return this._votingTimeout;
+  }
 
-    public get chatRecord(): string
-    {
-        return this._chatRecord;
-    }
+  public get chatRecord(): string {
+    return this._chatRecord;
+  }
 }

@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class PurchaseNotAllowedMessageParser implements IMessageParser
-{
-    private _code: number;
+export class PurchaseNotAllowedMessageParser implements IMessageParser {
+  private _code: number;
 
-    public flush(): boolean
-    {
-        this._code = 0;
+  public flush(): boolean {
+    this._code = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._code = wrapper.readInt();
+    this._code = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get code(): number
-    {
-        return this._code;
-    }
+  public get code(): number {
+    return this._code;
+  }
 }

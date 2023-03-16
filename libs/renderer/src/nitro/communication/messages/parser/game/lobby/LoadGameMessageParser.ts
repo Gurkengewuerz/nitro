@@ -1,88 +1,75 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class LoadGameMessageParser implements IMessageParser
-{
-    private _gameTypeId:number;
-    private _url:string;
-    private _quality:string;
-    private _scaleMode:string;
-    private _frameRate:number;
-    private _minMajorVersion:number;
-    private _minMinorVersion:number;
-    private _params:Map<string, string>;
-    private _gameClientId:string;
+export class LoadGameMessageParser implements IMessageParser {
+  private _gameTypeId: number;
+  private _url: string;
+  private _quality: string;
+  private _scaleMode: string;
+  private _frameRate: number;
+  private _minMajorVersion: number;
+  private _minMinorVersion: number;
+  private _params: Map<string, string>;
+  private _gameClientId: string;
 
-    public flush(): boolean
-    {
-        return true;
+  public flush(): boolean {
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    this._gameTypeId = wrapper.readInt();
+    this._gameClientId = wrapper.readString();
+    this._url = wrapper.readString();
+    this._quality = wrapper.readString();
+    this._scaleMode = wrapper.readString();
+    this._frameRate = wrapper.readInt();
+    this._minMajorVersion = wrapper.readInt();
+    this._minMinorVersion = wrapper.readInt();
+    this._params = new Map<string, string>();
+    const count = wrapper.readInt();
+    let _local_3 = 0;
+    while (_local_3 < count) {
+      this._params.set(wrapper.readString(), wrapper.readString());
+      _local_3++;
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    return true;
+  }
 
-        this._gameTypeId = wrapper.readInt();
-        this._gameClientId = wrapper.readString();
-        this._url = wrapper.readString();
-        this._quality = wrapper.readString();
-        this._scaleMode = wrapper.readString();
-        this._frameRate = wrapper.readInt();
-        this._minMajorVersion = wrapper.readInt();
-        this._minMinorVersion = wrapper.readInt();
-        this._params = new Map<string,string>();
-        const count = wrapper.readInt();
-        let _local_3 = 0;
-        while(_local_3 < count)
-        {
-            this._params.set(wrapper.readString(), wrapper.readString());
-            _local_3++;
-        }
+  public get gameTypeId(): number {
+    return this._gameTypeId;
+  }
 
-        return true;
-    }
+  public get url(): string {
+    return this._url;
+  }
 
-    public get gameTypeId():number
-    {
-        return this._gameTypeId;
-    }
+  public get quality(): string {
+    return this._quality;
+  }
 
-    public get url():string
-    {
-        return this._url;
-    }
+  public get scaleMode(): string {
+    return this._scaleMode;
+  }
 
-    public get quality():string
-    {
-        return this._quality;
-    }
+  public get frameRate(): number {
+    return this._frameRate;
+  }
 
-    public get scaleMode():string
-    {
-        return this._scaleMode;
-    }
+  public get minMajorVersion(): number {
+    return this._minMajorVersion;
+  }
 
-    public get frameRate():number
-    {
-        return this._frameRate;
-    }
+  public get minMinorVersion(): number {
+    return this._minMinorVersion;
+  }
 
-    public get minMajorVersion():number
-    {
-        return this._minMajorVersion;
-    }
+  public get params(): Map<string, string> {
+    return this._params;
+  }
 
-    public get minMinorVersion():number
-    {
-        return this._minMinorVersion;
-    }
-
-    public get params():Map<string,string>
-    {
-        return this._params;
-    }
-
-    public get gameClientId():string
-    {
-        return this._gameClientId;
-    }
+  public get gameClientId(): string {
+    return this._gameClientId;
+  }
 }

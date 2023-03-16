@@ -1,110 +1,92 @@
-import { IPollQuestion } from '@nitro/renderer';
-import { RoomWidgetUpdateEvent } from './RoomWidgetUpdateEvent';
+import {IPollQuestion} from "@nitro/renderer";
 
-export class RoomWidgetPollUpdateEvent extends RoomWidgetUpdateEvent
-{
-    public static readonly OFFER = 'RWPUW_OFFER';
-    public static readonly ERROR = 'RWPUW_ERROR';
-    public static readonly CONTENT = 'RWPUW_CONTENT';
+import {RoomWidgetUpdateEvent} from "./RoomWidgetUpdateEvent";
 
-    private _id = -1;
-    private _summary: string;
-    private _headline: string;
-    private _numQuestions = 0;
-    private _startMessage = '';
-    private _endMessage = '';
-    private _questionArray: IPollQuestion[] = null;
-    private _pollType = '';
-    private _npsPoll = false;
+export class RoomWidgetPollUpdateEvent extends RoomWidgetUpdateEvent {
+  public static readonly OFFER = "RWPUW_OFFER";
+  public static readonly ERROR = "RWPUW_ERROR";
+  public static readonly CONTENT = "RWPUW_CONTENT";
 
-    constructor(type: string, id: number)
-    {
-        super(type);
-        this._id = id;
-    }
+  private _id = -1;
+  private _summary: string;
+  private _headline: string;
+  private _numQuestions = 0;
+  private _startMessage = "";
+  private _endMessage = "";
+  private _questionArray: IPollQuestion[] = null;
+  private _pollType = "";
+  private _npsPoll = false;
 
-    public get id(): number
-    {
-        return this._id;
-    }
+  constructor(type: string, id: number) {
+    super(type);
+    this._id = id;
+  }
 
-    public get summary(): string
-    {
-        return this._summary;
-    }
+  public get id(): number {
+    return this._id;
+  }
 
-    public set summary(k: string)
-    {
-        this._summary = k;
-    }
+  public get summary(): string {
+    return this._summary;
+  }
 
-    public get headline(): string
-    {
-        return this._headline;
-    }
+  public set summary(k: string) {
+    this._summary = k;
+  }
 
-    public set headline(k: string)
-    {
-        this._headline = k;
-    }
+  public get headline(): string {
+    return this._headline;
+  }
 
-    public get numQuestions(): number
-    {
-        return this._numQuestions;
-    }
+  public set headline(k: string) {
+    this._headline = k;
+  }
 
-    public set numQuestions(k: number)
-    {
-        this._numQuestions = k;
-    }
+  public get numQuestions(): number {
+    return this._numQuestions;
+  }
 
-    public get startMessage(): string
-    {
-        return this._startMessage;
-    }
+  public set numQuestions(k: number) {
+    this._numQuestions = k;
+  }
 
-    public set startMessage(k: string)
-    {
-        this._startMessage = k;
-    }
+  public get startMessage(): string {
+    return this._startMessage;
+  }
 
-    public get endMessage(): string
-    {
-        return this._endMessage;
-    }
+  public set startMessage(k: string) {
+    this._startMessage = k;
+  }
 
-    public set endMessage(k: string)
-    {
-        this._endMessage = k;
-    }
+  public get endMessage(): string {
+    return this._endMessage;
+  }
 
-    public get questionArray(): IPollQuestion[]
-    {
-        return this._questionArray;
-    }
+  public set endMessage(k: string) {
+    this._endMessage = k;
+  }
 
-    public set questionArray(k: IPollQuestion[])
-    {
-        this._questionArray = k;
-    }
+  public get questionArray(): IPollQuestion[] {
+    return this._questionArray;
+  }
 
-    public get pollType(): string
-    {
-        return this._pollType;
-    }
+  public set questionArray(k: IPollQuestion[]) {
+    this._questionArray = k;
+  }
 
-    public set pollType(k: string)
-    {
-        this._pollType = k;
-    }
+  public get pollType(): string {
+    return this._pollType;
+  }
 
-    public get npsPoll(): boolean
-    {
-        return this._npsPoll;
-    }
+  public set pollType(k: string) {
+    this._pollType = k;
+  }
 
-    public set npsPoll(k: boolean)
-    {
-        this._npsPoll = k;
-    }
+  public get npsPoll(): boolean {
+    return this._npsPoll;
+  }
+
+  public set npsPoll(k: boolean) {
+    this._npsPoll = k;
+  }
 }

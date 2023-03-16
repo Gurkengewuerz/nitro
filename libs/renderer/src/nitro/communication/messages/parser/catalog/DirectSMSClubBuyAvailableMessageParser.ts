@@ -1,53 +1,46 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class DirectSMSClubBuyAvailableMessageParser implements IMessageParser
-{
-    private _available: boolean;
-    private _pricePointUrl: string;
-    private _market: string;
-    private _lengthInDays: number;
+export class DirectSMSClubBuyAvailableMessageParser implements IMessageParser {
+  private _available: boolean;
+  private _pricePointUrl: string;
+  private _market: string;
+  private _lengthInDays: number;
 
-    public flush(): boolean
-    {
-        this._available = false;
-        this._pricePointUrl = null;
-        this._market = null;
-        this._lengthInDays = 0;
+  public flush(): boolean {
+    this._available = false;
+    this._pricePointUrl = null;
+    this._market = null;
+    this._lengthInDays = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._pricePointUrl = wrapper.readString();
+    this._pricePointUrl = wrapper.readString();
 
-        if(this._pricePointUrl !== '') this._available = true;
+    if (this._pricePointUrl !== "") this._available = true;
 
-        this._market = wrapper.readString();
-        this._lengthInDays = wrapper.readInt();
+    this._market = wrapper.readString();
+    this._lengthInDays = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get available(): boolean
-    {
-        return this._available;
-    }
+  public get available(): boolean {
+    return this._available;
+  }
 
-    public get pricePointUrl(): string
-    {
-        return this._pricePointUrl;
-    }
+  public get pricePointUrl(): string {
+    return this._pricePointUrl;
+  }
 
-    public get market(): string
-    {
-        return this._market;
-    }
+  public get market(): string {
+    return this._market;
+  }
 
-    public get lengthInDays(): number
-    {
-        return this._lengthInDays;
-    }
+  public get lengthInDays(): number {
+    return this._lengthInDays;
+  }
 }

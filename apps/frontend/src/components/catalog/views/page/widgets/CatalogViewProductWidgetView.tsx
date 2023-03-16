@@ -1,99 +1,95 @@
-import { Vector3d } from '@nitro/renderer';
-import { FC, useEffect } from 'react';
-import { FurniCategory, GetAvatarRenderManager, GetSessionDataManager, Offer, ProductTypeEnum } from '../../../../../api';
-import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
+import {Vector3d} from "@nitro/renderer";
+import {FC, useEffect} from "react";
 
-export const CatalogViewProductWidgetView: FC<{}> = props =>
-{
-    const { currentOffer = null, roomPreviewer = null, purchaseOptions = null } = useCatalog();
-    const { previewStuffData = null } = purchaseOptions;
+import {FurniCategory, GetAvatarRenderManager, GetSessionDataManager, Offer, ProductTypeEnum} from "../../../../../api";
+import {AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView} from "../../../../../common";
+import {useCatalog} from "../../../../../hooks";
 
-    useEffect(() =>
-    {
-        if(!currentOffer || (currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE) || !roomPreviewer) return;
+export const CatalogViewProductWidgetView: FC<{}> = props => {
+  const {currentOffer = null, roomPreviewer = null, purchaseOptions = null} = useCatalog();
+  const {previewStuffData = null} = purchaseOptions;
 
-        const product = currentOffer.product;
+  useEffect(() => {
+    if (!currentOffer || currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE || !roomPreviewer) return;
 
-        if(!product) return;
+    const product = currentOffer.product;
 
-        roomPreviewer.reset(false);
+    if (!product) return;
 
-        switch(product.productType)
-        {
-            case ProductTypeEnum.FLOOR: {
-                if(!product.furnitureData) return;
+    roomPreviewer.reset(false);
 
-                if(product.furnitureData.specialType === FurniCategory.FIGURE_PURCHASABLE_SET)
-                {
-                    const furniData = GetSessionDataManager().getFloorItemData(product.furnitureData.id);
-                    const customParts = furniData.customParams.split(',').map(value => parseInt(value));
-                    const figureSets: number[] = [];
+    switch (product.productType) {
+      case ProductTypeEnum.FLOOR: {
+        if (!product.furnitureData) return;
 
-                    for(const part of customParts)
-                    {
-                        if(GetAvatarRenderManager().isValidFigureSetForGender(part, GetSessionDataManager().gender)) figureSets.push(part);
-                    }
+        if (product.furnitureData.specialType === FurniCategory.FIGURE_PURCHASABLE_SET) {
+          const furniData = GetSessionDataManager().getFloorItemData(product.furnitureData.id);
+          const customParts = furniData.customParams.split(",").map(value => parseInt(value));
+          const figureSets: number[] = [];
 
-                    const figureString = GetAvatarRenderManager().getFigureStringWithFigureIds(GetSessionDataManager().figure, GetSessionDataManager().gender, figureSets);
+          for (const part of customParts) {
+            if (GetAvatarRenderManager().isValidFigureSetForGender(part, GetSessionDataManager().gender)) figureSets.push(part);
+          }
 
-                    roomPreviewer.addAvatarIntoRoom(figureString, product.productClassId)
-                }
-                else
-                {
-                    roomPreviewer.addFurnitureIntoRoom(product.productClassId, new Vector3d(90), previewStuffData, product.extraParam);
-                }
-                return;
-            }
-            case ProductTypeEnum.WALL: {
-                if(!product.furnitureData) return;
+          const figureString = GetAvatarRenderManager().getFigureStringWithFigureIds(
+            GetSessionDataManager().figure,
+            GetSessionDataManager().gender,
+            figureSets
+          );
 
-                switch(product.furnitureData.specialType)
-                {
-                    case FurniCategory.FLOOR:
-                        roomPreviewer.updateObjectRoom(product.extraParam);
-                        return;
-                    case FurniCategory.WALL_PAPER:
-                        roomPreviewer.updateObjectRoom(null, product.extraParam);
-                        return;
-                    case FurniCategory.LANDSCAPE: {
-                        roomPreviewer.updateObjectRoom(null, null, product.extraParam);
-
-                        const furniData = GetSessionDataManager().getWallItemDataByName('window_double_default');
-
-                        if(furniData) roomPreviewer.addWallItemIntoRoom(furniData.id, new Vector3d(90), furniData.customParams);
-                        return;
-                    }
-                    default:
-                        roomPreviewer.updateObjectRoom('default', 'default', 'default');
-                        roomPreviewer.addWallItemIntoRoom(product.productClassId, new Vector3d(90), product.extraParam);
-                        return;
-                }
-            }
-            case ProductTypeEnum.ROBOT:
-                roomPreviewer.addAvatarIntoRoom(product.extraParam, 0);
-                return;
-            case ProductTypeEnum.EFFECT:
-                roomPreviewer.addAvatarIntoRoom(GetSessionDataManager().figure, product.productClassId);
-                return;
+          roomPreviewer.addAvatarIntoRoom(figureString, product.productClassId);
+        } else {
+          roomPreviewer.addFurnitureIntoRoom(product.productClassId, new Vector3d(90), previewStuffData, product.extraParam);
         }
-    }, [ currentOffer, previewStuffData, roomPreviewer ]);
+        return;
+      }
+      case ProductTypeEnum.WALL: {
+        if (!product.furnitureData) return;
 
-    if(!currentOffer) return null;
+        switch (product.furnitureData.specialType) {
+          case FurniCategory.FLOOR:
+            roomPreviewer.updateObjectRoom(product.extraParam);
+            return;
+          case FurniCategory.WALL_PAPER:
+            roomPreviewer.updateObjectRoom(null, product.extraParam);
+            return;
+          case FurniCategory.LANDSCAPE: {
+            roomPreviewer.updateObjectRoom(null, null, product.extraParam);
 
-    if(currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE)
-    {
-        return (
-            <Column fit overflow="hidden" className="bg-muted p-2 rounded">
-                <AutoGrid fullWidth columnCount={ 4 } className="nitro-catalog-layout-bundle-grid">
-                    { (currentOffer.products.length > 0) && currentOffer.products.map((product, index) =>
-                    {
-                        return <LayoutGridItem key={ index } itemImage={ product.getIconUrl(currentOffer) } itemCount={ product.productCount } />;
-                    }) }
-                </AutoGrid>
-            </Column>
-        );
+            const furniData = GetSessionDataManager().getWallItemDataByName("window_double_default");
+
+            if (furniData) roomPreviewer.addWallItemIntoRoom(furniData.id, new Vector3d(90), furniData.customParams);
+            return;
+          }
+          default:
+            roomPreviewer.updateObjectRoom("default", "default", "default");
+            roomPreviewer.addWallItemIntoRoom(product.productClassId, new Vector3d(90), product.extraParam);
+            return;
+        }
+      }
+      case ProductTypeEnum.ROBOT:
+        roomPreviewer.addAvatarIntoRoom(product.extraParam, 0);
+        return;
+      case ProductTypeEnum.EFFECT:
+        roomPreviewer.addAvatarIntoRoom(GetSessionDataManager().figure, product.productClassId);
+        return;
     }
-    
-    return <LayoutRoomPreviewerView roomPreviewer={ roomPreviewer } height={ 140 } />;
-}
+  }, [currentOffer, previewStuffData, roomPreviewer]);
+
+  if (!currentOffer) return null;
+
+  if (currentOffer.pricingModel === Offer.PRICING_MODEL_BUNDLE) {
+    return (
+      <Column fit overflow="hidden" className="bg-muted p-2 rounded">
+        <AutoGrid fullWidth columnCount={4} className="nitro-catalog-layout-bundle-grid">
+          {currentOffer.products.length > 0 &&
+            currentOffer.products.map((product, index) => {
+              return <LayoutGridItem key={index} itemImage={product.getIconUrl(currentOffer)} itemCount={product.productCount} />;
+            })}
+        </AutoGrid>
+      </Column>
+    );
+  }
+
+  return <LayoutRoomPreviewerView roomPreviewer={roomPreviewer} height={140} />;
+};

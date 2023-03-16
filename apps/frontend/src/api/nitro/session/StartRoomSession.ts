@@ -1,7 +1,7 @@
-import { IRoomSession } from '@nitro/renderer';
-import { GetRoomSessionManager } from './GetRoomSessionManager';
+import {IRoomSession} from "@nitro/renderer";
 
-export function StartRoomSession(session: IRoomSession): void
-{
-    GetRoomSessionManager().startSession(session);
+import {GetRoomSessionManager} from "./GetRoomSessionManager";
+
+export function StartRoomSession(session: IRoomSession): void {
+  GetRoomSessionManager().startSession(session);
 }

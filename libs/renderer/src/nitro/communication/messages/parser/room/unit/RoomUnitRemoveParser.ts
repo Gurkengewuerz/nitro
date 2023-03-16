@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class RoomUnitRemoveParser implements IMessageParser
-{
-    private _unitId: number;
+export class RoomUnitRemoveParser implements IMessageParser {
+  private _unitId: number;
 
-    public flush(): boolean
-    {
-        this._unitId = null;
+  public flush(): boolean {
+    this._unitId = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._unitId = parseInt(wrapper.readString());
+    this._unitId = parseInt(wrapper.readString());
 
-        return true;
-    }
+    return true;
+  }
 
-    public get unitId(): number
-    {
-        return this._unitId;
-    }
+  public get unitId(): number {
+    return this._unitId;
+  }
 }

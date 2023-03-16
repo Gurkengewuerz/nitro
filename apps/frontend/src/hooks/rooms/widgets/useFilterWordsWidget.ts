@@ -1,23 +1,22 @@
-import { RoomFilterSettingsMessageEvent } from '@nitro/renderer';
-import { useState } from 'react';
-import { useMessageEvent } from '../../events';
+import {RoomFilterSettingsMessageEvent} from "@nitro/renderer";
+import {useState} from "react";
 
-const useFilterWordsWidgetState = () =>
-{
-    const [ wordsFilter, setWordsFilter ] = useState<string[]>(null);
-    const [ isVisible, setIsVisible ] = useState<boolean>(false);
+import {useMessageEvent} from "../../events";
 
-    const onClose = () => setIsVisible(false);
+const useFilterWordsWidgetState = () => {
+  const [wordsFilter, setWordsFilter] = useState<string[]>(null);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
-    useMessageEvent<RoomFilterSettingsMessageEvent>(RoomFilterSettingsMessageEvent, event =>
-    {
-        const parser = event.getParser();
+  const onClose = () => setIsVisible(false);
 
-        setIsVisible(true);
-        setWordsFilter(parser.words);
-    });
+  useMessageEvent<RoomFilterSettingsMessageEvent>(RoomFilterSettingsMessageEvent, event => {
+    const parser = event.getParser();
 
-    return { wordsFilter, isVisible, setWordsFilter, onClose };
-}
+    setIsVisible(true);
+    setWordsFilter(parser.words);
+  });
+
+  return {wordsFilter, isVisible, setWordsFilter, onClose};
+};
 
 export const useFilterWordsWidget = useFilterWordsWidgetState;

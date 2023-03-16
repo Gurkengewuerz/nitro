@@ -1,20 +1,19 @@
-import { IFurnitureData } from '@nitro/renderer';
-import { GetSessionDataManager } from '.';
-import { ProductTypeEnum } from '../../catalog';
+import {IFurnitureData} from "@nitro/renderer";
 
-export function GetFurnitureData(furniClassId: number, productType: string): IFurnitureData
-{
-    let furniData: IFurnitureData = null;
+import {GetSessionDataManager} from ".";
+import {ProductTypeEnum} from "../../catalog";
 
-    switch(productType.toLowerCase())
-    {
-        case ProductTypeEnum.FLOOR:
-            furniData = GetSessionDataManager().getFloorItemData(furniClassId);
-            break;
-        case ProductTypeEnum.WALL:
-            furniData = GetSessionDataManager().getWallItemData(furniClassId);
-            break;
-    }
+export function GetFurnitureData(furniClassId: number, productType: string): IFurnitureData {
+  let furniData: IFurnitureData = null;
 
-    return furniData;
+  switch (productType.toLowerCase()) {
+    case ProductTypeEnum.FLOOR:
+      furniData = GetSessionDataManager().getFloorItemData(furniClassId);
+      break;
+    case ProductTypeEnum.WALL:
+      furniData = GetSessionDataManager().getWallItemData(furniClassId);
+      break;
+  }
+
+  return furniData;
 }

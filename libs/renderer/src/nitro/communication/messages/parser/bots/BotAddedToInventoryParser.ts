@@ -1,36 +1,31 @@
-﻿import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { BotData } from './BotData';
+﻿import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {BotData} from "./BotData";
 
-export class BotAddedToInventoryParser implements IMessageParser
-{
-    private _item: BotData;
-    private _openInventory: boolean;
+export class BotAddedToInventoryParser implements IMessageParser {
+  private _item: BotData;
+  private _openInventory: boolean;
 
-    public flush(): boolean
-    {
-        this._item = null;
-        this._openInventory = false;
+  public flush(): boolean {
+    this._item = null;
+    this._openInventory = false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._item = new BotData(wrapper);
-        this._openInventory = wrapper.readBoolean();
+    this._item = new BotData(wrapper);
+    this._openInventory = wrapper.readBoolean();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get item(): BotData
-    {
-        return this._item;
-    }
+  public get item(): BotData {
+    return this._item;
+  }
 
-    public openInventory(): boolean
-    {
-        return this._openInventory;
-    }
+  public openInventory(): boolean {
+    return this._openInventory;
+  }
 }

@@ -1,16 +1,16 @@
-import { RoomObjectCategory, RoomObjectVariable } from '@nitro/renderer';
-import { GetRoomSession } from '.';
-import { GetRoomEngine } from '..';
-import { GetSessionDataManager } from '../../../api';
+import {RoomObjectCategory, RoomObjectVariable} from "@nitro/renderer";
 
-export function IsOwnerOfFloorFurniture(id: number): boolean
-{
-    const roomObject = GetRoomEngine().getRoomObject(GetRoomSession().roomId, id, RoomObjectCategory.FLOOR);
+import {GetRoomSession} from ".";
+import {GetRoomEngine} from "..";
+import {GetSessionDataManager} from "../../../api";
 
-    if(!roomObject || !roomObject.model) return false;
+export function IsOwnerOfFloorFurniture(id: number): boolean {
+  const roomObject = GetRoomEngine().getRoomObject(GetRoomSession().roomId, id, RoomObjectCategory.FLOOR);
 
-    const userId = GetSessionDataManager().userId;
-    const objectOwnerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+  if (!roomObject || !roomObject.model) return false;
 
-    return (userId === objectOwnerId);
+  const userId = GetSessionDataManager().userId;
+  const objectOwnerId = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+
+  return userId === objectOwnerId;
 }

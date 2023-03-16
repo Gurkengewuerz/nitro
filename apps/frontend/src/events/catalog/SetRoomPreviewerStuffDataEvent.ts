@@ -1,28 +1,25 @@
-import { IObjectData, NitroEvent } from '@nitro/renderer';
-import { IPurchasableOffer } from '../../api';
+import {IObjectData, NitroEvent} from "@nitro/renderer";
 
-export class SetRoomPreviewerStuffDataEvent extends NitroEvent
-{
-    public static UPDATE_STUFF_DATA: string = 'SRPSA_UPDATE_STUFF_DATA';
+import {IPurchasableOffer} from "../../api";
 
-    private _offer: IPurchasableOffer;
-    private _stuffData: IObjectData;
+export class SetRoomPreviewerStuffDataEvent extends NitroEvent {
+  public static UPDATE_STUFF_DATA: string = "SRPSA_UPDATE_STUFF_DATA";
 
-    constructor(offer: IPurchasableOffer, stuffData: IObjectData)
-    {
-        super(SetRoomPreviewerStuffDataEvent.UPDATE_STUFF_DATA);
+  private _offer: IPurchasableOffer;
+  private _stuffData: IObjectData;
 
-        this._offer = offer;
-        this._stuffData = stuffData;
-    }
+  constructor(offer: IPurchasableOffer, stuffData: IObjectData) {
+    super(SetRoomPreviewerStuffDataEvent.UPDATE_STUFF_DATA);
 
-    public get offer(): IPurchasableOffer
-    {
-        return this._offer;
-    }
+    this._offer = offer;
+    this._stuffData = stuffData;
+  }
 
-    public get stuffData(): IObjectData
-    {
-        return this._stuffData;
-    }
+  public get offer(): IPurchasableOffer {
+    return this._offer;
+  }
+
+  public get stuffData(): IObjectData {
+    return this._stuffData;
+  }
 }

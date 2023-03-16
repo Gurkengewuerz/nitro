@@ -1,7 +1,6 @@
-import { IAssetData } from '../../../asset';
+import {IAssetData} from "../../../asset";
 
-export interface IObjectVisualizationData
-{
-    initialize(asset: IAssetData): boolean;
-    dispose(): void;
+export interface IObjectVisualizationData {
+  initialize(asset: IAssetData): boolean;
+  dispose(): void;
 }

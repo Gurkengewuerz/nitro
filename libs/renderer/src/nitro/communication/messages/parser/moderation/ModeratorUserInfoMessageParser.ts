@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { ModeratorUserInfoData } from './ModeratorUserInfoData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {ModeratorUserInfoData} from "./ModeratorUserInfoData";
 
-export class ModeratorUserInfoMessageParser implements IMessageParser
-{
-    private _data: ModeratorUserInfoData;
+export class ModeratorUserInfoMessageParser implements IMessageParser {
+  private _data: ModeratorUserInfoData;
 
-    public flush(): boolean
-    {
-        this._data = null;
+  public flush(): boolean {
+    this._data = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._data = new ModeratorUserInfoData(wrapper);
+    this._data = new ModeratorUserInfoData(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get data(): ModeratorUserInfoData
-    {
-        return this._data;
-    }
+  public get data(): ModeratorUserInfoData {
+    return this._data;
+  }
 }

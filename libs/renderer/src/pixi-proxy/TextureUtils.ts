@@ -1,128 +1,119 @@
-import { AbstractRenderer, Renderer, RenderTexture, Resource, Texture } from '@pixi/core';
-import { DisplayObject } from '@pixi/display';
-import { Extract } from '@pixi/extract';
-import { Matrix, Rectangle } from '@pixi/math';
-import { settings } from '@pixi/settings';
-import { Sprite } from '@pixi/sprite';
-import { PixiApplicationProxy } from './PixiApplicationProxy';
+import {AbstractRenderer, RenderTexture, Renderer, Resource, Texture} from "@pixi/core";
+import {DisplayObject} from "@pixi/display";
+import {Extract} from "@pixi/extract";
+import {Matrix, Rectangle} from "@pixi/math";
+import {settings} from "@pixi/settings";
+import {Sprite} from "@pixi/sprite";
 
-export class TextureUtils
-{
-    public static generateTexture(displayObject: DisplayObject, region: Rectangle = null, scaleMode: number = null, resolution: number = 1): RenderTexture
-    {
-        if(!displayObject) return null;
+import {PixiApplicationProxy} from "./PixiApplicationProxy";
 
-        if(scaleMode === null) scaleMode = settings.SCALE_MODE;
+export class TextureUtils {
+  public static generateTexture(displayObject: DisplayObject, region: Rectangle = null, scaleMode: number = null, resolution: number = 1): RenderTexture {
+    if (!displayObject) return null;
 
-        return this.getRenderer().generateTexture(displayObject, {
-            scaleMode,
-            resolution,
-            region
-        });
-    }
+    if (scaleMode === null) scaleMode = settings.SCALE_MODE;
 
-    public static generateTextureFromImage(image: HTMLImageElement): Texture<Resource>
-    {
-        if(!image) return null;
+    return this.getRenderer().generateTexture(displayObject, {
+      scaleMode,
+      resolution,
+      region,
+    });
+  }
 
-        return Texture.from(image);
-    }
+  public static generateTextureFromImage(image: HTMLImageElement): Texture<Resource> {
+    if (!image) return null;
 
-    public static generateImage(target: DisplayObject | RenderTexture): HTMLImageElement
-    {
-        if(!target) return null;
+    return Texture.from(image);
+  }
 
-        return this.getExtractor().image(target);
-    }
+  public static generateImage(target: DisplayObject | RenderTexture): HTMLImageElement {
+    if (!target) return null;
 
-    public static generateImageUrl(target: DisplayObject | RenderTexture): string
-    {
-        if(!target) return null;
+    return this.getExtractor().image(target);
+  }
 
-        return this.getExtractor().base64(target);
-    }
+  public static generateImageUrl(target: DisplayObject | RenderTexture): string {
+    if (!target) return null;
 
-    public static generateCanvas(target: DisplayObject | RenderTexture): HTMLCanvasElement
-    {
-        if(!target) return null;
+    return this.getExtractor().base64(target);
+  }
 
-        return this.getExtractor().canvas(target);
-    }
+  public static generateCanvas(target: DisplayObject | RenderTexture): HTMLCanvasElement {
+    if (!target) return null;
 
-    public static clearRenderTexture(renderTexture: RenderTexture): RenderTexture
-    {
-        if(!renderTexture) return null;
+    return this.getExtractor().canvas(target);
+  }
 
-        return this.writeToRenderTexture(new Sprite(Texture.EMPTY), renderTexture);
-    }
+  public static clearRenderTexture(renderTexture: RenderTexture): RenderTexture {
+    if (!renderTexture) return null;
 
-    public static createRenderTexture(width: number, height: number): RenderTexture
-    {
-        if((width < 0) || (height < 0)) return null;
+    return this.writeToRenderTexture(new Sprite(Texture.EMPTY), renderTexture);
+  }
 
-        return RenderTexture.create({
-            width,
-            height
-        });
-    }
+  public static createRenderTexture(width: number, height: number): RenderTexture {
+    if (width < 0 || height < 0) return null;
 
-    public static createAndFillRenderTexture(width: number, height: number, color: number = 16777215): RenderTexture
-    {
-        if((width < 0) || (height < 0)) return null;
+    return RenderTexture.create({
+      width,
+      height,
+    });
+  }
 
-        const renderTexture = this.createRenderTexture(width, height);
+  public static createAndFillRenderTexture(width: number, height: number, color: number = 16777215): RenderTexture {
+    if (width < 0 || height < 0) return null;
 
-        return this.clearAndFillRenderTexture(renderTexture, color);
-    }
+    const renderTexture = this.createRenderTexture(width, height);
 
-    public static createAndWriteRenderTexture(width: number, height: number, displayObject: DisplayObject, transform: Matrix = null): RenderTexture
-    {
-        if((width < 0) || (height < 0)) return null;
+    return this.clearAndFillRenderTexture(renderTexture, color);
+  }
 
-        const renderTexture = this.createRenderTexture(width, height);
+  public static createAndWriteRenderTexture(width: number, height: number, displayObject: DisplayObject, transform: Matrix = null): RenderTexture {
+    if (width < 0 || height < 0) return null;
 
-        return this.writeToRenderTexture(displayObject, renderTexture, true, transform);
-    }
+    const renderTexture = this.createRenderTexture(width, height);
 
-    public static clearAndFillRenderTexture(renderTexture: RenderTexture, color: number = 16777215): RenderTexture
-    {
-        if(!renderTexture) return null;
+    return this.writeToRenderTexture(displayObject, renderTexture, true, transform);
+  }
 
-        const sprite = new Sprite(Texture.WHITE);
+  public static clearAndFillRenderTexture(renderTexture: RenderTexture, color: number = 16777215): RenderTexture {
+    if (!renderTexture) return null;
 
-        sprite.tint = color;
+    const sprite = new Sprite(Texture.WHITE);
 
-        sprite.width = renderTexture.width;
-        sprite.height = renderTexture.height;
+    sprite.tint = color;
 
-        return this.writeToRenderTexture(sprite, renderTexture);
-    }
+    sprite.width = renderTexture.width;
+    sprite.height = renderTexture.height;
 
-    public static writeToRenderTexture(displayObject: DisplayObject, renderTexture: RenderTexture, clear: boolean = true, transform: Matrix = null): RenderTexture
-    {
-        if(!displayObject || !renderTexture) return null;
+    return this.writeToRenderTexture(sprite, renderTexture);
+  }
 
-        this.getRenderer().render(displayObject, {
-            renderTexture,
-            clear,
-            transform
-        });
+  public static writeToRenderTexture(
+    displayObject: DisplayObject,
+    renderTexture: RenderTexture,
+    clear: boolean = true,
+    transform: Matrix = null
+  ): RenderTexture {
+    if (!displayObject || !renderTexture) return null;
 
-        return renderTexture;
-    }
+    this.getRenderer().render(displayObject, {
+      renderTexture,
+      clear,
+      transform,
+    });
 
-    public static getPixels(displayObject: DisplayObject | RenderTexture, frame: Rectangle = null): Uint8Array
-    {
-        return this.getExtractor().pixels(displayObject);
-    }
+    return renderTexture;
+  }
 
-    public static getRenderer(): Renderer | AbstractRenderer
-    {
-        return PixiApplicationProxy.instance.renderer;
-    }
+  public static getPixels(displayObject: DisplayObject | RenderTexture, frame: Rectangle = null): Uint8Array {
+    return this.getExtractor().pixels(displayObject);
+  }
 
-    public static getExtractor(): Extract
-    {
-        return (this.getRenderer().plugins.extract as Extract);
-    }
+  public static getRenderer(): Renderer | AbstractRenderer {
+    return PixiApplicationProxy.instance.renderer;
+  }
+
+  public static getExtractor(): Extract {
+    return this.getRenderer().plugins.extract as Extract;
+  }
 }

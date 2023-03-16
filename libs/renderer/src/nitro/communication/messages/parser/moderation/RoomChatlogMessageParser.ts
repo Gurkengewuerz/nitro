@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { ChatRecordData } from './ChatRecordData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {ChatRecordData} from "./ChatRecordData";
 
-export class RoomChatlogMessageParser implements IMessageParser
-{
-    private _data: ChatRecordData;
+export class RoomChatlogMessageParser implements IMessageParser {
+  private _data: ChatRecordData;
 
-    public flush(): boolean
-    {
-        this._data = null;
-        return true;
-    }
+  public flush(): boolean {
+    this._data = null;
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._data = new ChatRecordData(wrapper);
+    this._data = new ChatRecordData(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get data(): ChatRecordData
-    {
-        return this._data;
-    }
+  public get data(): ChatRecordData {
+    return this._data;
+  }
 }

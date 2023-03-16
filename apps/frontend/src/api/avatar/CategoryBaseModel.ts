@@ -1,246 +1,215 @@
-import { AvatarEditorUtilities } from './AvatarEditorUtilities';
-import { CategoryData } from './CategoryData';
-import { IAvatarEditorCategoryModel } from './IAvatarEditorCategoryModel';
+import {AvatarEditorUtilities} from "./AvatarEditorUtilities";
+import {CategoryData} from "./CategoryData";
+import {IAvatarEditorCategoryModel} from "./IAvatarEditorCategoryModel";
 
-export class CategoryBaseModel implements IAvatarEditorCategoryModel
-{
-    protected _categories: Map<string, CategoryData>;
-    protected _isInitalized: boolean;
-    protected _maxPaletteCount: number;
-    private _disposed: boolean;
+export class CategoryBaseModel implements IAvatarEditorCategoryModel {
+  protected _categories: Map<string, CategoryData>;
+  protected _isInitalized: boolean;
+  protected _maxPaletteCount: number;
+  private _disposed: boolean;
 
-    constructor()
-    {
-        this._isInitalized = false;
-        this._maxPaletteCount = 0;
+  constructor() {
+    this._isInitalized = false;
+    this._maxPaletteCount = 0;
+  }
+
+  public dispose(): void {
+    this._categories = null;
+    this._disposed = true;
+  }
+
+  public get disposed(): boolean {
+    return this._disposed;
+  }
+
+  public init(): void {
+    if (!this._categories) this._categories = new Map();
+  }
+
+  public reset(): void {
+    this._isInitalized = false;
+
+    if (this._categories) {
+      for (const category of this._categories.values()) category && category.dispose();
     }
 
-    public dispose(): void
-    {
-        this._categories = null;
-        this._disposed = true;
+    this._categories = new Map();
+  }
+
+  protected addCategory(name: string): void {
+    let existing = this._categories.get(name);
+
+    if (existing) return;
+
+    existing = AvatarEditorUtilities.createCategory(this, name);
+
+    if (!existing) return;
+
+    this._categories.set(name, existing);
+
+    this.updateSelectionsFromFigure(name);
+  }
+
+  protected updateSelectionsFromFigure(figure: string): void {
+    const category = this._categories.get(figure);
+
+    if (!category) return;
+
+    const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(figure);
+
+    let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(figure);
+
+    if (!colorIds) colorIds = [];
+
+    category.selectPartId(setId);
+    category.selectColorIds(colorIds);
+  }
+
+  public hasClubSelectionsOverLevel(level: number): boolean {
+    if (!this._categories) return false;
+
+    for (const category of this._categories.values()) {
+      if (!category) continue;
+
+      if (category.hasClubSelectionsOverLevel(level)) return true;
     }
 
-    public get disposed(): boolean
-    {
-        return this._disposed;
+    return false;
+  }
+
+  public hasInvalidSelectedItems(ownedItems: number[]): boolean {
+    if (!this._categories) return false;
+
+    for (const category of this._categories.values()) {
+      if (category.hasInvalidSelectedItems(ownedItems)) return true;
     }
 
-    public init(): void
-    {
-        if(!this._categories) this._categories = new Map();
-    }
+    return false;
+  }
 
-    public reset(): void
-    {
-        this._isInitalized = false;
+  public stripClubItemsOverLevel(level: number): boolean {
+    if (!this._categories) return false;
 
-        if(this._categories)
-        {
-            for(const category of this._categories.values()) (category && category.dispose());
+    let didStrip = false;
+
+    for (const [name, category] of this._categories.entries()) {
+      let isValid = false;
+
+      if (category.stripClubItemsOverLevel(level)) isValid = true;
+
+      if (category.stripClubColorsOverLevel(level)) isValid = true;
+
+      if (isValid) {
+        const partItem = category.getCurrentPart();
+
+        if (partItem && AvatarEditorUtilities.CURRENT_FIGURE) {
+          AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
         }
 
-        this._categories = new Map();
+        didStrip = true;
+      }
     }
 
-    protected addCategory(name: string): void
-    {
-        let existing = this._categories.get(name);
+    return didStrip;
+  }
 
-        if(existing) return;
+  public stripInvalidSellableItems(): boolean {
+    if (!this._categories) return false;
 
-        existing = AvatarEditorUtilities.createCategory(this, name);
+    let didStrip = false;
 
-        if(!existing) return;
+    for (const [name, category] of this._categories.entries()) {
+      const isValid = false;
 
-        this._categories.set(name, existing);
+      // if(category._Str_8360(this._Str_2278.manager.inventory)) _local_6 = true;
 
-        this.updateSelectionsFromFigure(name);
-    }
+      if (isValid) {
+        const partItem = category.getCurrentPart();
 
-    protected updateSelectionsFromFigure(figure: string): void
-    {
-        const category = this._categories.get(figure);
-
-        if(!category) return;
-
-        const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(figure);
-
-        let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(figure);
-
-        if(!colorIds) colorIds = [];
-
-        category.selectPartId(setId);
-        category.selectColorIds(colorIds);
-    }
-
-    public hasClubSelectionsOverLevel(level: number): boolean
-    {
-        if(!this._categories) return false;
-
-        for(const category of this._categories.values())
-        {
-            if(!category) continue;
-
-            if(category.hasClubSelectionsOverLevel(level)) return true;
+        if (partItem && AvatarEditorUtilities.CURRENT_FIGURE) {
+          AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
         }
 
-        return false;
+        didStrip = true;
+      }
     }
 
-    public hasInvalidSelectedItems(ownedItems: number[]): boolean
-    {
-        if(!this._categories) return false;
+    return didStrip;
+  }
 
-        for(const category of this._categories.values())
-        {
-            if(category.hasInvalidSelectedItems(ownedItems)) return true;
-        }
+  public selectPart(category: string, partIndex: number): void {
+    const categoryData = this._categories.get(category);
 
-        return false;
+    if (!categoryData) return;
+
+    const selectedPartIndex = categoryData.selectedPartIndex;
+
+    categoryData.selectPartIndex(partIndex);
+
+    const partItem = categoryData.getCurrentPart();
+
+    if (!partItem) return;
+
+    if (partItem.isDisabled) {
+      categoryData.selectPartIndex(selectedPartIndex);
+
+      // open hc window
+
+      return;
     }
 
-    public stripClubItemsOverLevel(level: number): boolean
-    {
-        if(!this._categories) return false;
+    this._maxPaletteCount = partItem.maxColorIndex;
 
-        let didStrip = false;
+    AvatarEditorUtilities.CURRENT_FIGURE.savePartData(category, partItem.id, categoryData.getSelectedColorIds(), true);
+  }
 
-        for(const [ name, category ] of this._categories.entries())
-        {
-            let isValid = false;
+  public selectColor(category: string, colorIndex: number, paletteId: number): void {
+    const categoryData = this._categories.get(category);
 
-            if(category.stripClubItemsOverLevel(level)) isValid = true;
+    if (!categoryData) return;
 
-            if(category.stripClubColorsOverLevel(level)) isValid = true;
+    const paletteIndex = categoryData.getCurrentColorIndex(paletteId);
 
-            if(isValid)
-            {
-                const partItem = category.getCurrentPart();
+    categoryData.selectColorIndex(colorIndex, paletteId);
 
-                if(partItem && AvatarEditorUtilities.CURRENT_FIGURE)
-                {
-                    AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
-                }
+    const colorItem = categoryData.getSelectedColor(paletteId);
 
-                didStrip = true;
-            }
-        }
+    if (colorItem.isDisabled) {
+      categoryData.selectColorIndex(paletteIndex, paletteId);
 
-        return didStrip;
+      // open hc window
+
+      return;
     }
 
-    public stripInvalidSellableItems(): boolean
-    {
-        if(!this._categories) return false;
+    AvatarEditorUtilities.CURRENT_FIGURE.savePartSetColourId(category, categoryData.getSelectedColorIds(), true);
+  }
 
-        let didStrip = false;
+  public getCategoryData(category: string): CategoryData {
+    if (!this._isInitalized) this.init();
 
-        for(const [ name, category ] of this._categories.entries())
-        {
-            const isValid = false;
+    if (!this._categories) return null;
 
-            // if(category._Str_8360(this._Str_2278.manager.inventory)) _local_6 = true;
+    return this._categories.get(category);
+  }
 
-            if(isValid)
-            {
-                const partItem = category.getCurrentPart();
+  public get categories(): Map<string, CategoryData> {
+    return this._categories;
+  }
 
-                if(partItem && AvatarEditorUtilities.CURRENT_FIGURE)
-                {
-                    AvatarEditorUtilities.CURRENT_FIGURE.savePartData(name, partItem.id, category.getSelectedColorIds(), true);
-                }
+  public get canSetGender(): boolean {
+    return false;
+  }
 
-                didStrip = true;
-            }
-        }
+  public get maxPaletteCount(): number {
+    return this._maxPaletteCount || 1;
+  }
 
-        return didStrip;
-    }
+  public set maxPaletteCount(count: number) {
+    this._maxPaletteCount = count;
+  }
 
-    public selectPart(category: string, partIndex: number): void
-    {
-        const categoryData = this._categories.get(category);
-
-        if(!categoryData) return;
-
-        const selectedPartIndex = categoryData.selectedPartIndex;
-
-        categoryData.selectPartIndex(partIndex);
-
-        const partItem = categoryData.getCurrentPart();
-
-        if(!partItem) return;
-
-        if(partItem.isDisabled)
-        {
-            categoryData.selectPartIndex(selectedPartIndex);
-
-            // open hc window
-
-            return;
-        }
-
-        this._maxPaletteCount = partItem.maxColorIndex;
-
-        AvatarEditorUtilities.CURRENT_FIGURE.savePartData(category, partItem.id, categoryData.getSelectedColorIds(), true);
-    }
-
-    public selectColor(category: string, colorIndex: number, paletteId: number): void
-    {
-        const categoryData = this._categories.get(category);
-
-        if(!categoryData) return;
-
-        const paletteIndex = categoryData.getCurrentColorIndex(paletteId);
-
-        categoryData.selectColorIndex(colorIndex, paletteId);
-        
-        const colorItem = categoryData.getSelectedColor(paletteId);
-
-        if(colorItem.isDisabled)
-        {
-            categoryData.selectColorIndex(paletteIndex, paletteId);
-
-            // open hc window
-
-            return;
-        }
-        
-        AvatarEditorUtilities.CURRENT_FIGURE.savePartSetColourId(category, categoryData.getSelectedColorIds(), true);
-    }
-
-    public getCategoryData(category: string): CategoryData
-    {
-        if(!this._isInitalized) this.init();
-
-        if(!this._categories) return null;
-
-        return this._categories.get(category);
-    }
-
-    public get categories(): Map<string, CategoryData>
-    {
-        return this._categories;
-    }
-
-    public get canSetGender(): boolean
-    {
-        return false;
-    }
-
-    public get maxPaletteCount(): number
-    {
-        return (this._maxPaletteCount || 1);
-    }
-
-    public set maxPaletteCount(count: number)
-    {
-        this._maxPaletteCount = count;
-    }
-
-    public get name(): string
-    {
-        return null;
-    }
+  public get name(): string {
+    return null;
+  }
 }

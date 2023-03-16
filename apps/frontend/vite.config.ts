@@ -1,33 +1,33 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
-import { resolve } from 'path';
-import react from '@vitejs/plugin-react';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
+import react from "@vitejs/plugin-react";
+import {resolve} from "path";
+import {defineConfig} from "vite";
+import viteTsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/frontend',
+  cacheDir: "../../node_modules/.vite/frontend",
 
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'src'),
-      '~': resolve(__dirname, 'node_modules')
-    }
+      "@": resolve(__dirname, "src"),
+      "~": resolve(__dirname, "node_modules"),
+    },
   },
 
   server: {
     port: 4200,
-    host: 'localhost',
+    host: "localhost",
   },
 
   preview: {
     port: 4300,
-    host: 'localhost',
+    host: "localhost",
   },
 
   plugins: [
     react(),
     viteTsConfigPaths({
-      root: '../../',
+      root: "../../",
     }),
   ],
 
@@ -43,9 +43,9 @@ export default defineConfig({
   test: {
     globals: true,
     cache: {
-      dir: '../../node_modules/.vitest',
+      dir: "../../node_modules/.vitest",
     },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    environment: "jsdom",
+    include: ["src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
   },
 });

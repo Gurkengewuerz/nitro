@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class ClubGiftNotificationParser implements IMessageParser
-{
-    private _numGifts: number;
+export class ClubGiftNotificationParser implements IMessageParser {
+  private _numGifts: number;
 
-    public flush(): boolean
-    {
-        this._numGifts = 0;
+  public flush(): boolean {
+    this._numGifts = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._numGifts = wrapper.readInt();
+    this._numGifts = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get numGifts(): number
-    {
-        return this._numGifts;
-    }
+  public get numGifts(): number {
+    return this._numGifts;
+  }
 }

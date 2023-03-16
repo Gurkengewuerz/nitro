@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class ShowEnforceRoomCategoryDialogParser implements IMessageParser
-{
-    private _selectionType: number;
+export class ShowEnforceRoomCategoryDialogParser implements IMessageParser {
+  private _selectionType: number;
 
-    public flush(): boolean
-    {
-        this._selectionType = 0;
+  public flush(): boolean {
+    this._selectionType = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._selectionType = wrapper.readInt();
+    this._selectionType = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get selectionType(): number
-    {
-        return this._selectionType;
-    }
+  public get selectionType(): number {
+    return this._selectionType;
+  }
 }

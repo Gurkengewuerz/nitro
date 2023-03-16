@@ -1,18 +1,17 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from '../../../../common';
+import {FC, useMemo} from "react";
 
-export const ContextMenuHeaderView: FC<FlexProps> = props =>
-{
-    const { justifyContent = 'center', alignItems = 'center', classNames = [], ...rest } = props;
+import {Flex, FlexProps} from "../../../../common";
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'menu-header', 'p-1' ];
+export const ContextMenuHeaderView: FC<FlexProps> = props => {
+  const {justifyContent = "center", alignItems = "center", classNames = [], ...rest} = props;
 
-        if(classNames.length) newClassNames.push(...classNames);
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["menu-header", "p-1"];
 
-        return newClassNames;
-    }, [ classNames ]);
+    if (classNames.length) newClassNames.push(...classNames);
 
-    return <Flex justifyContent={ justifyContent } alignItems={ alignItems } classNames={ getClassNames } { ...rest } />;
-}
+    return newClassNames;
+  }, [classNames]);
+
+  return <Flex justifyContent={justifyContent} alignItems={alignItems} classNames={getClassNames} {...rest} />;
+};

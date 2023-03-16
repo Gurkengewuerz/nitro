@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class HotelWillShutdownParser implements IMessageParser
-{
-    private _minutes: number;
+export class HotelWillShutdownParser implements IMessageParser {
+  private _minutes: number;
 
-    public flush(): boolean
-    {
-        this._minutes = null;
+  public flush(): boolean {
+    this._minutes = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._minutes = wrapper.readInt();
+    this._minutes = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get minutes(): number
-    {
-        return this._minutes;
-    }
+  public get minutes(): number {
+    return this._minutes;
+  }
 }

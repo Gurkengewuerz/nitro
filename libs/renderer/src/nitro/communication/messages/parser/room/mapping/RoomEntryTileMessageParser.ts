@@ -1,43 +1,37 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class RoomEntryTileMessageParser implements IMessageParser
-{
-    private _x: number;
-    private _y: number;
-    private _direction: number;
+export class RoomEntryTileMessageParser implements IMessageParser {
+  private _x: number;
+  private _y: number;
+  private _direction: number;
 
-    public flush(): boolean
-    {
-        this._x = 0;
-        this._y = 0;
-        this._direction = 0;
+  public flush(): boolean {
+    this._x = 0;
+    this._y = 0;
+    this._direction = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._x = wrapper.readInt();
-        this._y = wrapper.readInt();
-        this._direction = wrapper.readInt();
+    this._x = wrapper.readInt();
+    this._y = wrapper.readInt();
+    this._direction = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get x(): number
-    {
-        return this._x;
-    }
+  public get x(): number {
+    return this._x;
+  }
 
-    public get y(): number
-    {
-        return this._y;
-    }
+  public get y(): number {
+    return this._y;
+  }
 
-    public get direction(): number
-    {
-        return this._direction;
-    }
+  public get direction(): number {
+    return this._direction;
+  }
 }

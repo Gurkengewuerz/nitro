@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class RoomUnitHandItemReceivedParser implements IMessageParser
-{
-    private _giverUserId: number;
-    private _handItemType: number;
+export class RoomUnitHandItemReceivedParser implements IMessageParser {
+  private _giverUserId: number;
+  private _handItemType: number;
 
-    public flush(): boolean
-    {
-        this._giverUserId = -1;
-        this._handItemType = -1;
+  public flush(): boolean {
+    this._giverUserId = -1;
+    this._handItemType = -1;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._giverUserId = wrapper.readInt();
-        this._handItemType = wrapper.readInt();
+    this._giverUserId = wrapper.readInt();
+    this._handItemType = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get giverUserId(): number
-    {
-        return this._giverUserId;
-    }
+  public get giverUserId(): number {
+    return this._giverUserId;
+  }
 
-    public get handItemType(): number
-    {
-        return this._handItemType;
-    }
+  public get handItemType(): number {
+    return this._handItemType;
+  }
 }

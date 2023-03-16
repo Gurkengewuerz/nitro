@@ -1,6 +1,5 @@
-import { NitroEvent } from '@nitro/renderer';
+import {NitroEvent} from "@nitro/renderer";
 
-export class HelpNameChangeEvent extends NitroEvent
-{
-    public static INIT: string = 'HC_NAME_CHANGE_INIT';
+export class HelpNameChangeEvent extends NitroEvent {
+  public static INIT: string = "HC_NAME_CHANGE_INIT";
 }

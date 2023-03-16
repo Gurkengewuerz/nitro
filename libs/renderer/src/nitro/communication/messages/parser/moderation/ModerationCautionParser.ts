@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class ModerationCautionParser implements IMessageParser
-{
-    private _message: string;
-    private _url: string;
+export class ModerationCautionParser implements IMessageParser {
+  private _message: string;
+  private _url: string;
 
-    public flush(): boolean
-    {
-        this._message = '';
-        this._url = null;
+  public flush(): boolean {
+    this._message = "";
+    this._url = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._message = wrapper.readString();
-        this._url = wrapper.readString();
+    this._message = wrapper.readString();
+    this._url = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get message(): string
-    {
-        return this._message;
-    }
+  public get message(): string {
+    return this._message;
+  }
 
-    public get url(): string
-    {
-        return this._url;
-    }
+  public get url(): string {
+    return this._url;
+  }
 }

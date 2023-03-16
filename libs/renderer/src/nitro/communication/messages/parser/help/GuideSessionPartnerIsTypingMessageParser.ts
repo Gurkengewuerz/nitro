@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class GuideSessionPartnerIsTypingMessageParser implements IMessageParser
-{
-    private _isTyping: boolean;
+export class GuideSessionPartnerIsTypingMessageParser implements IMessageParser {
+  private _isTyping: boolean;
 
-    public flush(): boolean
-    {
-        this._isTyping = false;
+  public flush(): boolean {
+    this._isTyping = false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._isTyping = wrapper.readBoolean();
+    this._isTyping = wrapper.readBoolean();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get isTyping(): boolean
-    {
-        return this._isTyping;
-    }
+  public get isTyping(): boolean {
+    return this._isTyping;
+  }
 }

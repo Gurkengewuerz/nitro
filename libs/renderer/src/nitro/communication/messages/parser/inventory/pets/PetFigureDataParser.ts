@@ -1,73 +1,63 @@
-import { IMessageDataWrapper, IPetFigureData } from '../../../../../../api';
+import {IMessageDataWrapper, IPetFigureData} from "../../../../../../api";
 
-export class PetFigureDataParser implements IPetFigureData
-{
-    private _typeId: number;
-    private _paletteId: number;
-    private _color: string;
-    private _breedId: number;
-    private _customPartCount: number;
-    private _customParts: number[];
+export class PetFigureDataParser implements IPetFigureData {
+  private _typeId: number;
+  private _paletteId: number;
+  private _color: string;
+  private _breedId: number;
+  private _customPartCount: number;
+  private _customParts: number[];
 
-    constructor(wrapper: IMessageDataWrapper)
-    {
-        this._typeId = wrapper.readInt();
-        this._paletteId = wrapper.readInt();
-        this._color = wrapper.readString();
-        this._breedId = wrapper.readInt();
-        this._customParts = [];
-        this._customPartCount = wrapper.readInt();
+  constructor(wrapper: IMessageDataWrapper) {
+    this._typeId = wrapper.readInt();
+    this._paletteId = wrapper.readInt();
+    this._color = wrapper.readString();
+    this._breedId = wrapper.readInt();
+    this._customParts = [];
+    this._customPartCount = wrapper.readInt();
 
-        let i = 0;
+    let i = 0;
 
-        while(i < this._customPartCount)
-        {
-            this._customParts.push(wrapper.readInt());
-            this._customParts.push(wrapper.readInt());
-            this._customParts.push(wrapper.readInt());
+    while (i < this._customPartCount) {
+      this._customParts.push(wrapper.readInt());
+      this._customParts.push(wrapper.readInt());
+      this._customParts.push(wrapper.readInt());
 
-            i++;
-        }
+      i++;
     }
+  }
 
-    public get typeId(): number
-    {
-        return this._typeId;
-    }
+  public get typeId(): number {
+    return this._typeId;
+  }
 
-    public get paletteId(): number
-    {
-        return this._paletteId;
-    }
+  public get paletteId(): number {
+    return this._paletteId;
+  }
 
-    public get color(): string
-    {
-        return this._color;
-    }
+  public get color(): string {
+    return this._color;
+  }
 
-    public get breedId(): number
-    {
-        return this._breedId;
-    }
+  public get breedId(): number {
+    return this._breedId;
+  }
 
-    public get figuredata(): string
-    {
-        let figure = ((((this.typeId + ' ') + this.paletteId) + ' ') + this.color);
+  public get figuredata(): string {
+    let figure = this.typeId + " " + this.paletteId + " " + this.color;
 
-        figure = (figure + (' ' + this.custompartCount));
+    figure = figure + (" " + this.custompartCount);
 
-        for(const _local_2 of this.customParts) figure = (figure + (' ' + _local_2));
+    for (const _local_2 of this.customParts) figure = figure + (" " + _local_2);
 
-        return figure;
-    }
+    return figure;
+  }
 
-    public get customParts(): number[]
-    {
-        return this._customParts;
-    }
+  public get customParts(): number[] {
+    return this._customParts;
+  }
 
-    public get custompartCount(): number
-    {
-        return this._customPartCount;
-    }
+  public get custompartCount(): number {
+    return this._customPartCount;
+  }
 }

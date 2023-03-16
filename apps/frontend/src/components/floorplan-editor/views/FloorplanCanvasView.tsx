@@ -1,156 +1,150 @@
-import { GetOccupiedTilesMessageComposer, GetRoomEntryTileMessageComposer, NitroPoint, RoomEntryTileMessageEvent, RoomOccupiedTilesMessageEvent } from '@nitro/renderer';
-import { FC, useEffect, useRef, useState } from 'react';
-import { FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp } from 'react-icons/fa';
-import { SendMessageComposer } from '../../../api';
-import { Base, Button, Column, ColumnProps, Flex, Grid } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
-import { FloorplanEditor } from '../common/FloorplanEditor';
-import { useFloorplanEditorContext } from '../FloorplanEditorContext';
+import {
+  GetOccupiedTilesMessageComposer,
+  GetRoomEntryTileMessageComposer,
+  NitroPoint,
+  RoomEntryTileMessageEvent,
+  RoomOccupiedTilesMessageEvent,
+} from "@nitro/renderer";
+import {FC, useEffect, useRef, useState} from "react";
+import {FaArrowDown, FaArrowLeft, FaArrowRight, FaArrowUp} from "react-icons/fa";
 
-export const FloorplanCanvasView: FC<ColumnProps> = props =>
-{
-    const { gap = 1, children = null, ...rest } = props;
-    const [ occupiedTilesReceived , setOccupiedTilesReceived ] = useState(false);
-    const [ entryTileReceived, setEntryTileReceived ] = useState(false);
-    const { originalFloorplanSettings = null, setOriginalFloorplanSettings = null, setVisualizationSettings = null } = useFloorplanEditorContext();
-    const elementRef = useRef<HTMLDivElement>(null);
+import {SendMessageComposer} from "../../../api";
+import {Base, Button, Column, ColumnProps, Flex, Grid} from "../../../common";
+import {useMessageEvent} from "../../../hooks";
+import {useFloorplanEditorContext} from "../FloorplanEditorContext";
+import {FloorplanEditor} from "../common/FloorplanEditor";
 
-    useMessageEvent<RoomOccupiedTilesMessageEvent>(RoomOccupiedTilesMessageEvent, event =>
-    {
-        const parser = event.getParser();
+export const FloorplanCanvasView: FC<ColumnProps> = props => {
+  const {gap = 1, children = null, ...rest} = props;
+  const [occupiedTilesReceived, setOccupiedTilesReceived] = useState(false);
+  const [entryTileReceived, setEntryTileReceived] = useState(false);
+  const {originalFloorplanSettings = null, setOriginalFloorplanSettings = null, setVisualizationSettings = null} = useFloorplanEditorContext();
+  const elementRef = useRef<HTMLDivElement>(null);
 
-        setOriginalFloorplanSettings(prevValue =>
-        {
-            const newValue = { ...prevValue };
+  useMessageEvent<RoomOccupiedTilesMessageEvent>(RoomOccupiedTilesMessageEvent, event => {
+    const parser = event.getParser();
 
-            newValue.reservedTiles = parser.blockedTilesMap;
+    setOriginalFloorplanSettings(prevValue => {
+      const newValue = {...prevValue};
 
-            FloorplanEditor.instance.setTilemap(newValue.tilemap, newValue.reservedTiles);
+      newValue.reservedTiles = parser.blockedTilesMap;
 
-            return newValue;
-        });
+      FloorplanEditor.instance.setTilemap(newValue.tilemap, newValue.reservedTiles);
 
-        setOccupiedTilesReceived(true);
-        
-        elementRef.current.scrollTo((FloorplanEditor.instance.view.width / 3), 0);
+      return newValue;
     });
 
-    useMessageEvent<RoomEntryTileMessageEvent>(RoomEntryTileMessageEvent, event =>
-    {
-        const parser = event.getParser();
+    setOccupiedTilesReceived(true);
 
-        setOriginalFloorplanSettings(prevValue =>
-        {
-            const newValue = { ...prevValue };
+    elementRef.current.scrollTo(FloorplanEditor.instance.view.width / 3, 0);
+  });
 
-            newValue.entryPoint = [ parser.x, parser.y ];
-            newValue.entryPointDir = parser.direction;
+  useMessageEvent<RoomEntryTileMessageEvent>(RoomEntryTileMessageEvent, event => {
+    const parser = event.getParser();
 
-            return newValue;
-        });
+    setOriginalFloorplanSettings(prevValue => {
+      const newValue = {...prevValue};
 
-        setVisualizationSettings(prevValue =>
-        {
-            const newValue = { ...prevValue };
+      newValue.entryPoint = [parser.x, parser.y];
+      newValue.entryPointDir = parser.direction;
 
-            newValue.entryPointDir = parser.direction;
-
-            return newValue;
-        });
-        
-        FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
-
-        setEntryTileReceived(true);
+      return newValue;
     });
 
-    const onClickArrowButton = (scrollDirection: string) =>
-    {
-        const element = elementRef.current;
+    setVisualizationSettings(prevValue => {
+      const newValue = {...prevValue};
 
-        if(!element) return;
+      newValue.entryPointDir = parser.direction;
 
-        switch(scrollDirection)
-        {
-            case 'up':
-                element.scrollBy({ top: -10 });
-                break;
-            case 'down':
-                element.scrollBy({ top: 10 });
-                break;
-            case 'left':
-                element.scrollBy({ left: -10 });
-                break;
-            case 'right':
-                element.scrollBy({ left: 10 });
-                break;
-        }
+      return newValue;
+    });
+
+    FloorplanEditor.instance.doorLocation = new NitroPoint(parser.x, parser.y);
+
+    setEntryTileReceived(true);
+  });
+
+  const onClickArrowButton = (scrollDirection: string) => {
+    const element = elementRef.current;
+
+    if (!element) return;
+
+    switch (scrollDirection) {
+      case "up":
+        element.scrollBy({top: -10});
+        break;
+      case "down":
+        element.scrollBy({top: 10});
+        break;
+      case "left":
+        element.scrollBy({left: -10});
+        break;
+      case "right":
+        element.scrollBy({left: 10});
+        break;
     }
+  };
 
-    useEffect(() =>
-    {
-        return () =>
-        {
-            FloorplanEditor.instance.clear();
+  useEffect(() => {
+    return () => {
+      FloorplanEditor.instance.clear();
 
-            setVisualizationSettings(prevValue =>
-            {
-                return {
-                    wallHeight: originalFloorplanSettings.wallHeight,
-                    thicknessWall: originalFloorplanSettings.thicknessWall,
-                    thicknessFloor: originalFloorplanSettings.thicknessFloor,
-                    entryPointDir: prevValue.entryPointDir
-                }
-            });
-        }
-    }, [ originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings ]);
+      setVisualizationSettings(prevValue => {
+        return {
+          wallHeight: originalFloorplanSettings.wallHeight,
+          thicknessWall: originalFloorplanSettings.thicknessWall,
+          thicknessFloor: originalFloorplanSettings.thicknessFloor,
+          entryPointDir: prevValue.entryPointDir,
+        };
+      });
+    };
+  }, [originalFloorplanSettings.thicknessFloor, originalFloorplanSettings.thicknessWall, originalFloorplanSettings.wallHeight, setVisualizationSettings]);
 
-    useEffect(() =>
-    {
-        if(!entryTileReceived || !occupiedTilesReceived) return;
-        
-        FloorplanEditor.instance.renderTiles();
-    }, [ entryTileReceived, occupiedTilesReceived ]);
+  useEffect(() => {
+    if (!entryTileReceived || !occupiedTilesReceived) return;
 
-    useEffect(() =>
-    {
-        SendMessageComposer(new GetRoomEntryTileMessageComposer());
-        SendMessageComposer(new GetOccupiedTilesMessageComposer());
+    FloorplanEditor.instance.renderTiles();
+  }, [entryTileReceived, occupiedTilesReceived]);
 
-        FloorplanEditor.instance.tilemapRenderer.interactive = true;
+  useEffect(() => {
+    SendMessageComposer(new GetRoomEntryTileMessageComposer());
+    SendMessageComposer(new GetOccupiedTilesMessageComposer());
 
-        if(!elementRef.current) return;
+    FloorplanEditor.instance.tilemapRenderer.interactive = true;
 
-        elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
-    }, []);
+    if (!elementRef.current) return;
 
-    return (
-        <Column gap={ gap } { ...rest }>
-            <Grid overflow="hidden" gap={ 1 }>
-                <Column center size={ 1 }>
-                    <Button className="d-md-none" onClick={ event => onClickArrowButton('left') }>
-                        <FaArrowLeft className="fa-icon" />
-                    </Button>
-                </Column>
-                <Column overflow="hidden" size={ 10 } gap={ 1 }>
-                    <Flex justifyContent="center" className="d-md-none">
-                        <Button shrink onClick={ event => onClickArrowButton('up') }>
-                            <FaArrowUp className="fa-icon" />
-                        </Button>
-                    </Flex>
-                    <Base overflow="auto" innerRef={ elementRef } />
-                    <Flex justifyContent="center" className="d-md-none">
-                        <Button shrink onClick={ event => onClickArrowButton('down') }>
-                            <FaArrowDown className="fa-icon" />
-                        </Button>
-                    </Flex>
-                </Column>
-                <Column center size={ 1 }>
-                    <Button className="d-md-none" onClick={ event => onClickArrowButton('right') }>
-                        <FaArrowRight className="fa-icon" />
-                    </Button>
-                </Column>
-            </Grid>
-            { children }
+    elementRef.current.appendChild(FloorplanEditor.instance.renderer.view);
+  }, []);
+
+  return (
+    <Column gap={gap} {...rest}>
+      <Grid overflow="hidden" gap={1}>
+        <Column center size={1}>
+          <Button className="d-md-none" onClick={event => onClickArrowButton("left")}>
+            <FaArrowLeft className="fa-icon" />
+          </Button>
         </Column>
-    );
-}
+        <Column overflow="hidden" size={10} gap={1}>
+          <Flex justifyContent="center" className="d-md-none">
+            <Button shrink onClick={event => onClickArrowButton("up")}>
+              <FaArrowUp className="fa-icon" />
+            </Button>
+          </Flex>
+          <Base overflow="auto" innerRef={elementRef} />
+          <Flex justifyContent="center" className="d-md-none">
+            <Button shrink onClick={event => onClickArrowButton("down")}>
+              <FaArrowDown className="fa-icon" />
+            </Button>
+          </Flex>
+        </Column>
+        <Column center size={1}>
+          <Button className="d-md-none" onClick={event => onClickArrowButton("right")}>
+            <FaArrowRight className="fa-icon" />
+          </Button>
+        </Column>
+      </Grid>
+      {children}
+    </Column>
+  );
+};

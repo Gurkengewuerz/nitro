@@ -1,18 +1,15 @@
-import { ObjectStateUpdateMessage } from './ObjectStateUpdateMessage';
+import {ObjectStateUpdateMessage} from "./ObjectStateUpdateMessage";
 
-export class ObjectAvatarDanceUpdateMessage extends ObjectStateUpdateMessage
-{
-    private _danceStyle: number;
+export class ObjectAvatarDanceUpdateMessage extends ObjectStateUpdateMessage {
+  private _danceStyle: number;
 
-    constructor(danceStyle: number = 0)
-    {
-        super();
+  constructor(danceStyle: number = 0) {
+    super();
 
-        this._danceStyle = danceStyle;
-    }
+    this._danceStyle = danceStyle;
+  }
 
-    public get danceStyle(): number
-    {
-        return this._danceStyle;
-    }
+  public get danceStyle(): number {
+    return this._danceStyle;
+  }
 }

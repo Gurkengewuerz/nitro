@@ -1,29 +1,28 @@
-import { GroupInformationEvent, GroupInformationParser } from '@nitro/renderer';
-import { FC, useState } from 'react';
-import { LocalizeText } from '../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';
-import { useMessageEvent } from '../../../hooks';
-import { GroupInformationView } from './GroupInformationView';
+import {GroupInformationEvent, GroupInformationParser} from "@nitro/renderer";
+import {FC, useState} from "react";
 
-export const GroupInformationStandaloneView: FC<{}> = props =>
-{
-    const [ groupInformation, setGroupInformation ] = useState<GroupInformationParser>(null);
+import {LocalizeText} from "../../../api";
+import {NitroCardContentView, NitroCardHeaderView, NitroCardView} from "../../../common";
+import {useMessageEvent} from "../../../hooks";
+import {GroupInformationView} from "./GroupInformationView";
 
-    useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event =>
-    {
-        const parser = event.getParser();
+export const GroupInformationStandaloneView: FC<{}> = props => {
+  const [groupInformation, setGroupInformation] = useState<GroupInformationParser>(null);
 
-        if((groupInformation && (groupInformation.id === parser.id)) || parser.flag) setGroupInformation(parser);
-    });
+  useMessageEvent<GroupInformationEvent>(GroupInformationEvent, event => {
+    const parser = event.getParser();
 
-    if(!groupInformation) return null;
+    if ((groupInformation && groupInformation.id === parser.id) || parser.flag) setGroupInformation(parser);
+  });
 
-    return (
-        <NitroCardView className="nitro-group-information-standalone" theme="primary-slim">
-            <NitroCardHeaderView headerText={ LocalizeText('group.window.title') } onCloseClick={ event => setGroupInformation(null) } />
-            <NitroCardContentView>
-                <GroupInformationView groupInformation={ groupInformation } onClose={ () => setGroupInformation(null) } />
-            </NitroCardContentView>
-        </NitroCardView>
-    );
+  if (!groupInformation) return null;
+
+  return (
+    <NitroCardView className="nitro-group-information-standalone" theme="primary-slim">
+      <NitroCardHeaderView headerText={LocalizeText("group.window.title")} onCloseClick={event => setGroupInformation(null)} />
+      <NitroCardContentView>
+        <GroupInformationView groupInformation={groupInformation} onClose={() => setGroupInformation(null)} />
+      </NitroCardContentView>
+    </NitroCardView>
+  );
 };

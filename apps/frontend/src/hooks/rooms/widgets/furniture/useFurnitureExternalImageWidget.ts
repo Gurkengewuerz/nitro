@@ -1,74 +1,68 @@
-import { RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomEngine, IPhotoData } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../engine';
-import { useRoom } from '../../useRoom';
+import {RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable} from "@nitro/renderer";
+import {useState} from "react";
 
-const useFurnitureExternalImageWidgetState = () =>
-{
-    const [ objectId, setObjectId ] = useState(-1);
-    const [ category, setCategory ] = useState(-1);
-    const [ currentPhotoIndex, setCurrentPhotoIndex ] = useState(-1);
-    const [ currentPhotos, setCurrentPhotos ] = useState<IPhotoData[]>([]);
-    const { roomSession = null } = useRoom();
+import {GetRoomEngine, IPhotoData} from "../../../../api";
+import {useRoomEngineEvent} from "../../../events";
+import {useFurniRemovedEvent} from "../../engine";
+import {useRoom} from "../../useRoom";
 
-    const onClose = () =>
-    {
-        setObjectId(-1);
-        setCategory(-1);
-        setCurrentPhotoIndex(-1);
-        setCurrentPhotos([]);
-    }
+const useFurnitureExternalImageWidgetState = () => {
+  const [objectId, setObjectId] = useState(-1);
+  const [category, setCategory] = useState(-1);
+  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(-1);
+  const [currentPhotos, setCurrentPhotos] = useState<IPhotoData[]>([]);
+  const {roomSession = null} = useRoom();
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event =>
-    {
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-        const roomTotalImages = GetRoomEngine().getRoomObjects(roomSession?.roomId, RoomObjectCategory.WALL);
+  const onClose = () => {
+    setObjectId(-1);
+    setCategory(-1);
+    setCurrentPhotoIndex(-1);
+    setCurrentPhotos([]);
+  };
 
-        if(!roomObject) return;
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_EXTERNAL_IMAGE, event => {
+    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+    const roomTotalImages = GetRoomEngine().getRoomObjects(roomSession?.roomId, RoomObjectCategory.WALL);
 
-        const datas: IPhotoData[] = [];
+    if (!roomObject) return;
 
-        roomTotalImages.forEach(object =>
-        {
-            if (object.type !== 'external_image_wallitem_poster_small') return null;
+    const datas: IPhotoData[] = [];
 
-            const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
-            const jsonData: IPhotoData = JSON.parse(data);
+    roomTotalImages.forEach(object => {
+      if (object.type !== "external_image_wallitem_poster_small") return null;
 
-            datas.push(jsonData);
-        });
+      const data = object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
+      const jsonData: IPhotoData = JSON.parse(data);
 
-        setObjectId(event.objectId);
-        setCategory(event.category);
-        setCurrentPhotos(datas);
-
-        const roomObjectPhotoData = (JSON.parse(roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA)) as IPhotoData);
-
-        setCurrentPhotoIndex(prevValue =>
-        {
-            let index = 0;
-
-            if(roomObjectPhotoData)
-            {
-                index = datas.findIndex(data => (data.u === roomObjectPhotoData.u))
-            }
-
-            if(index < 0) index = 0;
-
-            return index;
-        });
+      datas.push(jsonData);
     });
 
-    useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
-    {
-        if((event.id !== objectId) || (event.category !== category)) return;
+    setObjectId(event.objectId);
+    setCategory(event.category);
+    setCurrentPhotos(datas);
 
-        onClose();
+    const roomObjectPhotoData = JSON.parse(roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA)) as IPhotoData;
+
+    setCurrentPhotoIndex(prevValue => {
+      let index = 0;
+
+      if (roomObjectPhotoData) {
+        index = datas.findIndex(data => data.u === roomObjectPhotoData.u);
+      }
+
+      if (index < 0) index = 0;
+
+      return index;
     });
+  });
 
-    return { objectId, currentPhotoIndex, currentPhotos, onClose };
-}
+  useFurniRemovedEvent(objectId !== -1 && category !== -1, event => {
+    if (event.id !== objectId || event.category !== category) return;
+
+    onClose();
+  });
+
+  return {objectId, currentPhotoIndex, currentPhotos, onClose};
+};
 
 export const useFurnitureExternalImageWidget = useFurnitureExternalImageWidgetState;

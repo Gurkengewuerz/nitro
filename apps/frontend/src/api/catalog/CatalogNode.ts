@@ -1,124 +1,105 @@
-import { NodeData } from '@nitro/renderer';
-import { ICatalogNode } from './ICatalogNode';
+import {NodeData} from "@nitro/renderer";
 
-export class CatalogNode implements ICatalogNode 
-{
-    private _depth: number = 0;
-    private _localization: string = '';
-    private _pageId: number = -1;
-    private _pageName: string = '';
-    private _iconId: number = 0;
-    private _children: ICatalogNode[];
-    private _offerIds: number[];
-    private _parent: ICatalogNode;
-    private _isVisible: boolean;
-    private _isActive: boolean;
-    private _isOpen: boolean;
+import {ICatalogNode} from "./ICatalogNode";
 
-    constructor(node: NodeData, depth: number, parent: ICatalogNode)
-    {
-        this._depth = depth;
-        this._parent = parent;
-        this._localization = node.localization;
-        this._pageId = node.pageId;
-        this._pageName = node.pageName;
-        this._iconId = node.icon;
-        this._children = [];
-        this._offerIds = node.offerIds;
-        this._isVisible = node.visible;
-        this._isActive = false;
-        this._isOpen = false;
-    }
+export class CatalogNode implements ICatalogNode {
+  private _depth: number = 0;
+  private _localization: string = "";
+  private _pageId: number = -1;
+  private _pageName: string = "";
+  private _iconId: number = 0;
+  private _children: ICatalogNode[];
+  private _offerIds: number[];
+  private _parent: ICatalogNode;
+  private _isVisible: boolean;
+  private _isActive: boolean;
+  private _isOpen: boolean;
 
-    public activate(): void
-    {
-        this._isActive = true;
-    }
+  constructor(node: NodeData, depth: number, parent: ICatalogNode) {
+    this._depth = depth;
+    this._parent = parent;
+    this._localization = node.localization;
+    this._pageId = node.pageId;
+    this._pageName = node.pageName;
+    this._iconId = node.icon;
+    this._children = [];
+    this._offerIds = node.offerIds;
+    this._isVisible = node.visible;
+    this._isActive = false;
+    this._isOpen = false;
+  }
 
-    public deactivate(): void
-    {
-        this._isActive = false;
-    }
+  public activate(): void {
+    this._isActive = true;
+  }
 
-    public open(): void
-    {
-        this._isOpen = true;
-    }
+  public deactivate(): void {
+    this._isActive = false;
+  }
 
-    public close(): void
-    {
-        this._isOpen = false;
-    }
+  public open(): void {
+    this._isOpen = true;
+  }
 
-    public addChild(child: ICatalogNode):void
-    {
-        if(!child) return;
+  public close(): void {
+    this._isOpen = false;
+  }
 
-        this._children.push(child);
-    }
+  public addChild(child: ICatalogNode): void {
+    if (!child) return;
 
-    public get depth(): number
-    {
-        return this._depth;
-    }
+    this._children.push(child);
+  }
 
-    public get isBranch(): boolean
-    {
-        return (this._children.length > 0);
-    }
+  public get depth(): number {
+    return this._depth;
+  }
 
-    public get isLeaf(): boolean
-    {
-        return (this._children.length === 0);
-    }
+  public get isBranch(): boolean {
+    return this._children.length > 0;
+  }
 
-    public get localization(): string
-    {
-        return this._localization;
-    }
+  public get isLeaf(): boolean {
+    return this._children.length === 0;
+  }
 
-    public get pageId(): number
-    {
-        return this._pageId;
-    }
+  public get localization(): string {
+    return this._localization;
+  }
 
-    public get pageName(): string
-    {
-        return this._pageName;
-    }
+  public get pageId(): number {
+    return this._pageId;
+  }
 
-    public get iconId(): number
-    {
-        return this._iconId;
-    }
+  public get pageName(): string {
+    return this._pageName;
+  }
 
-    public get children(): ICatalogNode[]
-    {
-        return this._children;
-    }
+  public get iconId(): number {
+    return this._iconId;
+  }
 
-    public get offerIds(): number[]
-    {
-        return this._offerIds;
-    }
+  public get children(): ICatalogNode[] {
+    return this._children;
+  }
 
-    public get parent(): ICatalogNode
-    {
-        return this._parent;
-    }
+  public get offerIds(): number[] {
+    return this._offerIds;
+  }
 
-    public get isVisible(): boolean
-    {
-        return this._isVisible;
-    }
+  public get parent(): ICatalogNode {
+    return this._parent;
+  }
 
-    public get isActive(): boolean
-    {
-        return this._isActive;
-    }
+  public get isVisible(): boolean {
+    return this._isVisible;
+  }
 
-    public get isOpen(): boolean
-    {
-        return this._isOpen;
-    }
+  public get isActive(): boolean {
+    return this._isActive;
+  }
+
+  public get isOpen(): boolean {
+    return this._isOpen;
+  }
 }

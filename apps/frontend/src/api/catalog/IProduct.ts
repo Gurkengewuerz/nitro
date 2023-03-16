@@ -1,16 +1,16 @@
-import { IFurnitureData, IProductData } from '@nitro/renderer';
-import { IPurchasableOffer } from './IPurchasableOffer';
+import {IFurnitureData, IProductData} from "@nitro/renderer";
 
-export interface IProduct
-{
-    getIconUrl(offer?: IPurchasableOffer): string;
-    productType: string;
-    productClassId: number;
-    extraParam: string;
-    productCount: number;
-    productData: IProductData;
-    furnitureData: IFurnitureData;
-    isUniqueLimitedItem: boolean;
-    uniqueLimitedItemSeriesSize: number;
-    uniqueLimitedItemsLeft: number;
+import {IPurchasableOffer} from "./IPurchasableOffer";
+
+export interface IProduct {
+  getIconUrl(offer?: IPurchasableOffer): string;
+  productType: string;
+  productClassId: number;
+  extraParam: string;
+  productCount: number;
+  productData: IProductData;
+  furnitureData: IFurnitureData;
+  isUniqueLimitedItem: boolean;
+  uniqueLimitedItemSeriesSize: number;
+  uniqueLimitedItemsLeft: number;
 }

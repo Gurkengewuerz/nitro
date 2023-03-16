@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class YouArePlayingGameParser implements IMessageParser
-{
-    private _isPlaying: boolean;
+export class YouArePlayingGameParser implements IMessageParser {
+  private _isPlaying: boolean;
 
-    public flush(): boolean
-    {
-        this._isPlaying = false;
+  public flush(): boolean {
+    this._isPlaying = false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._isPlaying = wrapper.readBoolean();
+    this._isPlaying = wrapper.readBoolean();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get isPlaying(): boolean
-    {
-        return this._isPlaying;
-    }
+  public get isPlaying(): boolean {
+    return this._isPlaying;
+  }
 }

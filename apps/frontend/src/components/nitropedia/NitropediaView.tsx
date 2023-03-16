@@ -1,105 +1,93 @@
-import { ILinkEventTracker, NitroLogger } from '@nitro/renderer';
-import { FC, useEffect, useRef, useState } from 'react';
-import { AddEventLinkTracker, GetConfiguration, OpenUrl, RemoveLinkEventTracker } from '../../api';
-import { Base, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../common';
+import {ILinkEventTracker, NitroLogger} from "@nitro/renderer";
+import {FC, useEffect, useRef, useState} from "react";
 
-const NEW_LINE_REGEX = /\n\r|\n|\r/mg;
+import {AddEventLinkTracker, GetConfiguration, OpenUrl, RemoveLinkEventTracker} from "../../api";
+import {Base, NitroCardContentView, NitroCardHeaderView, NitroCardView} from "../../common";
 
-export const NitropediaView: FC<{}> = props =>
-{
-    const [ content, setContent ] = useState<string>(null);
-    const [ header, setHeader ] = useState<string>('');
-    const [ dimensions, setDimensions ] = useState<{ width: number, height: number }>(null);
-    const elementRef = useRef<HTMLDivElement>(null);
+const NEW_LINE_REGEX = /\n\r|\n|\r/gm;
 
-    useEffect(() =>
-    {
-        const openPage = async (link: string) =>
-        {
-            try
-            {
-                const response = await fetch(link);
+export const NitropediaView: FC<{}> = props => {
+  const [content, setContent] = useState<string>(null);
+  const [header, setHeader] = useState<string>("");
+  const [dimensions, setDimensions] = useState<{width: number; height: number}>(null);
+  const elementRef = useRef<HTMLDivElement>(null);
 
-                if(!response) return;
-        
-                const text = await response.text();
-                const splitData = text.split(NEW_LINE_REGEX);
-                const line = splitData.shift().split('|');
+  useEffect(() => {
+    const openPage = async (link: string) => {
+      try {
+        const response = await fetch(link);
 
-                setHeader(line[0]);
+        if (!response) return;
 
-                setDimensions(prevValue =>
-                {
-                    if(line[1] && (line[1].split(';').length === 2))
-                    {
-                        return {
-                            width: parseInt(line[1].split(';')[0]),
-                            height: parseInt(line[1].split(';')[1])
-                        }
-                    }
+        const text = await response.text();
+        const splitData = text.split(NEW_LINE_REGEX);
+        const line = splitData.shift().split("|");
 
-                    return null;
-                });
+        setHeader(line[0]);
 
-                setContent(splitData.join(''));
-            }
+        setDimensions(prevValue => {
+          if (line[1] && line[1].split(";").length === 2) {
+            return {
+              width: parseInt(line[1].split(";")[0]),
+              height: parseInt(line[1].split(";")[1]),
+            };
+          }
 
-            catch (error)
-            {
-                NitroLogger.error(`Failed to fetch ${ link }`);
-            }
-        }
+          return null;
+        });
 
-        const linkTracker: ILinkEventTracker = {
-            linkReceived: (url: string) =>
-            {
-                const value = url.split('/');
+        setContent(splitData.join(""));
+      } catch (error) {
+        NitroLogger.error(`Failed to fetch ${link}`);
+      }
+    };
 
-                if(value.length < 2) return;
+    const linkTracker: ILinkEventTracker = {
+      linkReceived: (url: string) => {
+        const value = url.split("/");
 
-                value.shift();
+        if (value.length < 2) return;
 
-                openPage(GetConfiguration<string>('habbopages.url') + value.join('/'));
-            },
-            eventUrlPrefix: 'habbopages/'
-        };
+        value.shift();
 
-        AddEventLinkTracker(linkTracker);
+        openPage(GetConfiguration<string>("habbopages.url") + value.join("/"));
+      },
+      eventUrlPrefix: "habbopages/",
+    };
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, []);
+    AddEventLinkTracker(linkTracker);
 
-    useEffect(() =>
-    {
-        const handle = (event: MouseEvent) =>
-        {
-            if(!(event.target instanceof HTMLAnchorElement)) return;
+    return () => RemoveLinkEventTracker(linkTracker);
+  }, []);
 
-            event.preventDefault();
+  useEffect(() => {
+    const handle = (event: MouseEvent) => {
+      if (!(event.target instanceof HTMLAnchorElement)) return;
 
-            const link = event.target.href;
+      event.preventDefault();
 
-            if(!link || !link.length) return;
+      const link = event.target.href;
 
-            OpenUrl(link);
-        }
+      if (!link || !link.length) return;
 
-        document.addEventListener('click', handle);
+      OpenUrl(link);
+    };
 
-        return () =>
-        {
-            document.removeEventListener('click', handle);
-        }
-    }, []);
+    document.addEventListener("click", handle);
 
-    if(!content) return null;
+    return () => {
+      document.removeEventListener("click", handle);
+    };
+  }, []);
 
-    return (
-        <NitroCardView className="nitropedia" theme="primary-slim" style={ dimensions ? { width: dimensions.width, height: dimensions.height } : {} }>
-            <NitroCardHeaderView headerText={ header } onCloseClick={ () => setContent(null) }/>
-            <NitroCardContentView>
-                <Base fit innerRef={ elementRef } className="text-black" dangerouslySetInnerHTML={ { __html: content } } />
-            </NitroCardContentView>
-        </NitroCardView>
-    );
-}
+  if (!content) return null;
+
+  return (
+    <NitroCardView className="nitropedia" theme="primary-slim" style={dimensions ? {width: dimensions.width, height: dimensions.height} : {}}>
+      <NitroCardHeaderView headerText={header} onCloseClick={() => setContent(null)} />
+      <NitroCardContentView>
+        <Base fit innerRef={elementRef} className="text-black" dangerouslySetInnerHTML={{__html: content}} />
+      </NitroCardContentView>
+    </NitroCardView>
+  );
+};

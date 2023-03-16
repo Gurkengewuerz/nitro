@@ -44,7 +44,6 @@
   }
 }
 
-
 //
 // Change placement of captions with a class
 //
@@ -52,7 +51,6 @@
 .caption-top {
   caption-side: top;
 }
-
 
 //
 // Condensed table w/ half padding
@@ -64,7 +62,6 @@
     padding: $table-cell-padding-y-sm $table-cell-padding-x-sm;
   }
 }
-
 
 // Border versions
 //
@@ -123,7 +120,6 @@
     color: var(--#{$variable-prefix}table-hover-color);
   }
 }
-
 
 // Table variants
 //

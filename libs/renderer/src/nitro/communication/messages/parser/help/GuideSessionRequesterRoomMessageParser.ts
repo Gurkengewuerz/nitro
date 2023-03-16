@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class GuideSessionRequesterRoomMessageParser implements IMessageParser
-{
-    private _requesterRoomId: number;
+export class GuideSessionRequesterRoomMessageParser implements IMessageParser {
+  private _requesterRoomId: number;
 
-    public flush(): boolean
-    {
-        this._requesterRoomId = 0;
+  public flush(): boolean {
+    this._requesterRoomId = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._requesterRoomId = wrapper.readInt();
+    this._requesterRoomId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get requesterRoomId(): number
-    {
-        return this._requesterRoomId;
-    }
+  public get requesterRoomId(): number {
+    return this._requesterRoomId;
+  }
 }

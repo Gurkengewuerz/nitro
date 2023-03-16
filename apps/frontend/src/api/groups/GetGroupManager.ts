@@ -1,6 +1,5 @@
-import { CreateLinkEvent } from '..';
+import {CreateLinkEvent} from "..";
 
-export function GetGroupManager(groupId: number): void
-{
-    CreateLinkEvent(`groups/manage/${ groupId }`);
+export function GetGroupManager(groupId: number): void {
+  CreateLinkEvent(`groups/manage/${groupId}`);
 }

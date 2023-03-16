@@ -1,1 +1,1 @@
-export * from './GameMessageHandler';
+export * from "./GameMessageHandler";

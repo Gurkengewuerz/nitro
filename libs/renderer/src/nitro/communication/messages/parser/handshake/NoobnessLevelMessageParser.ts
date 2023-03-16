@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class NoobnessLevelMessageParser implements IMessageParser
-{
-    private _noobnessLevel: number;
+export class NoobnessLevelMessageParser implements IMessageParser {
+  private _noobnessLevel: number;
 
-    public flush(): boolean
-    {
-        this._noobnessLevel = 0;
+  public flush(): boolean {
+    this._noobnessLevel = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._noobnessLevel = wrapper.readInt();
+    this._noobnessLevel = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get noobnessLevel(): number
-    {
-        return this._noobnessLevel;
-    }
+  public get noobnessLevel(): number {
+    return this._noobnessLevel;
+  }
 }

@@ -1,57 +1,48 @@
-import { SCALE_MODES } from '@pixi/constants';
-import { Texture } from '@pixi/core';
-import { IsometricImageFurniVisualization } from './IsometricImageFurniVisualization';
+import {SCALE_MODES} from "@pixi/constants";
+import {Texture} from "@pixi/core";
 
-export class FurnitureDynamicThumbnailVisualization extends IsometricImageFurniVisualization
-{
-    private _cachedUrl: string;
+import {IsometricImageFurniVisualization} from "./IsometricImageFurniVisualization";
 
-    constructor()
-    {
-        super();
+export class FurnitureDynamicThumbnailVisualization extends IsometricImageFurniVisualization {
+  private _cachedUrl: string;
 
-        this._cachedUrl = null;
-        this._hasOutline = true;
-    }
+  constructor() {
+    super();
 
-    protected updateModel(scale: number): boolean
-    {
-        if(this.object)
-        {
-            const thumbnailUrl = this.getThumbnailURL();
+    this._cachedUrl = null;
+    this._hasOutline = true;
+  }
 
-            if(this._cachedUrl !== thumbnailUrl)
-            {
-                this._cachedUrl = thumbnailUrl;
+  protected updateModel(scale: number): boolean {
+    if (this.object) {
+      const thumbnailUrl = this.getThumbnailURL();
 
-                if(this._cachedUrl && (this._cachedUrl !== ''))
-                {
-                    const image = new Image();
+      if (this._cachedUrl !== thumbnailUrl) {
+        this._cachedUrl = thumbnailUrl;
 
-                    image.src = thumbnailUrl;
-                    image.crossOrigin = '*';
+        if (this._cachedUrl && this._cachedUrl !== "") {
+          const image = new Image();
 
-                    image.onload = () =>
-                    {
-                        const texture = Texture.from(image);
+          image.src = thumbnailUrl;
+          image.crossOrigin = "*";
 
-                        texture.baseTexture.scaleMode = SCALE_MODES.LINEAR;
+          image.onload = () => {
+            const texture = Texture.from(image);
 
-                        this.setThumbnailImages(texture);
-                    };
-                }
-                else
-                {
-                    this.setThumbnailImages(null);
-                }
-            }
+            texture.baseTexture.scaleMode = SCALE_MODES.LINEAR;
+
+            this.setThumbnailImages(texture);
+          };
+        } else {
+          this.setThumbnailImages(null);
         }
-
-        return super.updateModel(scale);
+      }
     }
 
-    protected getThumbnailURL(): string
-    {
-        throw (new Error('This method must be overridden!'));
-    }
+    return super.updateModel(scale);
+  }
+
+  protected getThumbnailURL(): string {
+    throw new Error("This method must be overridden!");
+  }
 }

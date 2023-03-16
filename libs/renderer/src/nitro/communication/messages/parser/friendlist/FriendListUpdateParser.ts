@@ -1,81 +1,65 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { FriendCategoryData } from './FriendCategoryData';
-import { FriendParser } from './FriendParser';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {FriendCategoryData} from "./FriendCategoryData";
+import {FriendParser} from "./FriendParser";
 
-export class FriendListUpdateParser implements IMessageParser
-{
-    private _categories: FriendCategoryData[];
-    private _removedFriendIds: number[];
-    private _addedFriends: FriendParser[];
-    private _updatedFriends: FriendParser[];
+export class FriendListUpdateParser implements IMessageParser {
+  private _categories: FriendCategoryData[];
+  private _removedFriendIds: number[];
+  private _addedFriends: FriendParser[];
+  private _updatedFriends: FriendParser[];
 
-    public flush(): boolean
-    {
-        this._categories = [];
-        this._removedFriendIds = [];
-        this._addedFriends = [];
-        this._updatedFriends = [];
+  public flush(): boolean {
+    this._categories = [];
+    this._removedFriendIds = [];
+    this._addedFriends = [];
+    this._updatedFriends = [];
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    let totalCategories = wrapper.readInt();
+
+    while (totalCategories > 0) {
+      this._categories.push(new FriendCategoryData(wrapper));
+
+      totalCategories--;
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    let totalUpdates = wrapper.readInt();
 
-        let totalCategories = wrapper.readInt();
+    while (totalUpdates > 0) {
+      const type = wrapper.readInt();
 
-        while(totalCategories > 0)
-        {
-            this._categories.push(new FriendCategoryData(wrapper));
+      if (type === -1) {
+        this._removedFriendIds.push(wrapper.readInt());
+      } else if (type === 0) {
+        this._updatedFriends.push(new FriendParser(wrapper));
+      } else if (type === 1) {
+        this._addedFriends.push(new FriendParser(wrapper));
+      }
 
-            totalCategories--;
-        }
-
-        let totalUpdates = wrapper.readInt();
-
-        while(totalUpdates > 0)
-        {
-            const type = wrapper.readInt();
-
-            if(type === -1)
-            {
-                this._removedFriendIds.push(wrapper.readInt());
-            }
-
-            else if(type === 0)
-            {
-                this._updatedFriends.push(new FriendParser(wrapper));
-            }
-
-            else if(type === 1)
-            {
-                this._addedFriends.push(new FriendParser(wrapper));
-            }
-
-            totalUpdates--;
-        }
-
-        return true;
+      totalUpdates--;
     }
 
-    public get categories(): FriendCategoryData[]
-    {
-        return this._categories;
-    }
+    return true;
+  }
 
-    public get removedFriendIds(): number[]
-    {
-        return this._removedFriendIds;
-    }
+  public get categories(): FriendCategoryData[] {
+    return this._categories;
+  }
 
-    public get addedFriends(): FriendParser[]
-    {
-        return this._addedFriends;
-    }
+  public get removedFriendIds(): number[] {
+    return this._removedFriendIds;
+  }
 
-    public get updatedFriends(): FriendParser[]
-    {
-        return this._updatedFriends;
-    }
+  public get addedFriends(): FriendParser[] {
+    return this._addedFriends;
+  }
+
+  public get updatedFriends(): FriendParser[] {
+    return this._updatedFriends;
+  }
 }

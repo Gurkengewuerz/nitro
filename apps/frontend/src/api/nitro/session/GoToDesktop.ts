@@ -1,7 +1,7 @@
-import { DesktopViewComposer } from '@nitro/renderer';
-import { SendMessageComposer } from '..';
+import {DesktopViewComposer} from "@nitro/renderer";
 
-export function GoToDesktop(): void
-{
-    SendMessageComposer(new DesktopViewComposer());
+import {SendMessageComposer} from "..";
+
+export function GoToDesktop(): void {
+  SendMessageComposer(new DesktopViewComposer());
 }

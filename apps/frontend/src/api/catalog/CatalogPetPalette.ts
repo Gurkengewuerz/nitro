@@ -1,10 +1,5 @@
-import { SellablePetPaletteData } from '@nitro/renderer';
+import {SellablePetPaletteData} from "@nitro/renderer";
 
-export class CatalogPetPalette
-{
-    constructor(
-        public readonly breed: string,
-        public readonly palettes: SellablePetPaletteData[]
-    ) 
-    {}
+export class CatalogPetPalette {
+  constructor(public readonly breed: string, public readonly palettes: SellablePetPaletteData[]) {}
 }

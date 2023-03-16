@@ -1,42 +1,41 @@
-import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitro/renderer';
-import { FC, useRef } from 'react';
-import { GetRoomEngine } from '../../../../api';
-import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';
-import { CatalogPurchasedEvent } from '../../../../events';
-import { useUiEvent } from '../../../../hooks';
+import {NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum} from "@nitro/renderer";
+import {FC, useRef} from "react";
 
-export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props =>
-{
-    const { roomPreviewer = null } = props;
-    const elementRef = useRef<HTMLDivElement>(null);
+import {GetRoomEngine} from "../../../../api";
+import {LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps} from "../../../../common";
+import {CatalogPurchasedEvent} from "../../../../events";
+import {useUiEvent} from "../../../../hooks";
 
-    useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, event =>
-    {
-        if(!elementRef) return;
-        
-        const renderTexture = roomPreviewer.getRoomObjectCurrentImage();
+export const CatalogRoomPreviewerView: FC<LayoutRoomPreviewerViewProps> = props => {
+  const {roomPreviewer = null} = props;
+  const elementRef = useRef<HTMLDivElement>(null);
 
-        if(!renderTexture) return;
+  useUiEvent(CatalogPurchasedEvent.PURCHASE_SUCCESS, event => {
+    if (!elementRef) return;
 
-        const image = TextureUtils.generateImage(renderTexture);
+    const renderTexture = roomPreviewer.getRoomObjectCurrentImage();
 
-        if(!image) return;
+    if (!renderTexture) return;
 
-        const bounds = elementRef.current.getBoundingClientRect();
+    const image = TextureUtils.generateImage(renderTexture);
 
-        const x = (bounds.x + (bounds.width / 2));
-        const y = (bounds.y + (bounds.height / 2));
+    if (!image) return;
 
-        const animateEvent = new NitroToolbarAnimateIconEvent(image, x, y);
+    const bounds = elementRef.current.getBoundingClientRect();
 
-        animateEvent.iconName = ToolbarIconEnum.INVENTORY;
+    const x = bounds.x + bounds.width / 2;
+    const y = bounds.y + bounds.height / 2;
 
-        GetRoomEngine().events.dispatchEvent(animateEvent);
-    });
+    const animateEvent = new NitroToolbarAnimateIconEvent(image, x, y);
 
-    return (
-        <div ref={ elementRef }>
-            <LayoutRoomPreviewerView { ...props } />
-        </div>
-    );
-}
+    animateEvent.iconName = ToolbarIconEnum.INVENTORY;
+
+    GetRoomEngine().events.dispatchEvent(animateEvent);
+  });
+
+  return (
+    <div ref={elementRef}>
+      <LayoutRoomPreviewerView {...props} />
+    </div>
+  );
+};

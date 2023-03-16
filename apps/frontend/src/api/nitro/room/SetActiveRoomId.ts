@@ -1,6 +1,5 @@
-import { GetRoomEngine } from './GetRoomEngine';
+import {GetRoomEngine} from "./GetRoomEngine";
 
-export function SetActiveRoomId(roomId: number): void
-{
-    GetRoomEngine().setActiveRoomId(roomId);
+export function SetActiveRoomId(roomId: number): void {
+  GetRoomEngine().setActiveRoomId(roomId);
 }

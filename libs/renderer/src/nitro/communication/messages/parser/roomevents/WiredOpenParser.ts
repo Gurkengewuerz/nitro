@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class WiredOpenParser implements IMessageParser
-{
-    private _stuffId: number;
+export class WiredOpenParser implements IMessageParser {
+  private _stuffId: number;
 
-    public flush(): boolean
-    {
-        this._stuffId = 0;
+  public flush(): boolean {
+    this._stuffId = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._stuffId = wrapper.readInt();
+    this._stuffId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get stuffId(): number
-    {
-        return this._stuffId;
-    }
+  public get stuffId(): number {
+    return this._stuffId;
+  }
 }

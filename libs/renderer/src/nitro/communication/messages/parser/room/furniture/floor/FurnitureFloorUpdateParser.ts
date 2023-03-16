@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../../api';
-import { FurnitureFloorDataParser } from './FurnitureFloorDataParser';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../../api";
+import {FurnitureFloorDataParser} from "./FurnitureFloorDataParser";
 
-export class FurnitureFloorUpdateParser implements IMessageParser
-{
-    private _item: FurnitureFloorDataParser;
+export class FurnitureFloorUpdateParser implements IMessageParser {
+  private _item: FurnitureFloorDataParser;
 
-    public flush(): boolean
-    {
-        this._item = null;
+  public flush(): boolean {
+    this._item = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._item = new FurnitureFloorDataParser(wrapper);
+    this._item = new FurnitureFloorDataParser(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get item(): FurnitureFloorDataParser
-    {
-        return this._item;
-    }
+  public get item(): FurnitureFloorDataParser {
+    return this._item;
+  }
 }

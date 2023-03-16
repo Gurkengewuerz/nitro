@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../../api";
 
-export class RoomUnitTypingParser implements IMessageParser
-{
-    private _unitId: number;
-    private _isTyping: boolean;
+export class RoomUnitTypingParser implements IMessageParser {
+  private _unitId: number;
+  private _isTyping: boolean;
 
-    public flush(): boolean
-    {
-        this._unitId = null;
-        this._isTyping = false;
+  public flush(): boolean {
+    this._unitId = null;
+    this._isTyping = false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._unitId = wrapper.readInt();
-        this._isTyping = wrapper.readInt() === 1 ? true : false;
+    this._unitId = wrapper.readInt();
+    this._isTyping = wrapper.readInt() === 1 ? true : false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public get unitId(): number
-    {
-        return this._unitId;
-    }
+  public get unitId(): number {
+    return this._unitId;
+  }
 
-    public get isTyping(): boolean
-    {
-        return this._isTyping;
-    }
+  public get isTyping(): boolean {
+    return this._isTyping;
+  }
 }

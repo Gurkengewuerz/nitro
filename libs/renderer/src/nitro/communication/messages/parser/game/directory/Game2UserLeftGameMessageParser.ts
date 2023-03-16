@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class Game2UserLeftGameMessageParser implements IMessageParser
-{
-    private _userId: number;
+export class Game2UserLeftGameMessageParser implements IMessageParser {
+  private _userId: number;
 
-    public flush(): boolean
-    {
-        this._userId = -1;
+  public flush(): boolean {
+    this._userId = -1;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._userId = wrapper.readInt();
+    this._userId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get userId():number
-    {
-        return this._userId;
-    }
+  public get userId(): number {
+    return this._userId;
+  }
 }

@@ -1,5 +1,4 @@
-export interface ILinkEventTracker
-{
-    linkReceived(link: string): void;
-    eventUrlPrefix: string;
+export interface ILinkEventTracker {
+  linkReceived(link: string): void;
+  eventUrlPrefix: string;
 }

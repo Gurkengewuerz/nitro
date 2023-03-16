@@ -1,10 +1,9 @@
-const BuildMaxVisitorsList = () =>
-{
-    const list: number[] = [];
+const BuildMaxVisitorsList = () => {
+  const list: number[] = [];
 
-    for(let i = 10; i <= 100; i = i + 10) list.push(i);
+  for (let i = 10; i <= 100; i = i + 10) list.push(i);
 
-    return list;
-}
+  return list;
+};
 
 export const GetMaxVisitorsList = BuildMaxVisitorsList();

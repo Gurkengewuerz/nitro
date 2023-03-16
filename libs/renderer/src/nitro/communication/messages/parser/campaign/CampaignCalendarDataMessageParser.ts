@@ -1,29 +1,25 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { CampaignCalendarData } from './CampaignCalendarData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {CampaignCalendarData} from "./CampaignCalendarData";
 
-export class CampaignCalendarDataMessageParser implements IMessageParser
-{
-    private _calendarData: CampaignCalendarData;
+export class CampaignCalendarDataMessageParser implements IMessageParser {
+  private _calendarData: CampaignCalendarData;
 
-    public flush(): boolean
-    {
-        this._calendarData = null;
+  public flush(): boolean {
+    this._calendarData = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._calendarData = new CampaignCalendarData();
-        this._calendarData.parse(wrapper);
+    this._calendarData = new CampaignCalendarData();
+    this._calendarData.parse(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get calendarData(): CampaignCalendarData
-    {
-        return this._calendarData;
-    }
+  public get calendarData(): CampaignCalendarData {
+    return this._calendarData;
+  }
 }

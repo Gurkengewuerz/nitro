@@ -1,5 +1,4 @@
-export interface IRoomHistoryEntry
-{
-    id: number;
-    name: string;
+export interface IRoomHistoryEntry {
+  id: number;
+  name: string;
 }

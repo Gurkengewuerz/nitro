@@ -1,42 +1,38 @@
-import { InitCameraMessageEvent, IRoomCameraWidgetEffect, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent } from '@nitro/renderer';
-import { useEffect, useState } from 'react';
-import { useBetween } from 'use-between';
-import { CameraPicture, GetRoomCameraWidgetManager, SendMessageComposer } from '../../api';
-import { useCameraEvent, useMessageEvent } from '../events';
+import {IRoomCameraWidgetEffect, InitCameraMessageEvent, RequestCameraConfigurationComposer, RoomCameraWidgetManagerEvent} from "@nitro/renderer";
+import {useEffect, useState} from "react";
+import {useBetween} from "use-between";
 
-const useCameraState = () =>
-{
-    const [ availableEffects, setAvailableEffects ] = useState<IRoomCameraWidgetEffect[]>([]);
-    const [ cameraRoll, setCameraRoll ] = useState<CameraPicture[]>([]);
-    const [ selectedPictureIndex, setSelectedPictureIndex ] = useState(-1);
-    const [ myLevel, setMyLevel ] = useState(10);
-    const [ price, setPrice ] = useState<{ credits: number, duckets: number, publishDucketPrice: number }>(null);
+import {CameraPicture, GetRoomCameraWidgetManager, SendMessageComposer} from "../../api";
+import {useCameraEvent, useMessageEvent} from "../events";
 
-    useCameraEvent<RoomCameraWidgetManagerEvent>(RoomCameraWidgetManagerEvent.INITIALIZED, event =>
-    {
-        setAvailableEffects(Array.from(GetRoomCameraWidgetManager().effects.values()));
-    });
+const useCameraState = () => {
+  const [availableEffects, setAvailableEffects] = useState<IRoomCameraWidgetEffect[]>([]);
+  const [cameraRoll, setCameraRoll] = useState<CameraPicture[]>([]);
+  const [selectedPictureIndex, setSelectedPictureIndex] = useState(-1);
+  const [myLevel, setMyLevel] = useState(10);
+  const [price, setPrice] = useState<{credits: number; duckets: number; publishDucketPrice: number}>(null);
 
-    useMessageEvent<InitCameraMessageEvent>(InitCameraMessageEvent, event =>
-    {
-        const parser = event.getParser();
-        
-        setPrice({ credits: parser.creditPrice, duckets: parser.ducketPrice, publishDucketPrice: parser.publishDucketPrice });
-    });
+  useCameraEvent<RoomCameraWidgetManagerEvent>(RoomCameraWidgetManagerEvent.INITIALIZED, event => {
+    setAvailableEffects(Array.from(GetRoomCameraWidgetManager().effects.values()));
+  });
 
-    useEffect(() =>
-    {
-        if(!GetRoomCameraWidgetManager().isLoaded)
-        {
-            GetRoomCameraWidgetManager().init();
+  useMessageEvent<InitCameraMessageEvent>(InitCameraMessageEvent, event => {
+    const parser = event.getParser();
 
-            SendMessageComposer(new RequestCameraConfigurationComposer());
+    setPrice({credits: parser.creditPrice, duckets: parser.ducketPrice, publishDucketPrice: parser.publishDucketPrice});
+  });
 
-            return;
-        }
-    }, []);
+  useEffect(() => {
+    if (!GetRoomCameraWidgetManager().isLoaded) {
+      GetRoomCameraWidgetManager().init();
 
-    return { availableEffects, cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, myLevel, price };
-}
+      SendMessageComposer(new RequestCameraConfigurationComposer());
+
+      return;
+    }
+  }, []);
+
+  return {availableEffects, cameraRoll, setCameraRoll, selectedPictureIndex, setSelectedPictureIndex, myLevel, price};
+};
 
 export const useCamera = () => useBetween(useCameraState);

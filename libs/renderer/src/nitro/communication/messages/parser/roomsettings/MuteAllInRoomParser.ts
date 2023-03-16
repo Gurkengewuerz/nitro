@@ -1,25 +1,21 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class MuteAllInRoomParser implements IMessageParser
-{
-    private _isMuted: boolean;
+export class MuteAllInRoomParser implements IMessageParser {
+  private _isMuted: boolean;
 
-    public flush(): boolean
-    {
-        return true;
-    }
+  public flush(): boolean {
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._isMuted = wrapper.readBoolean();
+    this._isMuted = wrapper.readBoolean();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get isMuted(): boolean
-    {
-        return this._isMuted;
-    }
+  public get isMuted(): boolean {
+    return this._isMuted;
+  }
 }

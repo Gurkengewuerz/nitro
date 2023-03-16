@@ -1,6 +1,5 @@
-export interface IGroupChatData
-{
-    username: string;
-    figure: string;
-    userId: number;
+export interface IGroupChatData {
+  username: string;
+  figure: string;
+  userId: number;
 }

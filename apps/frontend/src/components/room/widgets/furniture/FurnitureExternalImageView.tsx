@@ -1,22 +1,34 @@
-import { FC } from 'react';
-import { GetSessionDataManager, ReportType } from '../../../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';
-import { useFurnitureExternalImageWidget, useHelp } from '../../../../hooks';
-import { CameraWidgetShowPhotoView } from '../../../camera/views/CameraWidgetShowPhotoView';
+import {FC} from "react";
 
-export const FurnitureExternalImageView: FC<{}> = props =>
-{
-    const { objectId = -1, currentPhotoIndex = -1, currentPhotos = null, onClose = null } = useFurnitureExternalImageWidget();
-    const { report = null } = useHelp();
+import {GetSessionDataManager, ReportType} from "../../../../api";
+import {NitroCardContentView, NitroCardHeaderView, NitroCardView} from "../../../../common";
+import {useFurnitureExternalImageWidget, useHelp} from "../../../../hooks";
+import {CameraWidgetShowPhotoView} from "../../../camera/views/CameraWidgetShowPhotoView";
 
-    if((objectId === -1) || (currentPhotoIndex === -1)) return null;
+export const FurnitureExternalImageView: FC<{}> = props => {
+  const {objectId = -1, currentPhotoIndex = -1, currentPhotos = null, onClose = null} = useFurnitureExternalImageWidget();
+  const {report = null} = useHelp();
 
-    return (
-        <NitroCardView className="nitro-external-image-widget" theme="primary-slim">
-            <NitroCardHeaderView headerText="" isGalleryPhoto={ true } onReportPhoto={ () => report(ReportType.PHOTO, { extraData: currentPhotos[currentPhotoIndex].w, roomId: currentPhotos[currentPhotoIndex].s, reportedUserId: GetSessionDataManager().userId, roomObjectId: Number(currentPhotos[currentPhotoIndex].u) }) } onCloseClick={ onClose } />
-            <NitroCardContentView>
-                <CameraWidgetShowPhotoView currentIndex={ currentPhotoIndex } currentPhotos={ currentPhotos } />
-            </NitroCardContentView>
-        </NitroCardView>
-    );
-}
+  if (objectId === -1 || currentPhotoIndex === -1) return null;
+
+  return (
+    <NitroCardView className="nitro-external-image-widget" theme="primary-slim">
+      <NitroCardHeaderView
+        headerText=""
+        isGalleryPhoto={true}
+        onReportPhoto={() =>
+          report(ReportType.PHOTO, {
+            extraData: currentPhotos[currentPhotoIndex].w,
+            roomId: currentPhotos[currentPhotoIndex].s,
+            reportedUserId: GetSessionDataManager().userId,
+            roomObjectId: Number(currentPhotos[currentPhotoIndex].u),
+          })
+        }
+        onCloseClick={onClose}
+      />
+      <NitroCardContentView>
+        <CameraWidgetShowPhotoView currentIndex={currentPhotoIndex} currentPhotos={currentPhotos} />
+      </NitroCardContentView>
+    </NitroCardView>
+  );
+};

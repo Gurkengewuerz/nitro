@@ -1,35 +1,30 @@
-﻿import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+﻿import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class BadgeReceivedParser implements IMessageParser
-{
-    private _badgeId: number;
-    private _badgeCode: string;
+export class BadgeReceivedParser implements IMessageParser {
+  private _badgeId: number;
+  private _badgeCode: string;
 
-    public flush(): boolean
-    {
-        this._badgeId = 0;
-        this._badgeCode = null;
+  public flush(): boolean {
+    this._badgeId = 0;
+    this._badgeCode = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._badgeId = wrapper.readInt();
-        this._badgeCode = wrapper.readString();
+    this._badgeId = wrapper.readInt();
+    this._badgeCode = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get badgeId(): number
-    {
-        return this._badgeId;
-    }
+  public get badgeId(): number {
+    return this._badgeId;
+  }
 
-    public get badgeCode(): string
-    {
-        return this._badgeCode;
-    }
+  public get badgeCode(): string {
+    return this._badgeCode;
+  }
 }

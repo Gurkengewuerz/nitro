@@ -1,27 +1,23 @@
-﻿import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+﻿import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class AvatarEffectSelectedParser implements IMessageParser
-{
-    private _type: number;
+export class AvatarEffectSelectedParser implements IMessageParser {
+  private _type: number;
 
-    public flush(): boolean
-    {
-        this._type = 0;
+  public flush(): boolean {
+    this._type = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._type = wrapper.readInt();
+    this._type = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get type(): number
-    {
-        return this._type;
-    }
+  public get type(): number {
+    return this._type;
+  }
 }

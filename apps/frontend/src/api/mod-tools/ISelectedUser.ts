@@ -1,5 +1,4 @@
-export interface ISelectedUser
-{
-    userId: number;
-    username: string;
+export interface ISelectedUser {
+  userId: number;
+  username: string;
 }

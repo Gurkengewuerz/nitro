@@ -1,9 +1,5 @@
-import { NitroTexture } from '@nitro/renderer';
+import {NitroTexture} from "@nitro/renderer";
 
-export class CameraPicture
-{
-    constructor(
-        public texture: NitroTexture,
-        public imageUrl: string) 
-    {}
+export class CameraPicture {
+  constructor(public texture: NitroTexture, public imageUrl: string) {}
 }

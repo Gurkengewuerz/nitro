@@ -1,13 +1,13 @@
-import { ClubGiftInfoParser, ClubOfferData, HabboGroupEntryData, MarketplaceConfigurationMessageParser } from '@nitro/renderer';
-import { CatalogPetPalette } from './CatalogPetPalette';
-import { GiftWrappingConfiguration } from './GiftWrappingConfiguration';
+import {ClubGiftInfoParser, ClubOfferData, HabboGroupEntryData, MarketplaceConfigurationMessageParser} from "@nitro/renderer";
 
-export interface ICatalogOptions
-{
-    groups?: HabboGroupEntryData[];
-    petPalettes?: CatalogPetPalette[];
-    clubOffers?: ClubOfferData[];
-    clubGifts?: ClubGiftInfoParser;
-    giftConfiguration?: GiftWrappingConfiguration;
-    marketplaceConfiguration?: MarketplaceConfigurationMessageParser;
+import {CatalogPetPalette} from "./CatalogPetPalette";
+import {GiftWrappingConfiguration} from "./GiftWrappingConfiguration";
+
+export interface ICatalogOptions {
+  groups?: HabboGroupEntryData[];
+  petPalettes?: CatalogPetPalette[];
+  clubOffers?: ClubOfferData[];
+  clubGifts?: ClubGiftInfoParser;
+  giftConfiguration?: GiftWrappingConfiguration;
+  marketplaceConfiguration?: MarketplaceConfigurationMessageParser;
 }

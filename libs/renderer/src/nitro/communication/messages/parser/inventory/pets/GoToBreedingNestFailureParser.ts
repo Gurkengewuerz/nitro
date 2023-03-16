@@ -1,25 +1,21 @@
-﻿import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+﻿import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class GoToBreedingNestFailureParser implements IMessageParser
-{
-    public static PET_TOO_TIRED_TO_BREED: number = 6;
+export class GoToBreedingNestFailureParser implements IMessageParser {
+  public static PET_TOO_TIRED_TO_BREED: number = 6;
 
-    private _reason: number;
+  private _reason: number;
 
-    public flush(): boolean
-    {
-        return true;
-    }
+  public flush(): boolean {
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        this._reason = wrapper.readInt();
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    this._reason = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get reason(): number
-    {
-        return this._reason;
-    }
+  public get reason(): number {
+    return this._reason;
+  }
 }

@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class FindFriendsProcessResultParser implements IMessageParser
-{
-    private _success: boolean;
+export class FindFriendsProcessResultParser implements IMessageParser {
+  private _success: boolean;
 
-    public flush(): boolean
-    {
-        this._success = false;
+  public flush(): boolean {
+    this._success = false;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._success = wrapper.readBoolean();
+    this._success = wrapper.readBoolean();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get success(): boolean
-    {
-        return this._success;
-    }
+  public get success(): boolean {
+    return this._success;
+  }
 }

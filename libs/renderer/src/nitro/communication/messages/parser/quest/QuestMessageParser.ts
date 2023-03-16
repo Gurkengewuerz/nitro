@@ -1,26 +1,22 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { QuestMessageData } from './QuestMessageData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {QuestMessageData} from "./QuestMessageData";
 
-export class QuestMessageParser implements IMessageParser
-{
-    private _quest: QuestMessageData;
+export class QuestMessageParser implements IMessageParser {
+  private _quest: QuestMessageData;
 
-    public flush(): boolean
-    {
-        this._quest = null;
-        return true;
-    }
+  public flush(): boolean {
+    this._quest = null;
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._quest = new QuestMessageData(wrapper);
-        return true;
-    }
+    this._quest = new QuestMessageData(wrapper);
+    return true;
+  }
 
-    public get quest(): QuestMessageData
-    {
-        return this._quest;
-    }
+  public get quest(): QuestMessageData {
+    return this._quest;
+  }
 }

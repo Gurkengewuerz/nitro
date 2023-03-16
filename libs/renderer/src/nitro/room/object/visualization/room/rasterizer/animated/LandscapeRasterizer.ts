@@ -1,231 +1,219 @@
-﻿import { RenderTexture } from '@pixi/core';
-import { IAssetPlane, IAssetPlaneVisualizationAnimatedLayer, IAssetPlaneVisualizationLayer, IVector3D } from '../../../../../../../api';
-import { PlaneTextureCache } from '../../../../../../../pixi-proxy';
-import { PlaneBitmapData, Randomizer } from '../../utils';
-import { PlaneMaterial, PlaneRasterizer, PlaneVisualizationLayer } from '../basic';
-import { LandscapePlane } from './LandscapePlane';
+﻿import {RenderTexture} from "@pixi/core";
 
-export class LandscapeRasterizer extends PlaneRasterizer
-{
-    public static LANDSCAPES_ENABLED: boolean = true;
-    public static LANDSCAPE_DEFAULT_COLOR: number = 8828617;
+import {IAssetPlane, IAssetPlaneVisualizationAnimatedLayer, IAssetPlaneVisualizationLayer, IVector3D} from "../../../../../../../api";
+import {PlaneTextureCache} from "../../../../../../../pixi-proxy";
+import {PlaneBitmapData, Randomizer} from "../../utils";
+import {PlaneMaterial, PlaneRasterizer, PlaneVisualizationLayer} from "../basic";
+import {LandscapePlane} from "./LandscapePlane";
 
-    private static UPDATE_INTERVAL: number = 500;
+export class LandscapeRasterizer extends PlaneRasterizer {
+  public static LANDSCAPES_ENABLED: boolean = true;
+  public static LANDSCAPE_DEFAULT_COLOR: number = 8828617;
 
-    private _landscapeWidth: number = 0;
-    private _landscapeHeight: number = 0;
-    private _cachedBitmap: RenderTexture = null;
+  private static UPDATE_INTERVAL: number = 500;
 
-    public initializeDimensions(k: number, _arg_2: number): boolean
-    {
-        if(k < 0) k = 0;
+  private _landscapeWidth: number = 0;
+  private _landscapeHeight: number = 0;
+  private _cachedBitmap: RenderTexture = null;
 
-        if(_arg_2 < 0) _arg_2 = 0;
+  public initializeDimensions(k: number, _arg_2: number): boolean {
+    if (k < 0) k = 0;
 
-        this._landscapeWidth = k;
-        this._landscapeHeight = _arg_2;
+    if (_arg_2 < 0) _arg_2 = 0;
 
-        return true;
-    }
+    this._landscapeWidth = k;
+    this._landscapeHeight = _arg_2;
 
-    protected initializePlanes(): void
-    {
-        if(!this.data) return;
+    return true;
+  }
 
-        const landscapes = this.data.planes;
+  protected initializePlanes(): void {
+    if (!this.data) return;
 
-        if(landscapes && landscapes.length) this.parseLandscapes(landscapes);
-    }
+    const landscapes = this.data.planes;
 
-    private parseLandscapes(k: IAssetPlane[]): void
-    {
-        if(!k) return;
+    if (landscapes && landscapes.length) this.parseLandscapes(landscapes);
+  }
 
-        const randomNumber = Math.trunc((Math.random() * 654321));
+  private parseLandscapes(k: IAssetPlane[]): void {
+    if (!k) return;
 
-        for(const landscapeIndex in k)
-        {
-            const landscape = k[landscapeIndex];
+    const randomNumber = Math.trunc(Math.random() * 654321);
 
-            if(!landscape) continue;
+    for (const landscapeIndex in k) {
+      const landscape = k[landscapeIndex];
 
-            const id = landscape.id;
-            const visualizations = landscape.animatedVisualization;
+      if (!landscape) continue;
 
-            const plane = new LandscapePlane();
+      const id = landscape.id;
+      const visualizations = landscape.animatedVisualization;
 
-            for(const visualization of visualizations)
-            {
-                if(!visualization) continue;
+      const plane = new LandscapePlane();
 
-                const size = visualization.size;
+      for (const visualization of visualizations) {
+        if (!visualization) continue;
 
-                let horizontalAngle = LandscapePlane.HORIZONTAL_ANGLE_DEFAULT;
-                let verticalAngle = LandscapePlane.VERTICAL_ANGLE_DEFAULT;
+        const size = visualization.size;
 
-                if(visualization.horizontalAngle !== undefined) horizontalAngle = visualization.horizontalAngle;
-                if(visualization.verticalAngle !== undefined) verticalAngle = visualization.verticalAngle;
+        let horizontalAngle = LandscapePlane.HORIZONTAL_ANGLE_DEFAULT;
+        let verticalAngle = LandscapePlane.VERTICAL_ANGLE_DEFAULT;
 
-                const totalLayers = (visualization.allLayers.length ?? 0);
+        if (visualization.horizontalAngle !== undefined) horizontalAngle = visualization.horizontalAngle;
+        if (visualization.verticalAngle !== undefined) verticalAngle = visualization.verticalAngle;
 
-                const planeVisualization = plane.createPlaneVisualization(size, (totalLayers || 0), this.getGeometry(size, horizontalAngle, verticalAngle));
+        const totalLayers = visualization.allLayers.length ?? 0;
 
-                if(planeVisualization)
-                {
-                    Randomizer.setSeed(randomNumber);
+        const planeVisualization = plane.createPlaneVisualization(size, totalLayers || 0, this.getGeometry(size, horizontalAngle, verticalAngle));
 
-                    let layerId = 0;
+        if (planeVisualization) {
+          Randomizer.setSeed(randomNumber);
 
-                    while(layerId < totalLayers)
-                    {
-                        const layer = visualization.allLayers[layerId];
+          let layerId = 0;
 
-                        if(layer)
-                        {
-                            if((layer as IAssetPlaneVisualizationAnimatedLayer).items === undefined)
-                            {
-                                const basicLayer = (layer as IAssetPlaneVisualizationLayer);
+          while (layerId < totalLayers) {
+            const layer = visualization.allLayers[layerId];
 
-                                let material: PlaneMaterial = null;
-                                let align: number = PlaneVisualizationLayer.ALIGN_DEFAULT;
-                                let color: number = LandscapePlane.DEFAULT_COLOR;
-                                let offset: number = PlaneVisualizationLayer.DEFAULT_OFFSET;
+            if (layer) {
+              if ((layer as IAssetPlaneVisualizationAnimatedLayer).items === undefined) {
+                const basicLayer = layer as IAssetPlaneVisualizationLayer;
 
-                                if(basicLayer.materialId) material = this.getMaterial(basicLayer.materialId);
+                let material: PlaneMaterial = null;
+                let align: number = PlaneVisualizationLayer.ALIGN_DEFAULT;
+                let color: number = LandscapePlane.DEFAULT_COLOR;
+                let offset: number = PlaneVisualizationLayer.DEFAULT_OFFSET;
 
-                                if(basicLayer.color) color = basicLayer.color;
+                if (basicLayer.materialId) material = this.getMaterial(basicLayer.materialId);
 
-                                if(basicLayer.offset) offset = basicLayer.offset;
+                if (basicLayer.color) color = basicLayer.color;
 
-                                if(basicLayer.align)
-                                {
-                                    if(basicLayer.align === 'bottom')
-                                    {
-                                        align = PlaneVisualizationLayer.ALIGN_BOTTOM;
-                                    }
+                if (basicLayer.offset) offset = basicLayer.offset;
 
-                                    else if(basicLayer.align === 'top') align = PlaneVisualizationLayer.ALIGN_TOP;
-                                }
-
-                                planeVisualization.setLayer(layerId, material, color, align, offset);
-                            }
-                            else
-                            {
-                                const animatedLayer = (layer as IAssetPlaneVisualizationAnimatedLayer);
-
-                                const items = animatedLayer.items;
-                                const animationItems: {}[] = [];
-
-                                if(items && items.length)
-                                {
-                                    for(const item of items)
-                                    {
-                                        if(item)
-                                        {
-                                            const id = item.id;
-                                            const assetId = item.assetId;
-                                            const x = this.getCoordinateValue(item.x || '', item.randomX || '');
-                                            const y = this.getCoordinateValue(item.y || '', item.randomY || '');
-                                            const speedX = item.speedX;
-                                            const speedY = item.speedY;
-
-                                            animationItems.push({
-                                                asset: assetId,
-                                                x,
-                                                y,
-                                                speedX,
-                                                speedY
-                                            });
-                                        }
-                                    }
-                                }
-
-                                planeVisualization.setAnimationLayer(layerId, animationItems, this.assetCollection);
-                            }
-
-                            layerId++;
-                        }
-                    }
+                if (basicLayer.align) {
+                  if (basicLayer.align === "bottom") {
+                    align = PlaneVisualizationLayer.ALIGN_BOTTOM;
+                  } else if (basicLayer.align === "top") align = PlaneVisualizationLayer.ALIGN_TOP;
                 }
+
+                planeVisualization.setLayer(layerId, material, color, align, offset);
+              } else {
+                const animatedLayer = layer as IAssetPlaneVisualizationAnimatedLayer;
+
+                const items = animatedLayer.items;
+                const animationItems: {}[] = [];
+
+                if (items && items.length) {
+                  for (const item of items) {
+                    if (item) {
+                      const id = item.id;
+                      const assetId = item.assetId;
+                      const x = this.getCoordinateValue(item.x || "", item.randomX || "");
+                      const y = this.getCoordinateValue(item.y || "", item.randomY || "");
+                      const speedX = item.speedX;
+                      const speedY = item.speedY;
+
+                      animationItems.push({
+                        asset: assetId,
+                        x,
+                        y,
+                        speedX,
+                        speedY,
+                      });
+                    }
+                  }
+                }
+
+                planeVisualization.setAnimationLayer(layerId, animationItems, this.assetCollection);
+              }
+
+              layerId++;
             }
-
-            if(!this.addPlane(id, plane)) plane.dispose();
+          }
         }
+      }
+
+      if (!this.addPlane(id, plane)) plane.dispose();
+    }
+  }
+
+  private getCoordinateValue(x: string, randomX: string): number {
+    let _local_3 = 0;
+
+    if (x.length > 0) {
+      if (x.charAt(x.length - 1) === "%") {
+        x = x.substr(0, x.length - 1);
+
+        _local_3 = parseFloat(x) / 100;
+      }
     }
 
-    private getCoordinateValue(x: string, randomX: string): number
-    {
-        let _local_3 = 0;
+    if (randomX.length > 0) {
+      const _local_4 = 10000;
+      const _local_5 = Randomizer.getValues(1, 0, _local_4);
+      const _local_6 = _local_5[0] / _local_4;
 
-        if((x.length > 0))
-        {
-            if(x.charAt((x.length - 1)) === '%')
-            {
-                x = x.substr(0, (x.length - 1));
+      if (randomX.charAt(randomX.length - 1) === "%") {
+        randomX = randomX.substr(0, randomX.length - 1);
 
-                _local_3 = (parseFloat(x) / 100);
-            }
-        }
-
-        if((randomX.length > 0))
-        {
-            const _local_4 = 10000;
-            const _local_5 = Randomizer.getValues(1, 0, _local_4);
-            const _local_6 = (_local_5[0] / _local_4);
-
-            if(randomX.charAt((randomX.length - 1)) === '%')
-            {
-                randomX = randomX.substr(0, (randomX.length - 1));
-
-                _local_3 = (_local_3 + ((_local_6 * parseFloat(randomX)) / 100));
-            }
-        }
-
-        return _local_3;
+        _local_3 = _local_3 + (_local_6 * parseFloat(randomX)) / 100;
+      }
     }
 
-    public render(planeId: string, textureCache: PlaneTextureCache, canvas: RenderTexture, id: string, width: number, height: number, scale: number, normal: IVector3D, useTexture: boolean, offsetX: number = 0, offsetY: number = 0, maxX: number = 0, maxY: number = 0, timeSinceStartMs: number = 0): PlaneBitmapData
-    {
-        let plane = this.getPlane(id) as LandscapePlane;
+    return _local_3;
+  }
 
-        if(!plane) plane = this.getPlane(LandscapeRasterizer.DEFAULT) as LandscapePlane;
+  public render(
+    planeId: string,
+    textureCache: PlaneTextureCache,
+    canvas: RenderTexture,
+    id: string,
+    width: number,
+    height: number,
+    scale: number,
+    normal: IVector3D,
+    useTexture: boolean,
+    offsetX: number = 0,
+    offsetY: number = 0,
+    maxX: number = 0,
+    maxY: number = 0,
+    timeSinceStartMs: number = 0
+  ): PlaneBitmapData {
+    let plane = this.getPlane(id) as LandscapePlane;
 
-        if(!plane) return null;
+    if (!plane) plane = this.getPlane(LandscapeRasterizer.DEFAULT) as LandscapePlane;
 
-        if(canvas) textureCache.clearRenderTexture(canvas);
+    if (!plane) return null;
 
-        let graphic = plane.render(planeId,textureCache, canvas, width, height, scale, normal, useTexture, offsetX, offsetY, maxX, maxY, timeSinceStartMs);
+    if (canvas) textureCache.clearRenderTexture(canvas);
 
-        if(graphic && (graphic !== canvas))
-        {
-            graphic = new RenderTexture(graphic.baseTexture);
+    let graphic = plane.render(planeId, textureCache, canvas, width, height, scale, normal, useTexture, offsetX, offsetY, maxX, maxY, timeSinceStartMs);
 
-            if(!graphic) return null;
-        }
+    if (graphic && graphic !== canvas) {
+      graphic = new RenderTexture(graphic.baseTexture);
 
-        let planeBitmapData: PlaneBitmapData = null;
-
-        if(!plane.isStatic(scale) && (LandscapeRasterizer.UPDATE_INTERVAL > 0))
-        {
-            planeBitmapData = new PlaneBitmapData(graphic, ((Math.round((timeSinceStartMs / LandscapeRasterizer.UPDATE_INTERVAL)) * LandscapeRasterizer.UPDATE_INTERVAL) + LandscapeRasterizer.UPDATE_INTERVAL));
-        }
-        else
-        {
-            planeBitmapData = new PlaneBitmapData(graphic, -1);
-        }
-
-        return planeBitmapData;
+      if (!graphic) return null;
     }
 
-    public getTextureIdentifier(k: number, _arg_2: IVector3D): string
-    {
-        if(_arg_2)
-        {
-            if(_arg_2.x < 0) return (k + '_0');
+    let planeBitmapData: PlaneBitmapData = null;
 
-            return (k + '_1');
-        }
-
-        return super.getTextureIdentifier(k, _arg_2);
+    if (!plane.isStatic(scale) && LandscapeRasterizer.UPDATE_INTERVAL > 0) {
+      planeBitmapData = new PlaneBitmapData(
+        graphic,
+        Math.round(timeSinceStartMs / LandscapeRasterizer.UPDATE_INTERVAL) * LandscapeRasterizer.UPDATE_INTERVAL + LandscapeRasterizer.UPDATE_INTERVAL
+      );
+    } else {
+      planeBitmapData = new PlaneBitmapData(graphic, -1);
     }
+
+    return planeBitmapData;
+  }
+
+  public getTextureIdentifier(k: number, _arg_2: IVector3D): string {
+    if (_arg_2) {
+      if (_arg_2.x < 0) return k + "_0";
+
+      return k + "_1";
+    }
+
+    return super.getTextureIdentifier(k, _arg_2);
+  }
 }

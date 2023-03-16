@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class CanCreateRoomEventParser implements IMessageParser
-{
-    private _canCreate: boolean;
-    private _errorCode: number;
+export class CanCreateRoomEventParser implements IMessageParser {
+  private _canCreate: boolean;
+  private _errorCode: number;
 
-    public flush(): boolean
-    {
-        this._canCreate = false;
-        this._errorCode = 0;
+  public flush(): boolean {
+    this._canCreate = false;
+    this._errorCode = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._canCreate = wrapper.readBoolean();
-        this._errorCode = wrapper.readInt();
+    this._canCreate = wrapper.readBoolean();
+    this._errorCode = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get canCreate(): boolean
-    {
-        return this._canCreate;
-    }
+  public get canCreate(): boolean {
+    return this._canCreate;
+  }
 
-    public get errorCode(): number
-    {
-        return this._errorCode;
-    }
+  public get errorCode(): number {
+    return this._errorCode;
+  }
 }

@@ -1,6 +1,5 @@
-export interface ICraftingIngredient
-{
-    name: string;
-    iconUrl: string;
-    count: number;
+export interface ICraftingIngredient {
+  name: string;
+  iconUrl: string;
+  count: number;
 }

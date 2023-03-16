@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class RoomUnitDanceParser implements IMessageParser
-{
-    private _unitId: number;
-    private _danceId: number;
+export class RoomUnitDanceParser implements IMessageParser {
+  private _unitId: number;
+  private _danceId: number;
 
-    public flush(): boolean
-    {
-        this._unitId = null;
-        this._danceId = 0;
+  public flush(): boolean {
+    this._unitId = null;
+    this._danceId = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._unitId = wrapper.readInt();
-        this._danceId = wrapper.readInt();
+    this._unitId = wrapper.readInt();
+    this._danceId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get unitId(): number
-    {
-        return this._unitId;
-    }
+  public get unitId(): number {
+    return this._unitId;
+  }
 
-    public get danceId(): number
-    {
-        return this._danceId;
-    }
+  public get danceId(): number {
+    return this._danceId;
+  }
 }

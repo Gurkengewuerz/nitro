@@ -1,92 +1,80 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class MarketplaceItemStatsParser implements IMessageParser
-{
-    private _averagePrice: number;
-    private _currentOfferCount: number;
-    private _historyLength: number;
-    private _dayOffsets: number[];
-    private _averagePrices: number[];
-    private _soldAmounts: number[];
-    private _furniTypeId: number;
-    private _furniCategoryId: number;
+export class MarketplaceItemStatsParser implements IMessageParser {
+  private _averagePrice: number;
+  private _currentOfferCount: number;
+  private _historyLength: number;
+  private _dayOffsets: number[];
+  private _averagePrices: number[];
+  private _soldAmounts: number[];
+  private _furniTypeId: number;
+  private _furniCategoryId: number;
 
-    public flush(): boolean
-    {
-        this._averagePrice = 0;
-        this._currentOfferCount = 0;
-        this._historyLength = 0;
-        this._dayOffsets = [];
-        this._averagePrices = [];
-        this._soldAmounts = [];
-        this._furniTypeId = 0;
-        this._furniCategoryId = 0;
+  public flush(): boolean {
+    this._averagePrice = 0;
+    this._currentOfferCount = 0;
+    this._historyLength = 0;
+    this._dayOffsets = [];
+    this._averagePrices = [];
+    this._soldAmounts = [];
+    this._furniTypeId = 0;
+    this._furniCategoryId = 0;
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    this._averagePrice = wrapper.readInt();
+    this._currentOfferCount = wrapper.readInt();
+    this._historyLength = wrapper.readInt();
+
+    let count = wrapper.readInt();
+
+    while (count > 0) {
+      this._dayOffsets.push(wrapper.readInt());
+      this._averagePrices.push(wrapper.readInt());
+      this._soldAmounts.push(wrapper.readInt());
+
+      count--;
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    this._furniCategoryId = wrapper.readInt();
+    this._furniTypeId = wrapper.readInt();
 
-        this._averagePrice = wrapper.readInt();
-        this._currentOfferCount = wrapper.readInt();
-        this._historyLength = wrapper.readInt();
+    return true;
+  }
 
-        let count = wrapper.readInt();
+  public get averagePrice(): number {
+    return this._averagePrice;
+  }
 
-        while(count > 0)
-        {
-            this._dayOffsets.push(wrapper.readInt());
-            this._averagePrices.push(wrapper.readInt());
-            this._soldAmounts.push(wrapper.readInt());
+  public get offerCount(): number {
+    return this._currentOfferCount;
+  }
 
-            count--;
-        }
+  public get historyLength(): number {
+    return this._historyLength;
+  }
 
-        this._furniCategoryId = wrapper.readInt();
-        this._furniTypeId = wrapper.readInt();
+  public get dayOffsets(): number[] {
+    return this._dayOffsets;
+  }
 
-        return true;
-    }
+  public get averagePrices(): number[] {
+    return this._averagePrices;
+  }
 
-    public get averagePrice(): number
-    {
-        return this._averagePrice;
-    }
+  public get soldAmounts(): number[] {
+    return this._soldAmounts;
+  }
 
-    public get offerCount(): number
-    {
-        return this._currentOfferCount;
-    }
+  public get furniTypeId(): number {
+    return this._furniTypeId;
+  }
 
-    public get historyLength(): number
-    {
-        return this._historyLength;
-    }
-
-    public get dayOffsets(): number[]
-    {
-        return this._dayOffsets;
-    }
-
-    public get averagePrices(): number[]
-    {
-        return this._averagePrices;
-    }
-
-    public get soldAmounts(): number[]
-    {
-        return this._soldAmounts;
-    }
-
-    public get furniTypeId(): number
-    {
-        return this._furniTypeId;
-    }
-
-    public get furniCategoryId(): number
-    {
-        return this._furniCategoryId;
-    }
+  public get furniCategoryId(): number {
+    return this._furniCategoryId;
+  }
 }

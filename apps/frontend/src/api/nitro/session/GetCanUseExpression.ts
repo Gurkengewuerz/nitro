@@ -1,14 +1,14 @@
-import { RoomObjectVariable } from '@nitro/renderer';
-import { GetOwnRoomObject } from '../room';
+import {RoomObjectVariable} from "@nitro/renderer";
 
-export function GetCanUseExpression(): boolean
-{
-    const roomObject = GetOwnRoomObject();
+import {GetOwnRoomObject} from "../room";
 
-    if(!roomObject) return false;
-    
-    const model = roomObject.model;
-    const effectId = model.getValue<number>(RoomObjectVariable.FIGURE_EFFECT);
+export function GetCanUseExpression(): boolean {
+  const roomObject = GetOwnRoomObject();
 
-    return !((effectId === 29) || (effectId === 30) || (effectId === 185));
+  if (!roomObject) return false;
+
+  const model = roomObject.model;
+  const effectId = model.getValue<number>(RoomObjectVariable.FIGURE_EFFECT);
+
+  return !(effectId === 29 || effectId === 30 || effectId === 185);
 }

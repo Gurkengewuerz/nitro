@@ -1,62 +1,73 @@
-import { SelectClubGiftComposer } from '@nitro/renderer';
-import { FC, useCallback, useMemo } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../../api';
-import { AutoGrid, Text } from '../../../../../../common';
-import { useCatalog, useNotification, usePurse } from '../../../../../../hooks';
-import { CatalogLayoutProps } from '../CatalogLayout.types';
-import { VipGiftItem } from './VipGiftItemView';
+import {SelectClubGiftComposer} from "@nitro/renderer";
+import {FC, useCallback, useMemo} from "react";
 
-export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props =>
-{
-    const { purse = null } = usePurse();
-    const { catalogOptions = null, setCatalogOptions = null } = useCatalog();
-    const { clubGifts = null } = catalogOptions;
-    const { showConfirm = null } = useNotification();
-    
-    const giftsAvailable = useCallback(() =>
-    {
-        if(!clubGifts) return '';
+import {LocalizeText, SendMessageComposer} from "../../../../../../api";
+import {AutoGrid, Text} from "../../../../../../common";
+import {useCatalog, useNotification, usePurse} from "../../../../../../hooks";
+import {CatalogLayoutProps} from "../CatalogLayout.types";
+import {VipGiftItem} from "./VipGiftItemView";
 
-        if(clubGifts.giftsAvailable > 0) return LocalizeText('catalog.club_gift.available', [ 'amount' ], [ clubGifts.giftsAvailable.toString() ]);
+export const CatalogLayoutVipGiftsView: FC<CatalogLayoutProps> = props => {
+  const {purse = null} = usePurse();
+  const {catalogOptions = null, setCatalogOptions = null} = useCatalog();
+  const {clubGifts = null} = catalogOptions;
+  const {showConfirm = null} = useNotification();
 
-        if(clubGifts.daysUntilNextGift > 0) return LocalizeText('catalog.club_gift.days_until_next', [ 'days' ], [ clubGifts.daysUntilNextGift.toString() ]);
+  const giftsAvailable = useCallback(() => {
+    if (!clubGifts) return "";
 
-        if(purse.isVip) return LocalizeText('catalog.club_gift.not_available');
+    if (clubGifts.giftsAvailable > 0) return LocalizeText("catalog.club_gift.available", ["amount"], [clubGifts.giftsAvailable.toString()]);
 
-        return LocalizeText('catalog.club_gift.no_club');
-    }, [ clubGifts, purse ]);
+    if (clubGifts.daysUntilNextGift > 0) return LocalizeText("catalog.club_gift.days_until_next", ["days"], [clubGifts.daysUntilNextGift.toString()]);
 
-    const selectGift = useCallback((localizationId: string) =>
-    {
-        showConfirm(LocalizeText('catalog.club_gift.confirm'), () =>
-        {
-            SendMessageComposer(new SelectClubGiftComposer(localizationId));
+    if (purse.isVip) return LocalizeText("catalog.club_gift.not_available");
 
-            setCatalogOptions(prevValue =>
-            {
-                prevValue.clubGifts.giftsAvailable--;
+    return LocalizeText("catalog.club_gift.no_club");
+  }, [clubGifts, purse]);
 
-                return { ...prevValue };
-            });
-        }, null);
-    }, [ setCatalogOptions, showConfirm ]);
+  const selectGift = useCallback(
+    (localizationId: string) => {
+      showConfirm(
+        LocalizeText("catalog.club_gift.confirm"),
+        () => {
+          SendMessageComposer(new SelectClubGiftComposer(localizationId));
 
-    const sortGifts = useMemo(() => 
-    {
-        let gifts = clubGifts.offers.sort((a,b) => 
-        {
-            return clubGifts.getOfferExtraData(a.offerId).daysRequired - clubGifts.getOfferExtraData(b.offerId).daysRequired;
-        })
-        return gifts;
-    },[ clubGifts ]);
-    
-    
-    return (
-        <>
-            <Text truncate shrink fontWeight="bold">{ giftsAvailable() }</Text>
-            <AutoGrid columnCount={ 1 } className="nitro-catalog-layout-vip-gifts-grid">
-                { (clubGifts.offers.length > 0) && sortGifts.map(offer => <VipGiftItem key={ offer.offerId } offer={ offer } isAvailable={ (clubGifts.getOfferExtraData(offer.offerId).isSelectable && (clubGifts.giftsAvailable > 0)) } onSelect={ selectGift } daysRequired={ clubGifts.getOfferExtraData(offer.offerId).daysRequired }/>) }
-            </AutoGrid>
-        </>
-    )
-}
+          setCatalogOptions(prevValue => {
+            prevValue.clubGifts.giftsAvailable--;
+
+            return {...prevValue};
+          });
+        },
+        null
+      );
+    },
+    [setCatalogOptions, showConfirm]
+  );
+
+  const sortGifts = useMemo(() => {
+    let gifts = clubGifts.offers.sort((a, b) => {
+      return clubGifts.getOfferExtraData(a.offerId).daysRequired - clubGifts.getOfferExtraData(b.offerId).daysRequired;
+    });
+    return gifts;
+  }, [clubGifts]);
+
+  return (
+    <>
+      <Text truncate shrink fontWeight="bold">
+        {giftsAvailable()}
+      </Text>
+      <AutoGrid columnCount={1} className="nitro-catalog-layout-vip-gifts-grid">
+        {clubGifts.offers.length > 0 &&
+          sortGifts.map(offer => (
+            <VipGiftItem
+              key={offer.offerId}
+              offer={offer}
+              isAvailable={clubGifts.getOfferExtraData(offer.offerId).isSelectable && clubGifts.giftsAvailable > 0}
+              onSelect={selectGift}
+              daysRequired={clubGifts.getOfferExtraData(offer.offerId).daysRequired}
+            />
+          ))}
+      </AutoGrid>
+    </>
+  );
+};

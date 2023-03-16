@@ -1,152 +1,156 @@
-import { BadgePointLimitsEvent, ILinkEventTracker, IRoomSession, RoomEngineObjectEvent, RoomEngineObjectPlacedEvent, RoomPreviewer, RoomSessionEvent } from '@nitro/renderer';
-import { FC, useEffect, useState } from 'react';
-import { AddEventLinkTracker, GetLocalization, GetRoomEngine, isObjectMoverRequested, LocalizeText, RemoveLinkEventTracker, setObjectMoverRequested, UnseenItemCategory } from '../../api';
-import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';
-import { useInventoryTrade, useInventoryUnseenTracker, useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent } from '../../hooks';
-import { InventoryBadgeView } from './views/badge/InventoryBadgeView';
-import { InventoryBotView } from './views/bot/InventoryBotView';
-import { InventoryFurnitureView } from './views/furniture/InventoryFurnitureView';
-import { InventoryTradeView } from './views/furniture/InventoryTradeView';
-import { InventoryPetView } from './views/pet/InventoryPetView';
+import {
+  BadgePointLimitsEvent,
+  ILinkEventTracker,
+  IRoomSession,
+  RoomEngineObjectEvent,
+  RoomEngineObjectPlacedEvent,
+  RoomPreviewer,
+  RoomSessionEvent,
+} from "@nitro/renderer";
+import {FC, useEffect, useState} from "react";
 
-const TAB_FURNITURE: string = 'inventory.furni';
-const TAB_BOTS: string = 'inventory.bots';
-const TAB_PETS: string = 'inventory.furni.tab.pets';
-const TAB_BADGES: string = 'inventory.badges';
-const TABS = [ TAB_FURNITURE, TAB_BOTS, TAB_PETS, TAB_BADGES ];
-const UNSEEN_CATEGORIES = [ UnseenItemCategory.FURNI, UnseenItemCategory.BOT, UnseenItemCategory.PET, UnseenItemCategory.BADGE ];
+import {
+  AddEventLinkTracker,
+  GetLocalization,
+  GetRoomEngine,
+  LocalizeText,
+  RemoveLinkEventTracker,
+  UnseenItemCategory,
+  isObjectMoverRequested,
+  setObjectMoverRequested,
+} from "../../api";
+import {NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView} from "../../common";
+import {useInventoryTrade, useInventoryUnseenTracker, useMessageEvent, useRoomEngineEvent, useRoomSessionManagerEvent} from "../../hooks";
+import {InventoryBadgeView} from "./views/badge/InventoryBadgeView";
+import {InventoryBotView} from "./views/bot/InventoryBotView";
+import {InventoryFurnitureView} from "./views/furniture/InventoryFurnitureView";
+import {InventoryTradeView} from "./views/furniture/InventoryTradeView";
+import {InventoryPetView} from "./views/pet/InventoryPetView";
 
-export const InventoryView: FC<{}> = props =>
-{
-    const [ isVisible, setIsVisible ] = useState(false);
-    const [ currentTab, setCurrentTab ] = useState<string>(TABS[0]);
-    const [ roomSession, setRoomSession ] = useState<IRoomSession>(null);
-    const [ roomPreviewer, setRoomPreviewer ] = useState<RoomPreviewer>(null);
-    const { isTrading = false, stopTrading = null } = useInventoryTrade();
-    const { getCount = null, resetCategory = null } = useInventoryUnseenTracker();
+const TAB_FURNITURE: string = "inventory.furni";
+const TAB_BOTS: string = "inventory.bots";
+const TAB_PETS: string = "inventory.furni.tab.pets";
+const TAB_BADGES: string = "inventory.badges";
+const TABS = [TAB_FURNITURE, TAB_BOTS, TAB_PETS, TAB_BADGES];
+const UNSEEN_CATEGORIES = [UnseenItemCategory.FURNI, UnseenItemCategory.BOT, UnseenItemCategory.PET, UnseenItemCategory.BADGE];
 
-    const onClose = () =>
-    {
-        if(isTrading) stopTrading();
+export const InventoryView: FC<{}> = props => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [currentTab, setCurrentTab] = useState<string>(TABS[0]);
+  const [roomSession, setRoomSession] = useState<IRoomSession>(null);
+  const [roomPreviewer, setRoomPreviewer] = useState<RoomPreviewer>(null);
+  const {isTrading = false, stopTrading = null} = useInventoryTrade();
+  const {getCount = null, resetCategory = null} = useInventoryUnseenTracker();
 
+  const onClose = () => {
+    if (isTrading) stopTrading();
+
+    setIsVisible(false);
+  };
+
+  useRoomEngineEvent<RoomEngineObjectPlacedEvent>(RoomEngineObjectEvent.PLACED, event => {
+    if (!isObjectMoverRequested()) return;
+
+    setObjectMoverRequested(false);
+
+    if (!event.placedInRoom) setIsVisible(true);
+  });
+
+  useRoomSessionManagerEvent<RoomSessionEvent>([RoomSessionEvent.CREATED, RoomSessionEvent.ENDED], event => {
+    switch (event.type) {
+      case RoomSessionEvent.CREATED:
+        setRoomSession(event.session);
+        return;
+      case RoomSessionEvent.ENDED:
+        setRoomSession(null);
         setIsVisible(false);
+        return;
     }
+  });
 
-    useRoomEngineEvent<RoomEngineObjectPlacedEvent>(RoomEngineObjectEvent.PLACED, event =>
-    {
-        if(!isObjectMoverRequested()) return;
+  useMessageEvent<BadgePointLimitsEvent>(BadgePointLimitsEvent, event => {
+    const parser = event.getParser();
 
-        setObjectMoverRequested(false);
+    for (const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
+  });
 
-        if(!event.placedInRoom) setIsVisible(true);
-    });
+  useEffect(() => {
+    const linkTracker: ILinkEventTracker = {
+      linkReceived: (url: string) => {
+        const parts = url.split("/");
 
-    useRoomSessionManagerEvent<RoomSessionEvent>([
-        RoomSessionEvent.CREATED,
-        RoomSessionEvent.ENDED
-    ], event =>
-    {
-        switch(event.type)
-        {
-            case RoomSessionEvent.CREATED:
-                setRoomSession(event.session);
-                return;
-            case RoomSessionEvent.ENDED:
-                setRoomSession(null);
-                setIsVisible(false);
-                return;
+        if (parts.length < 2) return;
+
+        switch (parts[1]) {
+          case "show":
+            setIsVisible(true);
+            return;
+          case "hide":
+            setIsVisible(false);
+            return;
+          case "toggle":
+            setIsVisible(prevValue => !prevValue);
+            return;
         }
-    });
+      },
+      eventUrlPrefix: "inventory/",
+    };
 
-    useMessageEvent<BadgePointLimitsEvent>(BadgePointLimitsEvent, event =>
-    {
-        const parser = event.getParser();
+    AddEventLinkTracker(linkTracker);
 
-        for(const data of parser.data) GetLocalization().setBadgePointLimit(data.badgeId, data.limit);
-    });
+    return () => RemoveLinkEventTracker(linkTracker);
+  }, []);
 
-    useEffect(() =>
-    {
-        const linkTracker: ILinkEventTracker = {
-            linkReceived: (url: string) =>
-            {
-                const parts = url.split('/');
+  useEffect(() => {
+    setRoomPreviewer(new RoomPreviewer(GetRoomEngine(), ++RoomPreviewer.PREVIEW_COUNTER));
 
-                if(parts.length < 2) return;
-        
-                switch(parts[1])
-                {
-                    case 'show':
-                        setIsVisible(true);
-                        return;
-                    case 'hide':
-                        setIsVisible(false);
-                        return;
-                    case 'toggle':
-                        setIsVisible(prevValue => !prevValue);
-                        return;
-                }
-            },
-            eventUrlPrefix: 'inventory/'
-        };
+    return () => {
+      setRoomPreviewer(prevValue => {
+        prevValue.dispose();
 
-        AddEventLinkTracker(linkTracker);
+        return null;
+      });
+    };
+  }, []);
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, []);
+  useEffect(() => {
+    if (!isVisible && isTrading) setIsVisible(true);
+  }, [isVisible, isTrading]);
 
-    useEffect(() =>
-    {
-        setRoomPreviewer(new RoomPreviewer(GetRoomEngine(), ++RoomPreviewer.PREVIEW_COUNTER));
+  if (!isVisible) return null;
 
-        return () =>
-        {
-            setRoomPreviewer(prevValue =>
-            {
-                prevValue.dispose();
-
-                return null;
-            });
-        }
-    }, []);
-
-    useEffect(() =>
-    {
-        if(!isVisible && isTrading) setIsVisible(true);
-    }, [ isVisible, isTrading ]);
-
-    if(!isVisible) return null;
-
-    return (
-        <NitroCardView uniqueKey={ 'inventory' } className="nitro-inventory" theme={ isTrading ? 'primary-slim' : '' } >
-            <NitroCardHeaderView headerText={ LocalizeText('inventory.title') } onCloseClick={ onClose } />
-            { !isTrading &&
-                <>
-                    <NitroCardTabsView>
-                        { TABS.map((name, index) =>
-                        {
-                            return (
-                                <NitroCardTabsItemView key={ index } isActive={ (currentTab === name) } onClick={ event => setCurrentTab(name) } count={ getCount(UNSEEN_CATEGORIES[index]) }>
-                                    { LocalizeText(name) }
-                                </NitroCardTabsItemView>
-                            );
-                        }) }
-                    </NitroCardTabsView>
-                    <NitroCardContentView>
-                        { (currentTab === TAB_FURNITURE ) &&
-                            <InventoryFurnitureView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === TAB_BOTS ) &&
-                            <InventoryBotView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === TAB_PETS ) && 
-                            <InventoryPetView roomSession={ roomSession } roomPreviewer={ roomPreviewer } /> }
-                        { (currentTab === TAB_BADGES ) && 
-                            <InventoryBadgeView /> }
-                    </NitroCardContentView>
-                </> }
-            { isTrading &&
-                <NitroCardContentView>
-                    <InventoryTradeView cancelTrade={ onClose } />
-                </NitroCardContentView> }
-        </NitroCardView>
-    );
-}
+  return (
+    <NitroCardView uniqueKey={"inventory"} className="nitro-inventory" theme={isTrading ? "primary-slim" : ""}>
+      <NitroCardHeaderView headerText={LocalizeText("inventory.title")} onCloseClick={onClose} />
+      {!isTrading && (
+        <>
+          <NitroCardTabsView>
+            {TABS.map((name, index) => {
+              return (
+                <NitroCardTabsItemView
+                  key={index}
+                  isActive={currentTab === name}
+                  onClick={event => setCurrentTab(name)}
+                  count={getCount(UNSEEN_CATEGORIES[index])}
+                >
+                  {LocalizeText(name)}
+                </NitroCardTabsItemView>
+              );
+            })}
+          </NitroCardTabsView>
+          <NitroCardContentView>
+            {currentTab === TAB_FURNITURE && <InventoryFurnitureView roomSession={roomSession} roomPreviewer={roomPreviewer} />}
+            {currentTab === TAB_BOTS && <InventoryBotView roomSession={roomSession} roomPreviewer={roomPreviewer} />}
+            {currentTab === TAB_PETS && <InventoryPetView roomSession={roomSession} roomPreviewer={roomPreviewer} />}
+            {currentTab === TAB_BADGES && <InventoryBadgeView />}
+          </NitroCardContentView>
+        </>
+      )}
+      {isTrading && (
+        <NitroCardContentView>
+          <InventoryTradeView cancelTrade={onClose} />
+        </NitroCardContentView>
+      )}
+    </NitroCardView>
+  );
+};

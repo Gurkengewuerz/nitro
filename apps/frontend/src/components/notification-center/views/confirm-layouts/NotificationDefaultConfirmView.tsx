@@ -1,40 +1,41 @@
-import { FC } from 'react';
-import { NotificationAlertType, NotificationConfirmItem } from '../../../../api';
-import { Button, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text } from '../../../../common';
+import {FC} from "react";
 
-export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps
-{
-    item: NotificationConfirmItem;
+import {NotificationAlertType, NotificationConfirmItem} from "../../../../api";
+import {Button, Flex, LayoutNotificationAlertView, LayoutNotificationAlertViewProps, Text} from "../../../../common";
+
+export interface NotificationDefaultConfirmViewProps extends LayoutNotificationAlertViewProps {
+  item: NotificationConfirmItem;
 }
 
-export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props =>
-{
-    const { item = null, onClose = null, ...rest } = props;
-    const { message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null } = item;
+export const NotificationDefaultConfirmView: FC<NotificationDefaultConfirmViewProps> = props => {
+  const {item = null, onClose = null, ...rest} = props;
+  const {message = null, onConfirm = null, onCancel = null, confirmText = null, cancelText = null, title = null} = item;
 
-    const confirm = () =>
-    {
-        if(onConfirm) onConfirm();
+  const confirm = () => {
+    if (onConfirm) onConfirm();
 
-        onClose();
-    }
+    onClose();
+  };
 
-    const cancel = () =>
-    {
-        if(onCancel) onCancel();
-        
-        onClose();
-    }
+  const cancel = () => {
+    if (onCancel) onCancel();
 
-    return (
-        <LayoutNotificationAlertView title={ title } onClose={ onClose } { ...rest } type={ NotificationAlertType.ALERT }>
-            <Flex grow center>
-                <Text>{ message }</Text>
-            </Flex>
-            <Flex gap={ 1 }>
-                <Button fullWidth variant="danger" onClick={ cancel }>{ cancelText }</Button>
-                <Button fullWidth onClick={ confirm }>{ confirmText }</Button>
-            </Flex>
-        </LayoutNotificationAlertView>
-    );
-}
+    onClose();
+  };
+
+  return (
+    <LayoutNotificationAlertView title={title} onClose={onClose} {...rest} type={NotificationAlertType.ALERT}>
+      <Flex grow center>
+        <Text>{message}</Text>
+      </Flex>
+      <Flex gap={1}>
+        <Button fullWidth variant="danger" onClick={cancel}>
+          {cancelText}
+        </Button>
+        <Button fullWidth onClick={confirm}>
+          {confirmText}
+        </Button>
+      </Flex>
+    </LayoutNotificationAlertView>
+  );
+};

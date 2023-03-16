@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { ExtendedForumData } from './ExtendedForumData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {ExtendedForumData} from "./ExtendedForumData";
 
-export class ForumDataMessageParser implements IMessageParser
-{
-    private _extendedForumData: ExtendedForumData;
+export class ForumDataMessageParser implements IMessageParser {
+  private _extendedForumData: ExtendedForumData;
 
-    public flush(): boolean
-    {
-        this._extendedForumData = null;
+  public flush(): boolean {
+    this._extendedForumData = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._extendedForumData = ExtendedForumData.parse(wrapper);
+    this._extendedForumData = ExtendedForumData.parse(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get extendedForumData(): ExtendedForumData
-    {
-        return this._extendedForumData;
-    }
+  public get extendedForumData(): ExtendedForumData {
+    return this._extendedForumData;
+  }
 }

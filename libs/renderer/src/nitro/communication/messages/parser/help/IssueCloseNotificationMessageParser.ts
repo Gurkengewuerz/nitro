@@ -1,34 +1,29 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class IssueCloseNotificationMessageParser implements IMessageParser
-{
-    private _closeReason: number;
-    private _messageText: string;
+export class IssueCloseNotificationMessageParser implements IMessageParser {
+  private _closeReason: number;
+  private _messageText: string;
 
-    public flush(): boolean
-    {
-        this._closeReason = 0;
-        this._messageText = '';
-        return true;
-    }
+  public flush(): boolean {
+    this._closeReason = 0;
+    this._messageText = "";
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._closeReason = wrapper.readInt();
-        this._messageText = wrapper.readString();
+    this._closeReason = wrapper.readInt();
+    this._messageText = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get closeReason(): number
-    {
-        return this._closeReason;
-    }
+  public get closeReason(): number {
+    return this._closeReason;
+  }
 
-    public get messageText(): string
-    {
-        return this._messageText;
-    }
+  public get messageText(): string {
+    return this._messageText;
+  }
 }

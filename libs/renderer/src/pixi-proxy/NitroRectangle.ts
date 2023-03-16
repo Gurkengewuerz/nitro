@@ -1,4 +1,3 @@
-import { Rectangle } from '@pixi/math';
+import {Rectangle} from "@pixi/math";
 
-export class NitroRectangle extends Rectangle
-{}
+export class NitroRectangle extends Rectangle {}

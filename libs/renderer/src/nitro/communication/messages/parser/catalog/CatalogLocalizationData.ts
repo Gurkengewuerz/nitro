@@ -1,41 +1,35 @@
-import { IMessageDataWrapper } from '../../../../../api';
+import {IMessageDataWrapper} from "../../../../../api";
 
-export class CatalogLocalizationData
-{
-    private _images: string[];
-    private _texts: string[];
+export class CatalogLocalizationData {
+  private _images: string[];
+  private _texts: string[];
 
-    constructor(wrapper: IMessageDataWrapper)
-    {
-        this._images = [];
-        this._texts = [];
+  constructor(wrapper: IMessageDataWrapper) {
+    this._images = [];
+    this._texts = [];
 
-        let totalImages = wrapper.readInt();
+    let totalImages = wrapper.readInt();
 
-        while(totalImages > 0)
-        {
-            this._images.push(wrapper.readString());
+    while (totalImages > 0) {
+      this._images.push(wrapper.readString());
 
-            totalImages--;
-        }
-
-        let totalTexts = wrapper.readInt();
-
-        while(totalTexts > 0)
-        {
-            this._texts.push(wrapper.readString());
-
-            totalTexts--;
-        }
+      totalImages--;
     }
 
-    public get images(): string[]
-    {
-        return this._images;
-    }
+    let totalTexts = wrapper.readInt();
 
-    public get texts(): string[]
-    {
-        return this._texts;
+    while (totalTexts > 0) {
+      this._texts.push(wrapper.readString());
+
+      totalTexts--;
     }
+  }
+
+  public get images(): string[] {
+    return this._images;
+  }
+
+  public get texts(): string[] {
+    return this._texts;
+  }
 }

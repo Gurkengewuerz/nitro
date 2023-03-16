@@ -1,28 +1,25 @@
-import { Resource, Texture } from '@pixi/core';
-import { NitroEvent } from '../core';
+import {Resource, Texture} from "@pixi/core";
 
-export class BadgeImageReadyEvent extends NitroEvent
-{
-    public static IMAGE_READY: string = 'BIME_BADGE_IMAGE_READY';
+import {NitroEvent} from "../core";
 
-    private _badgeId: string;
-    private _image: Texture<Resource>;
+export class BadgeImageReadyEvent extends NitroEvent {
+  public static IMAGE_READY: string = "BIME_BADGE_IMAGE_READY";
 
-    constructor(badgeId: string, image: Texture<Resource>)
-    {
-        super(BadgeImageReadyEvent.IMAGE_READY);
+  private _badgeId: string;
+  private _image: Texture<Resource>;
 
-        this._badgeId = badgeId;
-        this._image = image;
-    }
+  constructor(badgeId: string, image: Texture<Resource>) {
+    super(BadgeImageReadyEvent.IMAGE_READY);
 
-    public get badgeId(): string
-    {
-        return this._badgeId;
-    }
+    this._badgeId = badgeId;
+    this._image = image;
+  }
 
-    public get image(): Texture<Resource>
-    {
-        return this._image;
-    }
+  public get badgeId(): string {
+    return this._badgeId;
+  }
+
+  public get image(): Texture<Resource> {
+    return this._image;
+  }
 }

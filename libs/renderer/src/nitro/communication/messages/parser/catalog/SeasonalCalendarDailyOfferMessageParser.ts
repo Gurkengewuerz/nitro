@@ -1,36 +1,31 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { CatalogPageMessageOfferData } from './CatalogPageMessageOfferData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {CatalogPageMessageOfferData} from "./CatalogPageMessageOfferData";
 
-export class SeasonalCalendarDailyOfferMessageParser implements IMessageParser
-{
-    private _pageId: number;
-    private _data: CatalogPageMessageOfferData;
+export class SeasonalCalendarDailyOfferMessageParser implements IMessageParser {
+  private _pageId: number;
+  private _data: CatalogPageMessageOfferData;
 
-    public flush(): boolean
-    {
-        this._pageId = -1;
-        this._data = null;
+  public flush(): boolean {
+    this._pageId = -1;
+    this._data = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._pageId = wrapper.readInt();
-        this._data = new CatalogPageMessageOfferData(wrapper);
+    this._pageId = wrapper.readInt();
+    this._data = new CatalogPageMessageOfferData(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get pageId(): number
-    {
-        return this._pageId;
-    }
+  public get pageId(): number {
+    return this._pageId;
+  }
 
-    public get data(): CatalogPageMessageOfferData
-    {
-        return this._data;
-    }
+  public get data(): CatalogPageMessageOfferData {
+    return this._data;
+  }
 }

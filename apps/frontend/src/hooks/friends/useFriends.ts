@@ -1,266 +1,254 @@
-import { AcceptFriendMessageComposer, DeclineFriendMessageComposer, FollowFriendMessageComposer, FriendListFragmentEvent, FriendListUpdateComposer, FriendListUpdateEvent, FriendParser, FriendRequestsEvent, GetFriendRequestsComposer, MessengerInitComposer, MessengerInitEvent, NewFriendRequestEvent, RequestFriendComposer, SetRelationshipStatusComposer } from '@nitro/renderer';
-import { useEffect, useMemo, useState } from 'react';
-import { useBetween } from 'use-between';
-import { CloneObject, GetSessionDataManager, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer } from '../../api';
-import { useMessageEvent } from '../events';
+import {
+  AcceptFriendMessageComposer,
+  DeclineFriendMessageComposer,
+  FollowFriendMessageComposer,
+  FriendListFragmentEvent,
+  FriendListUpdateComposer,
+  FriendListUpdateEvent,
+  FriendParser,
+  FriendRequestsEvent,
+  GetFriendRequestsComposer,
+  MessengerInitComposer,
+  MessengerInitEvent,
+  NewFriendRequestEvent,
+  RequestFriendComposer,
+  SetRelationshipStatusComposer,
+} from "@nitro/renderer";
+import {useEffect, useMemo, useState} from "react";
+import {useBetween} from "use-between";
 
-const useFriendsState = () =>
-{
-    const [ friends, setFriends ] = useState<MessengerFriend[]>([]);
-    const [ requests, setRequests ] = useState<MessengerRequest[]>([]);
-    const [ sentRequests, setSentRequests ] = useState<number[]>([]);
-    const [ dismissedRequestIds, setDismissedRequestIds ] = useState<number[]>([]);
-    const [ settings, setSettings ] = useState<MessengerSettings>(null);
+import {CloneObject, GetSessionDataManager, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer} from "../../api";
+import {useMessageEvent} from "../events";
 
-    const onlineFriends = useMemo(() =>
-    {
-        const onlineFriends = friends.filter(friend => friend.online);
+const useFriendsState = () => {
+  const [friends, setFriends] = useState<MessengerFriend[]>([]);
+  const [requests, setRequests] = useState<MessengerRequest[]>([]);
+  const [sentRequests, setSentRequests] = useState<number[]>([]);
+  const [dismissedRequestIds, setDismissedRequestIds] = useState<number[]>([]);
+  const [settings, setSettings] = useState<MessengerSettings>(null);
 
-        onlineFriends.sort((a, b) =>
-        {
-            if( a.name < b.name ) return -1;
+  const onlineFriends = useMemo(() => {
+    const onlineFriends = friends.filter(friend => friend.online);
 
-            if( a.name > b.name ) return 1;
+    onlineFriends.sort((a, b) => {
+      if (a.name < b.name) return -1;
 
-            return 0;
-        });
+      if (a.name > b.name) return 1;
 
-        return onlineFriends;
-    }, [ friends ]);
+      return 0;
+    });
 
-    const offlineFriends = useMemo(() =>
-    {
-        const offlineFriends = friends.filter(friend => !friend.online);
+    return onlineFriends;
+  }, [friends]);
 
-        offlineFriends.sort((a, b) =>
-        {
-            if( a.name < b.name ) return -1;
+  const offlineFriends = useMemo(() => {
+    const offlineFriends = friends.filter(friend => !friend.online);
 
-            if( a.name > b.name ) return 1;
+    offlineFriends.sort((a, b) => {
+      if (a.name < b.name) return -1;
 
-            return 0;
-        });
+      if (a.name > b.name) return 1;
 
-        return offlineFriends;
-    }, [ friends ]);
+      return 0;
+    });
 
-    const followFriend = (friend: MessengerFriend) => SendMessageComposer(new FollowFriendMessageComposer(friend.id));
+    return offlineFriends;
+  }, [friends]);
 
-    const updateRelationship = (friend: MessengerFriend, type: number) => ((type !== friend.relationshipStatus) && SendMessageComposer(new SetRelationshipStatusComposer(friend.id, type)));
+  const followFriend = (friend: MessengerFriend) => SendMessageComposer(new FollowFriendMessageComposer(friend.id));
 
-    const getFriend = (userId: number) =>
-    {
-        for(const friend of friends)
-        {
-            if(friend.id === userId) return friend;
-        }
+  const updateRelationship = (friend: MessengerFriend, type: number) =>
+    type !== friend.relationshipStatus && SendMessageComposer(new SetRelationshipStatusComposer(friend.id, type));
 
-        return null;
+  const getFriend = (userId: number) => {
+    for (const friend of friends) {
+      if (friend.id === userId) return friend;
     }
 
-    const canRequestFriend = (userId: number) =>
-    {
-        if(userId === GetSessionDataManager().userId) return false;
-        
-        if(getFriend(userId)) return false;
+    return null;
+  };
 
-        if(requests.find(request => (request.requesterUserId === userId))) return false;
+  const canRequestFriend = (userId: number) => {
+    if (userId === GetSessionDataManager().userId) return false;
 
-        if(sentRequests.indexOf(userId) >= 0) return false;
+    if (getFriend(userId)) return false;
 
-        return true;
-    }
+    if (requests.find(request => request.requesterUserId === userId)) return false;
 
-    const requestFriend = (userId: number, userName: string) =>
-    {
-        if(!canRequestFriend(userId)) return false;
+    if (sentRequests.indexOf(userId) >= 0) return false;
 
-        setSentRequests(prevValue =>
-        {
-            const newSentRequests = [ ...prevValue ];
+    return true;
+  };
 
-            newSentRequests.push(userId);
+  const requestFriend = (userId: number, userName: string) => {
+    if (!canRequestFriend(userId)) return false;
 
-            return newSentRequests;
-        });
+    setSentRequests(prevValue => {
+      const newSentRequests = [...prevValue];
 
-        SendMessageComposer(new RequestFriendComposer(userName));
-    }
+      newSentRequests.push(userId);
 
-    const requestResponse = (requestId: number, flag: boolean) =>
-    {
-        if(requestId === -1 && !flag)
-        {
-            SendMessageComposer(new DeclineFriendMessageComposer(true));
+      return newSentRequests;
+    });
 
-            setRequests([]);
+    SendMessageComposer(new RequestFriendComposer(userName));
+  };
+
+  const requestResponse = (requestId: number, flag: boolean) => {
+    if (requestId === -1 && !flag) {
+      SendMessageComposer(new DeclineFriendMessageComposer(true));
+
+      setRequests([]);
+    } else {
+      setRequests(prevValue => {
+        const newRequests = [...prevValue];
+        const index = newRequests.findIndex(request => request.id === requestId);
+
+        if (index === -1) return prevValue;
+
+        if (flag) {
+          SendMessageComposer(new AcceptFriendMessageComposer(newRequests[index].id));
+        } else {
+          SendMessageComposer(new DeclineFriendMessageComposer(false, newRequests[index].id));
         }
-        else
-        {
-            setRequests(prevValue =>
-            {
-                const newRequests = [ ...prevValue ];
-                const index = newRequests.findIndex(request => (request.id === requestId));
 
-                if(index === -1) return prevValue;
+        newRequests.splice(index, 1);
 
-                if(flag)
-                {
-                    SendMessageComposer(new AcceptFriendMessageComposer(newRequests[index].id));
-                }
-                else
-                {
-                    SendMessageComposer(new DeclineFriendMessageComposer(false, newRequests[index].id));
-                }
-
-                newRequests.splice(index, 1);
-
-                return newRequests;
-            });
-        }
+        return newRequests;
+      });
     }
+  };
 
-    useMessageEvent<MessengerInitEvent>(MessengerInitEvent, event =>
-    {
-        const parser = event.getParser();
+  useMessageEvent<MessengerInitEvent>(MessengerInitEvent, event => {
+    const parser = event.getParser();
 
-        setSettings(new MessengerSettings(
-            parser.userFriendLimit,
-            parser.normalFriendLimit,
-            parser.extendedFriendLimit,
-            parser.categories));
+    setSettings(new MessengerSettings(parser.userFriendLimit, parser.normalFriendLimit, parser.extendedFriendLimit, parser.categories));
 
-        SendMessageComposer(new GetFriendRequestsComposer());
+    SendMessageComposer(new GetFriendRequestsComposer());
+  });
+
+  useMessageEvent<FriendListFragmentEvent>(FriendListFragmentEvent, event => {
+    const parser = event.getParser();
+
+    setFriends(prevValue => {
+      const newValue = [...prevValue];
+
+      for (const friend of parser.fragment) {
+        const index = newValue.findIndex(existingFriend => existingFriend.id === friend.id);
+        const newFriend = new MessengerFriend();
+        newFriend.populate(friend);
+
+        if (index > -1) newValue[index] = newFriend;
+        else newValue.push(newFriend);
+      }
+
+      return newValue;
     });
+  });
 
-    useMessageEvent<FriendListFragmentEvent>(FriendListFragmentEvent, event =>
-    {
-        const parser = event.getParser();
+  useMessageEvent<FriendListUpdateEvent>(FriendListUpdateEvent, event => {
+    const parser = event.getParser();
 
-        setFriends(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
+    setFriends(prevValue => {
+      const newValue = [...prevValue];
 
-            for(const friend of parser.fragment)
-            {
-                const index = newValue.findIndex(existingFriend => (existingFriend.id === friend.id));
-                const newFriend = new MessengerFriend();
-                newFriend.populate(friend);
+      const processUpdate = (friend: FriendParser) => {
+        const index = newValue.findIndex(existingFriend => existingFriend.id === friend.id);
 
-                if(index > -1) newValue[index] = newFriend;
-                else newValue.push(newFriend);
-            }
+        if (index === -1) {
+          const newFriend = new MessengerFriend();
+          newFriend.populate(friend);
 
-            return newValue;
-        });
-    });
-
-    useMessageEvent<FriendListUpdateEvent>(FriendListUpdateEvent, event =>
-    {
-        const parser = event.getParser();
-
-        setFriends(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
-
-            const processUpdate = (friend: FriendParser) =>
-            {
-                const index = newValue.findIndex(existingFriend => (existingFriend.id === friend.id));
-
-                if(index === -1)
-                {
-                    const newFriend = new MessengerFriend();
-                    newFriend.populate(friend);
-
-                    newValue.unshift(newFriend);
-                }
-                else
-                {
-                    newValue[index].populate(friend);
-                }
-            }
-
-            for(const friend of parser.addedFriends) processUpdate(friend);
-
-            for(const friend of parser.updatedFriends) processUpdate(friend);
-
-            for(const removedFriendId of parser.removedFriendIds)
-            {
-                const index = newValue.findIndex(existingFriend => (existingFriend.id === removedFriendId));
-
-                if(index > -1) newValue.splice(index, 1);
-            }
-
-            return newValue;
-        });
-    });
-
-    useMessageEvent<FriendRequestsEvent>(FriendRequestsEvent, event =>
-    {
-        const parser = event.getParser();
-
-        setRequests(prevValue =>
-        {
-            const newValue = [ ...prevValue ];
-
-            for(const request of parser.requests)
-            {
-                const index = newValue.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
-
-                if(index > 0)
-                {
-                    newValue[index] = CloneObject(newValue[index]);
-                    newValue[index].populate(request);
-                }
-                else
-                {
-                    const newRequest = new MessengerRequest();
-                    newRequest.populate(request);
-
-                    newValue.push(newRequest);
-                }
-            }
-
-            return newValue;
-        });
-    });
-
-    useMessageEvent<NewFriendRequestEvent>(NewFriendRequestEvent, event =>
-    {
-        const parser = event.getParser();
-        const request = parser.request;
-
-        setRequests(prevValue =>
-        {
-            const newRequests = [ ...prevValue ];
-
-            const index = newRequests.findIndex(existing => (existing.requesterUserId === request.requesterUserId));
-
-            if(index === -1)
-            {
-                const newRequest = new MessengerRequest();
-                newRequest.populate(request);
-
-                newRequests.push(newRequest);
-            }
-
-            return newRequests;
-        });
-    });
-
-    useEffect(() =>
-    {
-        SendMessageComposer(new MessengerInitComposer());
-
-        const interval = setInterval(() => SendMessageComposer(new FriendListUpdateComposer()), 120000);
-
-        return () =>
-        {
-            clearInterval(interval);
+          newValue.unshift(newFriend);
+        } else {
+          newValue[index].populate(friend);
         }
-    }, []);
+      };
 
-    return { friends, requests, sentRequests, dismissedRequestIds, setDismissedRequestIds, settings, onlineFriends, offlineFriends, getFriend, canRequestFriend, requestFriend, requestResponse, followFriend, updateRelationship };
-}
+      for (const friend of parser.addedFriends) processUpdate(friend);
+
+      for (const friend of parser.updatedFriends) processUpdate(friend);
+
+      for (const removedFriendId of parser.removedFriendIds) {
+        const index = newValue.findIndex(existingFriend => existingFriend.id === removedFriendId);
+
+        if (index > -1) newValue.splice(index, 1);
+      }
+
+      return newValue;
+    });
+  });
+
+  useMessageEvent<FriendRequestsEvent>(FriendRequestsEvent, event => {
+    const parser = event.getParser();
+
+    setRequests(prevValue => {
+      const newValue = [...prevValue];
+
+      for (const request of parser.requests) {
+        const index = newValue.findIndex(existing => existing.requesterUserId === request.requesterUserId);
+
+        if (index > 0) {
+          newValue[index] = CloneObject(newValue[index]);
+          newValue[index].populate(request);
+        } else {
+          const newRequest = new MessengerRequest();
+          newRequest.populate(request);
+
+          newValue.push(newRequest);
+        }
+      }
+
+      return newValue;
+    });
+  });
+
+  useMessageEvent<NewFriendRequestEvent>(NewFriendRequestEvent, event => {
+    const parser = event.getParser();
+    const request = parser.request;
+
+    setRequests(prevValue => {
+      const newRequests = [...prevValue];
+
+      const index = newRequests.findIndex(existing => existing.requesterUserId === request.requesterUserId);
+
+      if (index === -1) {
+        const newRequest = new MessengerRequest();
+        newRequest.populate(request);
+
+        newRequests.push(newRequest);
+      }
+
+      return newRequests;
+    });
+  });
+
+  useEffect(() => {
+    SendMessageComposer(new MessengerInitComposer());
+
+    const interval = setInterval(() => SendMessageComposer(new FriendListUpdateComposer()), 120000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  return {
+    friends,
+    requests,
+    sentRequests,
+    dismissedRequestIds,
+    setDismissedRequestIds,
+    settings,
+    onlineFriends,
+    offlineFriends,
+    getFriend,
+    canRequestFriend,
+    requestFriend,
+    requestResponse,
+    followFriend,
+    updateRelationship,
+  };
+};
 
 export const useFriends = () => useBetween(useFriendsState);

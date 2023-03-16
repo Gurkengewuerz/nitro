@@ -1,28 +1,26 @@
-import { FC, useMemo } from 'react';
-import { Base, BaseProps } from '..';
+import {FC, useMemo} from "react";
 
-interface LayoutRarityLevelViewProps extends BaseProps<HTMLDivElement>
-{
-    level: number;
+import {Base, BaseProps} from "..";
+
+interface LayoutRarityLevelViewProps extends BaseProps<HTMLDivElement> {
+  level: number;
 }
 
-export const LayoutRarityLevelView: FC<LayoutRarityLevelViewProps> = props =>
-{
-    const { level = 0, classNames = [], children = null, ...rest } = props;
+export const LayoutRarityLevelView: FC<LayoutRarityLevelViewProps> = props => {
+  const {level = 0, classNames = [], children = null, ...rest} = props;
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'nitro-rarity-level' ];
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["nitro-rarity-level"];
 
-        if(classNames.length) newClassNames.push(...classNames);
+    if (classNames.length) newClassNames.push(...classNames);
 
-        return newClassNames;
-    }, [ classNames ]);
+    return newClassNames;
+  }, [classNames]);
 
-    return (
-        <Base classNames={ getClassNames } { ...rest }>
-            <div>{ level }</div>
-            { children }
-        </Base>
-    );
-}
+  return (
+    <Base classNames={getClassNames} {...rest}>
+      <div>{level}</div>
+      {children}
+    </Base>
+  );
+};

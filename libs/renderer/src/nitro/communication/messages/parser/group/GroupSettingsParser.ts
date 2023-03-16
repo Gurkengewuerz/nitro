@@ -1,149 +1,131 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { GroupDataBadgePart } from './utils';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {GroupDataBadgePart} from "./utils";
 
-export class GroupSettingsParser implements IMessageParser
-{
-    private _roomId: number;
-    private _roomName: string;
-    private _id: number;
-    private _title: string;
-    private _description: string;
-    private _colorA: number;
-    private _colorB: number;
-    private _state: number;
-    private _canMembersDecorate: boolean;
-    private _badgeParts: Map<number, GroupDataBadgePart>;
-    private _badgeCode: string;
-    private _membersCount: number;
+export class GroupSettingsParser implements IMessageParser {
+  private _roomId: number;
+  private _roomName: string;
+  private _id: number;
+  private _title: string;
+  private _description: string;
+  private _colorA: number;
+  private _colorB: number;
+  private _state: number;
+  private _canMembersDecorate: boolean;
+  private _badgeParts: Map<number, GroupDataBadgePart>;
+  private _badgeCode: string;
+  private _membersCount: number;
 
-    public flush(): boolean
-    {
-        this._roomId = 0;
-        this._roomName = null;
-        this._id = 0;
-        this._title = null;
-        this._description = null;
-        this._colorA = 0;
-        this._colorB = 0;
-        this._state = 0;
-        this._canMembersDecorate = false;
-        this._badgeParts = new Map();
-        this._badgeCode = null;
-        this._membersCount = 0;
+  public flush(): boolean {
+    this._roomId = 0;
+    this._roomName = null;
+    this._id = 0;
+    this._title = null;
+    this._description = null;
+    this._colorA = 0;
+    this._colorB = 0;
+    this._state = 0;
+    this._canMembersDecorate = false;
+    this._badgeParts = new Map();
+    this._badgeCode = null;
+    this._membersCount = 0;
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    const hasRoomData = wrapper.readInt();
+
+    if (hasRoomData === 1) {
+      this._roomId = wrapper.readInt();
+      this._roomName = wrapper.readString();
+      wrapper.readBoolean();
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    wrapper.readBoolean();
 
-        const hasRoomData = wrapper.readInt();
+    this._id = wrapper.readInt();
+    this._title = wrapper.readString();
+    this._description = wrapper.readString();
 
-        if(hasRoomData === 1)
-        {
-            this._roomId = wrapper.readInt();
-            this._roomName = wrapper.readString();
-            wrapper.readBoolean();
-        }
+    wrapper.readInt();
 
-        wrapper.readBoolean();
+    this._colorA = wrapper.readInt();
+    this._colorB = wrapper.readInt();
+    this._state = wrapper.readInt();
+    this._canMembersDecorate = wrapper.readInt() === 0;
 
-        this._id = wrapper.readInt();
-        this._title = wrapper.readString();
-        this._description = wrapper.readString();
+    wrapper.readBoolean();
+    wrapper.readString();
 
-        wrapper.readInt();
+    const badgePartsCount = wrapper.readInt();
 
-        this._colorA = wrapper.readInt();
-        this._colorB = wrapper.readInt();
-        this._state = wrapper.readInt();
-        this._canMembersDecorate = wrapper.readInt() === 0;
+    for (let i = 0; i < badgePartsCount; i++) {
+      const part = new GroupDataBadgePart(i === 0);
 
-        wrapper.readBoolean();
-        wrapper.readString();
+      part.key = wrapper.readInt();
+      part.color = wrapper.readInt();
+      part.position = wrapper.readInt();
 
-        const badgePartsCount = wrapper.readInt();
+      if (part.key === 0) {
+        part.position = 4;
+      }
 
-        for(let i = 0; i < badgePartsCount; i++)
-        {
-            const part = new GroupDataBadgePart(i === 0);
-
-            part.key = wrapper.readInt();
-            part.color = wrapper.readInt();
-            part.position = wrapper.readInt();
-
-            if(part.key === 0)
-            {
-                part.position = 4;
-            }
-
-            this._badgeParts.set(i, part);
-        }
-
-        this._badgeCode = wrapper.readString();
-        this._membersCount = wrapper.readInt();
-
-        return true;
+      this._badgeParts.set(i, part);
     }
 
-    public get roomId(): number
-    {
-        return this._roomId;
-    }
+    this._badgeCode = wrapper.readString();
+    this._membersCount = wrapper.readInt();
 
-    public get roomName(): string
-    {
-        return this._roomName;
-    }
+    return true;
+  }
 
-    public get id(): number
-    {
-        return this._id;
-    }
+  public get roomId(): number {
+    return this._roomId;
+  }
 
-    public get title(): string
-    {
-        return this._title;
-    }
+  public get roomName(): string {
+    return this._roomName;
+  }
 
-    public get description(): string
-    {
-        return this._description;
-    }
+  public get id(): number {
+    return this._id;
+  }
 
-    public get colorA(): number
-    {
-        return this._colorA;
-    }
+  public get title(): string {
+    return this._title;
+  }
 
-    public get colorB(): number
-    {
-        return this._colorB;
-    }
+  public get description(): string {
+    return this._description;
+  }
 
-    public get state(): number
-    {
-        return this._state;
-    }
+  public get colorA(): number {
+    return this._colorA;
+  }
 
-    public get canMembersDecorate(): boolean
-    {
-        return this._canMembersDecorate;
-    }
+  public get colorB(): number {
+    return this._colorB;
+  }
 
-    public get badgeParts(): Map<number, GroupDataBadgePart>
-    {
-        return this._badgeParts;
-    }
+  public get state(): number {
+    return this._state;
+  }
 
-    public get badgeCode(): string
-    {
-        return this._badgeCode;
-    }
+  public get canMembersDecorate(): boolean {
+    return this._canMembersDecorate;
+  }
 
-    public get membersCount(): number
-    {
-        return this._membersCount;
-    }
+  public get badgeParts(): Map<number, GroupDataBadgePart> {
+    return this._badgeParts;
+  }
+
+  public get badgeCode(): string {
+    return this._badgeCode;
+  }
+
+  public get membersCount(): number {
+    return this._membersCount;
+  }
 }

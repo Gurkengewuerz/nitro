@@ -1,35 +1,30 @@
-﻿import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+﻿import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class ConfirmBreedingResultParser implements IMessageParser
-{
-    private _breedingNestStuffId: number;
-    private _result: number;
+export class ConfirmBreedingResultParser implements IMessageParser {
+  private _breedingNestStuffId: number;
+  private _result: number;
 
-    public flush(): boolean
-    {
-        this._breedingNestStuffId = 0;
-        this._result = 0;
+  public flush(): boolean {
+    this._breedingNestStuffId = 0;
+    this._result = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._breedingNestStuffId = wrapper.readInt();
-        this._result = wrapper.readInt();
+    this._breedingNestStuffId = wrapper.readInt();
+    this._result = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get breedingNestStuffId(): number
-    {
-        return this._breedingNestStuffId;
-    }
+  public get breedingNestStuffId(): number {
+    return this._breedingNestStuffId;
+  }
 
-    public get result(): number
-    {
-        return this._result;
-    }
+  public get result(): number {
+    return this._result;
+  }
 }

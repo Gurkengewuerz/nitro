@@ -1,49 +1,47 @@
-import { GetGuestRoomMessageComposer, GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomEngine, SendMessageComposer } from '../../../../api';
-import { useMessageEvent, useRoomEngineEvent } from '../../../events';
+import {GetGuestRoomMessageComposer, GetGuestRoomResultEvent, RoomEngineTriggerWidgetEvent, RoomObjectVariable} from "@nitro/renderer";
+import {useState} from "react";
 
-const INTERNALLINK = 'internalLink';
+import {GetRoomEngine, SendMessageComposer} from "../../../../api";
+import {useMessageEvent, useRoomEngineEvent} from "../../../events";
 
-const useFurnitureRoomLinkWidgetState = () =>
-{
-    const [ roomIdToEnter, setRoomIdToEnter ] = useState(0);
+const INTERNALLINK = "internalLink";
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, event =>
-    {
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-    
-        if(!roomObject) return;
+const useFurnitureRoomLinkWidgetState = () => {
+  const [roomIdToEnter, setRoomIdToEnter] = useState(0);
 
-        const data = roomObject.model.getValue<any>(RoomObjectVariable.FURNITURE_DATA);
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_ROOM_LINK, event => {
+    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
-        let roomId = data[INTERNALLINK];
+    if (!roomObject) return;
 
-        if(!roomId || !roomId.length) roomId = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_INTERNAL_LINK);
+    const data = roomObject.model.getValue<any>(RoomObjectVariable.FURNITURE_DATA);
 
-        if(!roomId || !roomId.length) return;
+    let roomId = data[INTERNALLINK];
 
-        roomId = parseInt(roomId, 10);
+    if (!roomId || !roomId.length) roomId = roomObject.model.getValue<string>(RoomObjectVariable.FURNITURE_INTERNAL_LINK);
 
-        if(isNaN(roomId)) return;
+    if (!roomId || !roomId.length) return;
 
-        setRoomIdToEnter(roomId);
+    roomId = parseInt(roomId, 10);
 
-        SendMessageComposer(new GetGuestRoomMessageComposer(roomId, false, false));
-    });
+    if (isNaN(roomId)) return;
 
-    useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event =>
-    {
-        if(!roomIdToEnter) return;
+    setRoomIdToEnter(roomId);
 
-        const parser = event.getParser();
+    SendMessageComposer(new GetGuestRoomMessageComposer(roomId, false, false));
+  });
 
-        if(parser.data.roomId !== roomIdToEnter) return;
+  useMessageEvent<GetGuestRoomResultEvent>(GetGuestRoomResultEvent, event => {
+    if (!roomIdToEnter) return;
 
-        setRoomIdToEnter(0);
-    });
+    const parser = event.getParser();
 
-    return {};
-}
+    if (parser.data.roomId !== roomIdToEnter) return;
+
+    setRoomIdToEnter(0);
+  });
+
+  return {};
+};
 
 export const useFurnitureRoomLinkWidget = useFurnitureRoomLinkWidgetState;

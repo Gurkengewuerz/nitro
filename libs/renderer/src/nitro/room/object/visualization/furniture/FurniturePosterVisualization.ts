@@ -1,6 +1,3 @@
-import { FurnitureAnimatedVisualization } from './FurnitureAnimatedVisualization';
+import {FurnitureAnimatedVisualization} from "./FurnitureAnimatedVisualization";
 
-export class FurniturePosterVisualization extends FurnitureAnimatedVisualization
-{
-
-}
+export class FurniturePosterVisualization extends FurnitureAnimatedVisualization {}

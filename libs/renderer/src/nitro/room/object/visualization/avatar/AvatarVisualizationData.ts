@@ -1,55 +1,61 @@
-import { Resource, Texture } from '@pixi/core';
-import { AvatarScaleType, IAssetData, IAvatarEffectListener, IAvatarImage, IAvatarImageListener, IAvatarRenderManager, IObjectVisualizationData } from '../../../../../api';
-import { Disposable } from '../../../../../core';
+import {Resource, Texture} from "@pixi/core";
 
-export class AvatarVisualizationData extends Disposable implements IObjectVisualizationData
-{
-    private _avatarRenderer: IAvatarRenderManager;
+import {
+  AvatarScaleType,
+  IAssetData,
+  IAvatarEffectListener,
+  IAvatarImage,
+  IAvatarImageListener,
+  IAvatarRenderManager,
+  IObjectVisualizationData,
+} from "../../../../../api";
+import {Disposable} from "../../../../../core";
 
-    constructor()
-    {
-        super();
-    }
+export class AvatarVisualizationData extends Disposable implements IObjectVisualizationData {
+  private _avatarRenderer: IAvatarRenderManager;
 
-    public initialize(asset: IAssetData): boolean
-    {
-        return true;
-    }
+  constructor() {
+    super();
+  }
 
-    public onDispose(): void
-    {
-        this._avatarRenderer = null;
-    }
+  public initialize(asset: IAssetData): boolean {
+    return true;
+  }
 
-    public createAvatarImage(figure: string, size: number, gender: string = null, avatarListener: IAvatarImageListener = null, effectListener: IAvatarEffectListener = null): IAvatarImage
-    {
-        let avatarImage: IAvatarImage = null;
+  public onDispose(): void {
+    this._avatarRenderer = null;
+  }
 
-        if(size > 48) avatarImage = this._avatarRenderer.createAvatarImage(figure, AvatarScaleType.LARGE, gender, avatarListener, effectListener);
-        else avatarImage = this._avatarRenderer.createAvatarImage(figure, AvatarScaleType.SMALL, gender, avatarListener, effectListener);
+  public createAvatarImage(
+    figure: string,
+    size: number,
+    gender: string = null,
+    avatarListener: IAvatarImageListener = null,
+    effectListener: IAvatarEffectListener = null
+  ): IAvatarImage {
+    let avatarImage: IAvatarImage = null;
 
-        return avatarImage;
-    }
+    if (size > 48) avatarImage = this._avatarRenderer.createAvatarImage(figure, AvatarScaleType.LARGE, gender, avatarListener, effectListener);
+    else avatarImage = this._avatarRenderer.createAvatarImage(figure, AvatarScaleType.SMALL, gender, avatarListener, effectListener);
 
-    public getAvatarRendererAsset(name: string): Texture<Resource>
-    {
-        if(!this._avatarRenderer) return null;
+    return avatarImage;
+  }
 
-        return this._avatarRenderer.assets.getTexture(name);
-    }
+  public getAvatarRendererAsset(name: string): Texture<Resource> {
+    if (!this._avatarRenderer) return null;
 
-    public get avatarManager(): IAvatarRenderManager
-    {
-        return this._avatarRenderer;
-    }
+    return this._avatarRenderer.assets.getTexture(name);
+  }
 
-    public set avatarManager(renderer: IAvatarRenderManager)
-    {
-        this._avatarRenderer = renderer;
-    }
+  public get avatarManager(): IAvatarRenderManager {
+    return this._avatarRenderer;
+  }
 
-    public get layerCount(): number
-    {
-        return 0;
-    }
+  public set avatarManager(renderer: IAvatarRenderManager) {
+    this._avatarRenderer = renderer;
+  }
+
+  public get layerCount(): number {
+    return 0;
+  }
 }

@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { BundleDiscountRuleset } from './BundleDiscountRuleset';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {BundleDiscountRuleset} from "./BundleDiscountRuleset";
 
-export class BundleDiscountRulesetMessageParser implements IMessageParser
-{
-    private _bundleDiscountRuleset: BundleDiscountRuleset;
+export class BundleDiscountRulesetMessageParser implements IMessageParser {
+  private _bundleDiscountRuleset: BundleDiscountRuleset;
 
-    public flush(): boolean
-    {
-        this._bundleDiscountRuleset = null;
+  public flush(): boolean {
+    this._bundleDiscountRuleset = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._bundleDiscountRuleset = new BundleDiscountRuleset(wrapper);
+    this._bundleDiscountRuleset = new BundleDiscountRuleset(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get bundleDiscountRuleset(): BundleDiscountRuleset
-    {
-        return this._bundleDiscountRuleset;
-    }
+  public get bundleDiscountRuleset(): BundleDiscountRuleset {
+    return this._bundleDiscountRuleset;
+  }
 }

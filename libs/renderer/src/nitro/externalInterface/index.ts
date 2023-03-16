@@ -1,1 +1,1 @@
-export * from './LegacyExternalInterface';
+export * from "./LegacyExternalInterface";

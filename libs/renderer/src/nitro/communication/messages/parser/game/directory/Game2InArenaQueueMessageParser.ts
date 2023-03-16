@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class Game2InArenaQueueMessageParser implements IMessageParser
-{
-    private _position: number;
+export class Game2InArenaQueueMessageParser implements IMessageParser {
+  private _position: number;
 
-    public flush(): boolean
-    {
-        this._position = -1;
+  public flush(): boolean {
+    this._position = -1;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._position = wrapper.readInt();
+    this._position = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get position(): number
-    {
-        return this._position;
-    }
+  public get position(): number {
+    return this._position;
+  }
 }

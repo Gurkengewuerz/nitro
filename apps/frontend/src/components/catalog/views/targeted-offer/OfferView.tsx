@@ -1,32 +1,28 @@
-import { GetTargetedOfferComposer, TargetedOfferData, TargetedOfferEvent } from '@nitro/renderer';
-import { useState } from 'react';
-import { SendMessageComposer } from '../../../../api';
-import { useMessageEvent, UseMountEffect } from '../../../../hooks';
-import { OfferBubbleView } from './OfferBubbleView';
-import { OfferWindowView } from './OfferWindowView';
+import {GetTargetedOfferComposer, TargetedOfferData, TargetedOfferEvent} from "@nitro/renderer";
+import {useState} from "react";
 
-export const OfferView = () =>
-{
-    const [ offer, setOffer ] = useState<TargetedOfferData>(null);
-    const [ opened, setOpened ] = useState<boolean>(false);
+import {SendMessageComposer} from "../../../../api";
+import {UseMountEffect, useMessageEvent} from "../../../../hooks";
+import {OfferBubbleView} from "./OfferBubbleView";
+import {OfferWindowView} from "./OfferWindowView";
 
-    useMessageEvent<TargetedOfferEvent>(TargetedOfferEvent, evt =>
-    {
-        let parser = evt.getParser();
+export const OfferView = () => {
+  const [offer, setOffer] = useState<TargetedOfferData>(null);
+  const [opened, setOpened] = useState<boolean>(false);
 
-        if (!parser) return;
+  useMessageEvent<TargetedOfferEvent>(TargetedOfferEvent, evt => {
+    let parser = evt.getParser();
 
-        setOffer(parser.data);
-    });
+    if (!parser) return;
 
-    UseMountEffect(() =>
-    {
-        SendMessageComposer(new GetTargetedOfferComposer());
-    })
+    setOffer(parser.data);
+  });
 
-    if (!offer) return;
-    
-    return <>
-        { opened ? <OfferWindowView offer={ offer } setOpen={ setOpened } /> : <OfferBubbleView offer={ offer } setOpen={ setOpened } /> }
-    </>
-}
+  UseMountEffect(() => {
+    SendMessageComposer(new GetTargetedOfferComposer());
+  });
+
+  if (!offer) return;
+
+  return <>{opened ? <OfferWindowView offer={offer} setOpen={setOpened} /> : <OfferBubbleView offer={offer} setOpen={setOpened} />}</>;
+};

@@ -1,83 +1,85 @@
-import { Game2AccountGameStatusMessageEvent, Game2AccountGameStatusMessageParser, GameConfigurationData, GameListMessageEvent, GameStatusMessageEvent, GetGameListMessageComposer, LoadGameUrlEvent } from '@nitro/renderer';
-import { useEffect, useState } from 'react';
-import { useBetween } from 'use-between';
-import { SendMessageComposer, VisitDesktop } from '../../api';
-import { useMessageEvent } from '../events';
+import {
+  Game2AccountGameStatusMessageEvent,
+  Game2AccountGameStatusMessageParser,
+  GameConfigurationData,
+  GameListMessageEvent,
+  GameStatusMessageEvent,
+  GetGameListMessageComposer,
+  LoadGameUrlEvent,
+} from "@nitro/renderer";
+import {useEffect, useState} from "react";
+import {useBetween} from "use-between";
 
-const useGameCenterState = () => 
-{
-    const [ isVisible, setIsVisible ] = useState<boolean>(false);
-    const [ games, setGames ] = useState<GameConfigurationData[]>(null);
-    const [ selectedGame, setSelectedGame ] = useState<GameConfigurationData>(null);
-    const [ accountStatus, setAccountStatus ] = useState<Game2AccountGameStatusMessageParser>(null);
-    const [ gameOffline, setGameOffline ] = useState<boolean>(false);
-    const [ gameURL, setGameURL ] = useState<string>(null);
+import {SendMessageComposer, VisitDesktop} from "../../api";
+import {useMessageEvent} from "../events";
 
-    useMessageEvent<GameListMessageEvent>(GameListMessageEvent, event => 
-    {
-        let parser = event.getParser();
+const useGameCenterState = () => {
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [games, setGames] = useState<GameConfigurationData[]>(null);
+  const [selectedGame, setSelectedGame] = useState<GameConfigurationData>(null);
+  const [accountStatus, setAccountStatus] = useState<Game2AccountGameStatusMessageParser>(null);
+  const [gameOffline, setGameOffline] = useState<boolean>(false);
+  const [gameURL, setGameURL] = useState<string>(null);
 
-        if(!parser || parser && !parser.games.length) return;
+  useMessageEvent<GameListMessageEvent>(GameListMessageEvent, event => {
+    let parser = event.getParser();
 
-        setSelectedGame(parser.games[0]);
+    if (!parser || (parser && !parser.games.length)) return;
 
-        setGames(parser.games);
-    });
+    setSelectedGame(parser.games[0]);
 
-    useMessageEvent<Game2AccountGameStatusMessageEvent>(Game2AccountGameStatusMessageEvent, event => 
-    {
-        let parser = event.getParser();
+    setGames(parser.games);
+  });
 
-        if(!parser) return;
+  useMessageEvent<Game2AccountGameStatusMessageEvent>(Game2AccountGameStatusMessageEvent, event => {
+    let parser = event.getParser();
 
-        setAccountStatus(parser);
-    });
+    if (!parser) return;
 
-    useMessageEvent<GameStatusMessageEvent>(GameStatusMessageEvent, event => 
-    {
-        let parser = event.getParser();
+    setAccountStatus(parser);
+  });
 
-        if(!parser) return;
+  useMessageEvent<GameStatusMessageEvent>(GameStatusMessageEvent, event => {
+    let parser = event.getParser();
 
-        setGameOffline(parser.isInMaintenance);
-    })
+    if (!parser) return;
 
-    useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event => 
-    {
-        let parser = event.getParser();
+    setGameOffline(parser.isInMaintenance);
+  });
 
-        if(!parser) return;
+  useMessageEvent<LoadGameUrlEvent>(LoadGameUrlEvent, event => {
+    let parser = event.getParser();
 
-        switch(parser.gameTypeId) 
-        {
-            case 2:
-                return console.log('snowwar')
-            default:
-                return setGameURL(parser.url);
-        }
-    });
+    if (!parser) return;
 
-    useEffect(()=>
-    {
-        if(isVisible) 
-        {
-            SendMessageComposer(new GetGameListMessageComposer());
-            VisitDesktop();
-        }
-        else 
-        {
-            // dispose or wtv
-        }
-    },[ isVisible ]);
-
-    return {
-        isVisible, setIsVisible,
-        games,
-        accountStatus,
-        selectedGame, setSelectedGame,
-        gameOffline,
-        gameURL, setGameURL
+    switch (parser.gameTypeId) {
+      case 2:
+        return console.log("snowwar");
+      default:
+        return setGameURL(parser.url);
     }
-}
+  });
+
+  useEffect(() => {
+    if (isVisible) {
+      SendMessageComposer(new GetGameListMessageComposer());
+      VisitDesktop();
+    } else {
+      // dispose or wtv
+    }
+  }, [isVisible]);
+
+  return {
+    isVisible,
+    setIsVisible,
+    games,
+    accountStatus,
+    selectedGame,
+    setSelectedGame,
+    gameOffline,
+    gameURL,
+    setGameURL,
+  };
+};
 
 export const useGameCenter = () => useBetween(useGameCenterState);

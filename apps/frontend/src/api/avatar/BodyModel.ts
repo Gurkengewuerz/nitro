@@ -1,76 +1,72 @@
-import { AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType } from '@nitro/renderer';
-import { GetAvatarRenderManager } from '../nitro';
-import { AvatarEditorUtilities } from './AvatarEditorUtilities';
-import { CategoryBaseModel } from './CategoryBaseModel';
-import { FigureData } from './FigureData';
+import {AvatarEditorFigureCategory, AvatarScaleType, AvatarSetType} from "@nitro/renderer";
 
-export class BodyModel extends CategoryBaseModel
-{
-    private _imageCallBackHandled: boolean = false;
+import {GetAvatarRenderManager} from "../nitro";
+import {AvatarEditorUtilities} from "./AvatarEditorUtilities";
+import {CategoryBaseModel} from "./CategoryBaseModel";
+import {FigureData} from "./FigureData";
 
-    public init(): void
-    {
-        super.init();
+export class BodyModel extends CategoryBaseModel {
+  private _imageCallBackHandled: boolean = false;
 
-        this.addCategory(FigureData.FACE);
+  public init(): void {
+    super.init();
 
-        this._isInitalized = true;
-    }
+    this.addCategory(FigureData.FACE);
 
-    public selectColor(category: string, colorIndex: number, paletteId: number): void
-    {
-        super.selectColor(category, colorIndex, paletteId);
+    this._isInitalized = true;
+  }
 
-        this.updateSelectionsFromFigure(FigureData.FACE);
-    }
+  public selectColor(category: string, colorIndex: number, paletteId: number): void {
+    super.selectColor(category, colorIndex, paletteId);
 
-    protected updateSelectionsFromFigure(name: string): void
-    {
-        if(!this._categories || !AvatarEditorUtilities.CURRENT_FIGURE) return;
+    this.updateSelectionsFromFigure(FigureData.FACE);
+  }
 
-        const category = this._categories.get(name);
+  protected updateSelectionsFromFigure(name: string): void {
+    if (!this._categories || !AvatarEditorUtilities.CURRENT_FIGURE) return;
 
-        if(!category) return;
+    const category = this._categories.get(name);
 
-        const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(name);
+    if (!category) return;
 
-        let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(name);
+    const setId = AvatarEditorUtilities.CURRENT_FIGURE.getPartSetId(name);
 
-        if(!colorIds) colorIds = [];
+    let colorIds = AvatarEditorUtilities.CURRENT_FIGURE.getColorIds(name);
 
-        category.selectPartId(setId);
-        category.selectColorIds(colorIds);
+    if (!colorIds) colorIds = [];
 
-        for(const part of category.parts)
-        {
-            const resetFigure = (figure: string) =>
-            {
-                const figureString = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
-                const avatarImage = GetAvatarRenderManager().createAvatarImage(figureString, AvatarScaleType.LARGE, null, { resetFigure, dispose: null, disposed: false });
-    
-                const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);
-    
-                if(sprite)
-                {
-                    sprite.y = 10;
-    
-                    part.thumbContainer = sprite;
-    
-                    setTimeout(() => avatarImage.dispose(), 0);
-                }
-            }
+    category.selectPartId(setId);
+    category.selectColorIds(colorIds);
 
-            resetFigure(null);
+    for (const part of category.parts) {
+      const resetFigure = (figure: string) => {
+        const figureString = AvatarEditorUtilities.CURRENT_FIGURE.getFigureStringWithFace(part.id);
+        const avatarImage = GetAvatarRenderManager().createAvatarImage(figureString, AvatarScaleType.LARGE, null, {
+          resetFigure,
+          dispose: null,
+          disposed: false,
+        });
+
+        const sprite = avatarImage.getImageAsSprite(AvatarSetType.HEAD);
+
+        if (sprite) {
+          sprite.y = 10;
+
+          part.thumbContainer = sprite;
+
+          setTimeout(() => avatarImage.dispose(), 0);
         }
-    }
+      };
 
-    public get canSetGender(): boolean
-    {
-        return true;
+      resetFigure(null);
     }
+  }
 
-    public get name(): string
-    {
-        return AvatarEditorFigureCategory.GENERIC;
-    }
+  public get canSetGender(): boolean {
+    return true;
+  }
+
+  public get name(): string {
+    return AvatarEditorFigureCategory.GENERIC;
+  }
 }

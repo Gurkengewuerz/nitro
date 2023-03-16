@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class CustomUserNotificationMessageParser implements IMessageParser
-{
-    private _code: number;
+export class CustomUserNotificationMessageParser implements IMessageParser {
+  private _code: number;
 
-    public flush(): boolean
-    {
-        this._code = 0;
+  public flush(): boolean {
+    this._code = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._code = wrapper.readInt();
+    this._code = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get count(): number
-    {
-        return this._code;
-    }
+  public get count(): number {
+    return this._code;
+  }
 }

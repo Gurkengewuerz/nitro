@@ -1,6 +1,3 @@
-import { Tilemap } from '@pixi/tilemap';
+import {Tilemap} from "@pixi/tilemap";
 
-export class NitroTilemap extends Tilemap
-{
-
-}
+export class NitroTilemap extends Tilemap {}

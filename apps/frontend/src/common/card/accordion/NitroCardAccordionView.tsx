@@ -1,25 +1,21 @@
-import { FC, useCallback, useState } from 'react';
-import { Column, ColumnProps } from '../..';
-import { NitroCardAccordionContextProvider } from './NitroCardAccordionContext';
+import {FC, useCallback, useState} from "react";
 
-interface NitroCardAccordionViewProps extends ColumnProps
-{
-    
-}
+import {Column, ColumnProps} from "../..";
+import {NitroCardAccordionContextProvider} from "./NitroCardAccordionContext";
 
-export const NitroCardAccordionView: FC<NitroCardAccordionViewProps> = props =>
-{
-    const { ...rest } = props;
-    const [ closers, setClosers ] = useState<Function[]>([]);
+interface NitroCardAccordionViewProps extends ColumnProps {}
 
-    const closeAll = useCallback(() =>
-    {
-        for(const closer of closers) closer();
-    }, [ closers ]);
+export const NitroCardAccordionView: FC<NitroCardAccordionViewProps> = props => {
+  const {...rest} = props;
+  const [closers, setClosers] = useState<Function[]>([]);
 
-    return (
-        <NitroCardAccordionContextProvider value={ { closers, setClosers, closeAll } }>
-            <Column gap={ 0 } { ...rest } />
-        </NitroCardAccordionContextProvider>
-    );
-}
+  const closeAll = useCallback(() => {
+    for (const closer of closers) closer();
+  }, [closers]);
+
+  return (
+    <NitroCardAccordionContextProvider value={{closers, setClosers, closeAll}}>
+      <Column gap={0} {...rest} />
+    </NitroCardAccordionContextProvider>
+  );
+};

@@ -1,18 +1,17 @@
-import { FC, useMemo } from 'react';
-import { Column, ColumnProps } from '../../../../common';
+import {FC, useMemo} from "react";
 
-export const ContextMenuListView: FC<ColumnProps> = props =>
-{
-    const { classNames = [], ...rest } = props;
+import {Column, ColumnProps} from "../../../../common";
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'menu-list' ];
+export const ContextMenuListView: FC<ColumnProps> = props => {
+  const {classNames = [], ...rest} = props;
 
-        if(classNames.length) newClassNames.push(...classNames);
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["menu-list"];
 
-        return newClassNames;
-    }, [ classNames ]);
+    if (classNames.length) newClassNames.push(...classNames);
 
-    return <Column classNames={ getClassNames } { ...rest } />
-}
+    return newClassNames;
+  }, [classNames]);
+
+  return <Column classNames={getClassNames} {...rest} />;
+};

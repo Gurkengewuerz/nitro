@@ -1,7 +1,7 @@
-import { ILinkEventTracker } from '@nitro/renderer';
-import { GetNitroInstance } from './GetNitroInstance';
+import {ILinkEventTracker} from "@nitro/renderer";
 
-export function RemoveLinkEventTracker(tracker: ILinkEventTracker): void
-{
-    GetNitroInstance().removeLinkEventTracker(tracker);
+import {GetNitroInstance} from "./GetNitroInstance";
+
+export function RemoveLinkEventTracker(tracker: ILinkEventTracker): void {
+  GetNitroInstance().removeLinkEventTracker(tracker);
 }

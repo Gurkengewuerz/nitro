@@ -1,32 +1,29 @@
-import { IRoomObjectController, RoomObjectCategory } from '@nitro/renderer';
-import { GetRoomSession, GetSessionDataManager } from '../session';
-import { GetRoomEngine } from './GetRoomEngine';
+import {IRoomObjectController, RoomObjectCategory} from "@nitro/renderer";
 
-export function GetOwnRoomObject(): IRoomObjectController
-{
-    const userId = GetSessionDataManager().userId;
-    const roomId = GetRoomEngine().activeRoomId;
-    const category = RoomObjectCategory.UNIT;
-    const totalObjects = GetRoomEngine().getTotalObjectsForManager(roomId, category);
+import {GetRoomSession, GetSessionDataManager} from "../session";
+import {GetRoomEngine} from "./GetRoomEngine";
 
-    let i = 0;
+export function GetOwnRoomObject(): IRoomObjectController {
+  const userId = GetSessionDataManager().userId;
+  const roomId = GetRoomEngine().activeRoomId;
+  const category = RoomObjectCategory.UNIT;
+  const totalObjects = GetRoomEngine().getTotalObjectsForManager(roomId, category);
 
-    while(i < totalObjects)
-    {
-        const roomObject = GetRoomEngine().getRoomObjectByIndex(roomId, i, category);
+  let i = 0;
 
-        if(roomObject)
-        {
-            const userData = GetRoomSession().userDataManager.getUserDataByIndex(roomObject.id);
+  while (i < totalObjects) {
+    const roomObject = GetRoomEngine().getRoomObjectByIndex(roomId, i, category);
 
-            if(userData)
-            {
-                if(userData.webID === userId) return roomObject;
-            }
-        }
+    if (roomObject) {
+      const userData = GetRoomSession().userDataManager.getUserDataByIndex(roomObject.id);
 
-        i++;
+      if (userData) {
+        if (userData.webID === userId) return roomObject;
+      }
     }
 
-    return null;
+    i++;
+  }
+
+  return null;
 }

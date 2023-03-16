@@ -1,47 +1,40 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class MaintenanceStatusMessageParser implements IMessageParser
-{
-    private _isInMaintenance: boolean;
-    private _minutesUntilMaintenance: number;
-    private _duration: number;
+export class MaintenanceStatusMessageParser implements IMessageParser {
+  private _isInMaintenance: boolean;
+  private _minutesUntilMaintenance: number;
+  private _duration: number;
 
-    public flush(): boolean
-    {
-        this._isInMaintenance = false;
-        this._minutesUntilMaintenance = 0;
-        this._duration = 15;
+  public flush(): boolean {
+    this._isInMaintenance = false;
+    this._minutesUntilMaintenance = 0;
+    this._duration = 15;
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    this._isInMaintenance = wrapper.readBoolean();
+    this._minutesUntilMaintenance = wrapper.readInt();
+
+    if (wrapper.bytesAvailable) {
+      this._duration = wrapper.readInt();
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    return true;
+  }
 
-        this._isInMaintenance = wrapper.readBoolean();
-        this._minutesUntilMaintenance = wrapper.readInt();
+  public get isInMaintenance(): boolean {
+    return this._isInMaintenance;
+  }
 
-        if(wrapper.bytesAvailable)
-        {
-            this._duration = wrapper.readInt();
-        }
+  public get minutesUntilMaintenance(): number {
+    return this._minutesUntilMaintenance;
+  }
 
-        return true;
-    }
-
-    public get isInMaintenance(): boolean
-    {
-        return this._isInMaintenance;
-    }
-
-    public get minutesUntilMaintenance(): number
-    {
-        return this._minutesUntilMaintenance;
-    }
-
-    public get duration(): number
-    {
-        return this._duration;
-    }
+  public get duration(): number {
+    return this._duration;
+  }
 }

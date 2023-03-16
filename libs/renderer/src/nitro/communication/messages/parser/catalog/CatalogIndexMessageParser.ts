@@ -1,42 +1,36 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { NodeData } from './NodeData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {NodeData} from "./NodeData";
 
-export class CatalogIndexMessageParser implements IMessageParser
-{
-    private _root: NodeData;
-    private _newAdditionsAvailable: boolean;
-    private _catalogType: string;
+export class CatalogIndexMessageParser implements IMessageParser {
+  private _root: NodeData;
+  private _newAdditionsAvailable: boolean;
+  private _catalogType: string;
 
-    public flush(): boolean
-    {
-        this._root = null;
+  public flush(): boolean {
+    this._root = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._root = new NodeData(wrapper);
-        this._newAdditionsAvailable = wrapper.readBoolean();
-        this._catalogType = wrapper.readString();
+    this._root = new NodeData(wrapper);
+    this._newAdditionsAvailable = wrapper.readBoolean();
+    this._catalogType = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get root(): NodeData
-    {
-        return this._root;
-    }
+  public get root(): NodeData {
+    return this._root;
+  }
 
-    public get newAdditionsAvailable(): boolean
-    {
-        return this._newAdditionsAvailable;
-    }
+  public get newAdditionsAvailable(): boolean {
+    return this._newAdditionsAvailable;
+  }
 
-    public get catalogType(): string
-    {
-        return this._catalogType;
-    }
+  public get catalogType(): string {
+    return this._catalogType;
+  }
 }

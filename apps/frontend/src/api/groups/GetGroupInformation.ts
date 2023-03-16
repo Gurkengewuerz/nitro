@@ -1,7 +1,7 @@
-import { GroupInformationComposer } from '@nitro/renderer';
-import { SendMessageComposer } from '..';
+import {GroupInformationComposer} from "@nitro/renderer";
 
-export function GetGroupInformation(groupId: number): void
-{
-    SendMessageComposer(new GroupInformationComposer(groupId, true));
+import {SendMessageComposer} from "..";
+
+export function GetGroupInformation(groupId: number): void {
+  SendMessageComposer(new GroupInformationComposer(groupId, true));
 }

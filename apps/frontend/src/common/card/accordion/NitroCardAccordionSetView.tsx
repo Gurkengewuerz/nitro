@@ -1,84 +1,77 @@
-import { FC, useCallback, useEffect, useMemo, useState } from 'react';
-import { FaCaretDown, FaCaretUp } from 'react-icons/fa';
-import { Column, ColumnProps, Flex, Text } from '../..';
-import { useNitroCardAccordionContext } from './NitroCardAccordionContext';
+import {FC, useCallback, useEffect, useMemo, useState} from "react";
+import {FaCaretDown, FaCaretUp} from "react-icons/fa";
 
-export interface NitroCardAccordionSetViewProps extends ColumnProps
-{
-    headerText: string;
-    isExpanded?: boolean;
+import {Column, ColumnProps, Flex, Text} from "../..";
+import {useNitroCardAccordionContext} from "./NitroCardAccordionContext";
+
+export interface NitroCardAccordionSetViewProps extends ColumnProps {
+  headerText: string;
+  isExpanded?: boolean;
 }
 
-export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = props =>
-{
-    const { headerText = '', isExpanded = false, gap = 0, classNames = [], children = null, ...rest } = props;
-    const [ isOpen, setIsOpen ] = useState(false);
-    const { setClosers = null, closeAll = null } = useNitroCardAccordionContext();
+export const NitroCardAccordionSetView: FC<NitroCardAccordionSetViewProps> = props => {
+  const {headerText = "", isExpanded = false, gap = 0, classNames = [], children = null, ...rest} = props;
+  const [isOpen, setIsOpen] = useState(false);
+  const {setClosers = null, closeAll = null} = useNitroCardAccordionContext();
 
-    const onClick = () =>
-    {
-        closeAll();
-        
-        setIsOpen(prevValue => !prevValue);
-    }
+  const onClick = () => {
+    closeAll();
 
-    const onClose = useCallback(() => setIsOpen(false), []);
+    setIsOpen(prevValue => !prevValue);
+  };
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames = [ 'nitro-card-accordion-set' ];
+  const onClose = useCallback(() => setIsOpen(false), []);
 
-        if(isOpen) newClassNames.push('active');
+  const getClassNames = useMemo(() => {
+    const newClassNames = ["nitro-card-accordion-set"];
 
-        if(classNames && classNames.length) newClassNames.push(...classNames);
+    if (isOpen) newClassNames.push("active");
 
-        return newClassNames;
-    }, [ isOpen, classNames ]);
+    if (classNames && classNames.length) newClassNames.push(...classNames);
 
-    useEffect(() =>
-    {
-        setIsOpen(isExpanded);
-    }, [ isExpanded ]);
+    return newClassNames;
+  }, [isOpen, classNames]);
 
-    useEffect(() =>
-    {
-        const closeFunction = onClose;
+  useEffect(() => {
+    setIsOpen(isExpanded);
+  }, [isExpanded]);
 
-        setClosers(prevValue =>
-        {
-            const newClosers = [ ...prevValue ];
+  useEffect(() => {
+    const closeFunction = onClose;
 
-            newClosers.push(closeFunction);
+    setClosers(prevValue => {
+      const newClosers = [...prevValue];
 
-            return newClosers;
-        });
+      newClosers.push(closeFunction);
 
-        return () =>
-        {
-            setClosers(prevValue =>
-            {
-                const newClosers = [ ...prevValue ];
+      return newClosers;
+    });
 
-                const index = newClosers.indexOf(closeFunction);
+    return () => {
+      setClosers(prevValue => {
+        const newClosers = [...prevValue];
 
-                if(index >= 0) newClosers.splice(index, 1);
-    
-                return newClosers;
-            });
-        }
-    }, [ onClose, setClosers ]);
+        const index = newClosers.indexOf(closeFunction);
 
-    return (
-        <Column classNames={ getClassNames } gap={ gap } { ...rest }>
-            <Flex pointer justifyContent="between" className="nitro-card-accordion-set-header px-2 py-1" onClick={ onClick }>
-                <Text>{ headerText }</Text>
-                { isOpen && <FaCaretUp className="fa-icon" /> }
-                { !isOpen && <FaCaretDown className="fa-icon" /> }
-            </Flex>
-            { isOpen &&
-                <Column fullHeight overflow="auto" gap={ 0 } className="nitro-card-accordion-set-content">
-                    { children }
-                </Column> }
+        if (index >= 0) newClosers.splice(index, 1);
+
+        return newClosers;
+      });
+    };
+  }, [onClose, setClosers]);
+
+  return (
+    <Column classNames={getClassNames} gap={gap} {...rest}>
+      <Flex pointer justifyContent="between" className="nitro-card-accordion-set-header px-2 py-1" onClick={onClick}>
+        <Text>{headerText}</Text>
+        {isOpen && <FaCaretUp className="fa-icon" />}
+        {!isOpen && <FaCaretDown className="fa-icon" />}
+      </Flex>
+      {isOpen && (
+        <Column fullHeight overflow="auto" gap={0} className="nitro-card-accordion-set-content">
+          {children}
         </Column>
-    );
-}
+      )}
+    </Column>
+  );
+};

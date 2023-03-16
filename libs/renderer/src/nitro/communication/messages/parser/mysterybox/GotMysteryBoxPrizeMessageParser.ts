@@ -1,33 +1,27 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class GotMysteryBoxPrizeMessageParser implements IMessageParser
-{
-    private _contentType:string;
-    private _classId:number;
+export class GotMysteryBoxPrizeMessageParser implements IMessageParser {
+  private _contentType: string;
+  private _classId: number;
 
-    public flush(): boolean
-    {
-        return true;
-    }
+  public flush(): boolean {
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._contentType = wrapper.readString();
-        this._classId = wrapper.readInt();
+    this._contentType = wrapper.readString();
+    this._classId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get contentType():string
-    {
-        return this._contentType;
-    }
+  public get contentType(): string {
+    return this._contentType;
+  }
 
-    public get classId():number
-    {
-        return this._classId;
-    }
-
+  public get classId(): number {
+    return this._classId;
+  }
 }

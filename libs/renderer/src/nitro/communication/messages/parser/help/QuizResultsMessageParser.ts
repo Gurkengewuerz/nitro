@@ -1,40 +1,35 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class QuizResultsMessageParser implements IMessageParser
-{
-    private _quizCode: string;
-    private _questionIdsForWrongAnswers: number[];
+export class QuizResultsMessageParser implements IMessageParser {
+  private _quizCode: string;
+  private _questionIdsForWrongAnswers: number[];
 
-    public flush(): boolean
-    {
-        this._quizCode = null;
-        this._questionIdsForWrongAnswers = [];
+  public flush(): boolean {
+    this._quizCode = null;
+    this._questionIdsForWrongAnswers = [];
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._quizCode = wrapper.readString();
+    this._quizCode = wrapper.readString();
 
-        const size = wrapper.readInt();
+    const size = wrapper.readInt();
 
-        this._questionIdsForWrongAnswers = [];
+    this._questionIdsForWrongAnswers = [];
 
-        for(let i = 0; i < size; i++) this._questionIdsForWrongAnswers.push(wrapper.readInt());
+    for (let i = 0; i < size; i++) this._questionIdsForWrongAnswers.push(wrapper.readInt());
 
-        return true;
-    }
+    return true;
+  }
 
-    public get quizCode(): string
-    {
-        return this._quizCode;
-    }
+  public get quizCode(): string {
+    return this._quizCode;
+  }
 
-    public get questionIdsForWrongAnswers(): number[]
-    {
-        return this._questionIdsForWrongAnswers;
-    }
+  public get questionIdsForWrongAnswers(): number[] {
+    return this._questionIdsForWrongAnswers;
+  }
 }

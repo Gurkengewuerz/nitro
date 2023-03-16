@@ -1,5 +1,3 @@
-import { Sprite as SpriteBase } from '@pixi/sprite';
+import {Sprite as SpriteBase} from "@pixi/sprite";
 
-export class NitroSprite extends SpriteBase
-{
-}
+export class NitroSprite extends SpriteBase {}

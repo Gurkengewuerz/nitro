@@ -58,6 +58,7 @@
     "@nrwl/vite": "15.8.6",
     "@nrwl/workspace": "15.8.6",
     "@testing-library/react": "14.0.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.1.1",
     "@types/howler": "^2.2.7",
     "@types/node": "18.14.2",
     "@types/pako": "^1.0.3",

@@ -1,44 +1,41 @@
-import { RoomSessionDoorbellEvent } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomSession } from '../../../api';
-import { useRoomSessionManagerEvent } from '../../events';
+import {RoomSessionDoorbellEvent} from "@nitro/renderer";
+import {useState} from "react";
 
-const useDoorbellWidgetState = () =>
-{
-    const [ users, setUsers ] = useState<string[]>([]);
+import {GetRoomSession} from "../../../api";
+import {useRoomSessionManagerEvent} from "../../events";
 
-    const addUser = (userName: string) =>
-    {
-        if(users.indexOf(userName) >= 0) return;
+const useDoorbellWidgetState = () => {
+  const [users, setUsers] = useState<string[]>([]);
 
-        setUsers([ ...users, userName ]);
-    }
+  const addUser = (userName: string) => {
+    if (users.indexOf(userName) >= 0) return;
 
-    const removeUser = (userName: string) =>
-    {
-        const index = users.indexOf(userName);
+    setUsers([...users, userName]);
+  };
 
-        if(index === -1) return;
+  const removeUser = (userName: string) => {
+    const index = users.indexOf(userName);
 
-        const newUsers = [ ...users ];
+    if (index === -1) return;
 
-        newUsers.splice(index, 1);
+    const newUsers = [...users];
 
-        setUsers(newUsers);
-    }
+    newUsers.splice(index, 1);
 
-    const answer = (userName: string, flag: boolean) =>
-    {
-        GetRoomSession().sendDoorbellApprovalMessage(userName, flag);
+    setUsers(newUsers);
+  };
 
-        removeUser(userName);
-    }
+  const answer = (userName: string, flag: boolean) => {
+    GetRoomSession().sendDoorbellApprovalMessage(userName, flag);
 
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.DOORBELL, event => addUser(event.userName));
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_REJECTED, event => removeUser(event.userName));
-    useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_ACCEPTED, event => removeUser(event.userName));
+    removeUser(userName);
+  };
 
-    return { users, addUser, removeUser, answer };
-}
+  useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.DOORBELL, event => addUser(event.userName));
+  useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_REJECTED, event => removeUser(event.userName));
+  useRoomSessionManagerEvent<RoomSessionDoorbellEvent>(RoomSessionDoorbellEvent.RSDE_ACCEPTED, event => removeUser(event.userName));
+
+  return {users, addUser, removeUser, answer};
+};
 
 export const useDoorbellWidget = useDoorbellWidgetState;

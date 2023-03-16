@@ -1,56 +1,52 @@
-import { HighScoreDataType, ObjectDataFactory, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
-import { useRoom } from '../../useRoom';
+import {HighScoreDataType, ObjectDataFactory, RoomEngineTriggerWidgetEvent, RoomObjectVariable} from "@nitro/renderer";
+import {useState} from "react";
 
-const SCORE_TYPES = [ 'perteam', 'mostwins', 'classic' ];
-const CLEAR_TYPES = [ 'alltime', 'daily', 'weekly', 'monthly' ];
+import {GetRoomEngine} from "../../../../api";
+import {useRoomEngineEvent} from "../../../events";
+import {useRoom} from "../../useRoom";
 
-const useFurnitureHighScoreWidgetState = () =>
-{
-    const [ stuffDatas, setStuffDatas ] = useState<Map<number, HighScoreDataType>>(new Map());
-    const { roomSession = null } = useRoom();
+const SCORE_TYPES = ["perteam", "mostwins", "classic"];
+const CLEAR_TYPES = ["alltime", "daily", "weekly", "monthly"];
 
-    const getScoreType = (type: number) => SCORE_TYPES[type];
-    const getClearType = (type: number) => CLEAR_TYPES[type];
+const useFurnitureHighScoreWidgetState = () => {
+  const [stuffDatas, setStuffDatas] = useState<Map<number, HighScoreDataType>>(new Map());
+  const {roomSession = null} = useRoom();
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, event =>
-    {
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
-    
-        if(!roomObject) return;
+  const getScoreType = (type: number) => SCORE_TYPES[type];
+  const getClearType = (type: number) => CLEAR_TYPES[type];
 
-        const formatKey = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_DATA_FORMAT);
-        const stuffData = (ObjectDataFactory.getData(formatKey) as HighScoreDataType);
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIGH_SCORE_DISPLAY, event => {
+    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
-        stuffData.initializeFromRoomObjectModel(roomObject.model);
+    if (!roomObject) return;
 
-        setStuffDatas(prevValue =>
-        {
-            const newValue = new Map(prevValue);
+    const formatKey = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_DATA_FORMAT);
+    const stuffData = ObjectDataFactory.getData(formatKey) as HighScoreDataType;
 
-            newValue.set(roomObject.id, stuffData);
+    stuffData.initializeFromRoomObjectModel(roomObject.model);
 
-            return newValue;
-        });
+    setStuffDatas(prevValue => {
+      const newValue = new Map(prevValue);
+
+      newValue.set(roomObject.id, stuffData);
+
+      return newValue;
     });
+  });
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, event =>
-    {
-        if(event.roomId !== roomSession.roomId) return;
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_HIDE_HIGH_SCORE_DISPLAY, event => {
+    if (event.roomId !== roomSession.roomId) return;
 
-        setStuffDatas(prevValue =>
-        {
-            const newValue = new Map(prevValue);
+    setStuffDatas(prevValue => {
+      const newValue = new Map(prevValue);
 
-            newValue.delete(event.objectId);
+      newValue.delete(event.objectId);
 
-            return newValue;
-        });
+      return newValue;
     });
+  });
 
-    return { stuffDatas, getScoreType, getClearType };
-}
+  return {stuffDatas, getScoreType, getClearType};
+};
 
 export const useFurnitureHighScoreWidget = useFurnitureHighScoreWidgetState;

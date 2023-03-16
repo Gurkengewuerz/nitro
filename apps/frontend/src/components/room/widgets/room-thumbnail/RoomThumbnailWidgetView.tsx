@@ -1,42 +1,36 @@
-import { NitroRenderTexture } from '@nitro/renderer';
-import { FC, useState } from 'react';
-import { GetRoomEngine } from '../../../../api';
-import { LayoutMiniCameraView } from '../../../../common';
-import { RoomWidgetThumbnailEvent } from '../../../../events';
-import { useRoom, useUiEvent } from '../../../../hooks';
+import {NitroRenderTexture} from "@nitro/renderer";
+import {FC, useState} from "react";
 
-export const RoomThumbnailWidgetView: FC<{}> = props =>
-{
-    const [ isVisible, setIsVisible ] = useState(false);
-    const { roomSession = null } = useRoom();
+import {GetRoomEngine} from "../../../../api";
+import {LayoutMiniCameraView} from "../../../../common";
+import {RoomWidgetThumbnailEvent} from "../../../../events";
+import {useRoom, useUiEvent} from "../../../../hooks";
 
-    useUiEvent([
-        RoomWidgetThumbnailEvent.SHOW_THUMBNAIL,
-        RoomWidgetThumbnailEvent.HIDE_THUMBNAIL,
-        RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL ], event =>
-    {
-        switch(event.type)
-        {
-            case RoomWidgetThumbnailEvent.SHOW_THUMBNAIL:
-                setIsVisible(true);
-                return;
-            case RoomWidgetThumbnailEvent.HIDE_THUMBNAIL:
-                setIsVisible(false);
-                return;   
-            case RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL:
-                setIsVisible(value => !value);
-                return;
-        }
-    });
+export const RoomThumbnailWidgetView: FC<{}> = props => {
+  const [isVisible, setIsVisible] = useState(false);
+  const {roomSession = null} = useRoom();
 
-    const receiveTexture = (texture: NitroRenderTexture) =>
-    {
-        GetRoomEngine().saveTextureAsScreenshot(texture, true);
-
+  useUiEvent([RoomWidgetThumbnailEvent.SHOW_THUMBNAIL, RoomWidgetThumbnailEvent.HIDE_THUMBNAIL, RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL], event => {
+    switch (event.type) {
+      case RoomWidgetThumbnailEvent.SHOW_THUMBNAIL:
+        setIsVisible(true);
+        return;
+      case RoomWidgetThumbnailEvent.HIDE_THUMBNAIL:
         setIsVisible(false);
+        return;
+      case RoomWidgetThumbnailEvent.TOGGLE_THUMBNAIL:
+        setIsVisible(value => !value);
+        return;
     }
+  });
 
-    if(!isVisible) return null;
+  const receiveTexture = (texture: NitroRenderTexture) => {
+    GetRoomEngine().saveTextureAsScreenshot(texture, true);
 
-    return <LayoutMiniCameraView roomId={ roomSession.roomId } textureReceiver={ receiveTexture } onClose={ () => setIsVisible(false) } />
+    setIsVisible(false);
+  };
+
+  if (!isVisible) return null;
+
+  return <LayoutMiniCameraView roomId={roomSession.roomId} textureReceiver={receiveTexture} onClose={() => setIsVisible(false)} />;
 };

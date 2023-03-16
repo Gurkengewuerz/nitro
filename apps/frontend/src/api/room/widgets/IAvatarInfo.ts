@@ -1,4 +1,3 @@
-export interface IAvatarInfo
-{
-    type: string;
+export interface IAvatarInfo {
+  type: string;
 }

@@ -1,1 +1,1 @@
-export * from './RoomCameraWidgetManagerEvent';
+export * from "./RoomCameraWidgetManagerEvent";

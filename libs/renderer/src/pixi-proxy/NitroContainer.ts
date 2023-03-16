@@ -1,4 +1,3 @@
-import { Container } from '@pixi/display';
+import {Container} from "@pixi/display";
 
-export class NitroContainer extends Container
-{}
+export class NitroContainer extends Container {}

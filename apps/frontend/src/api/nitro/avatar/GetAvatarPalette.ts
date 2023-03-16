@@ -1,7 +1,7 @@
-import { IPalette } from '@nitro/renderer';
-import { GetAvatarRenderManager } from './GetAvatarRenderManager';
+import {IPalette} from "@nitro/renderer";
 
-export function GetAvatarPalette(paletteId: number): IPalette
-{
-    return GetAvatarRenderManager().structureData.getPalette(paletteId);
+import {GetAvatarRenderManager} from "./GetAvatarRenderManager";
+
+export function GetAvatarPalette(paletteId: number): IPalette {
+  return GetAvatarRenderManager().structureData.getPalette(paletteId);
 }

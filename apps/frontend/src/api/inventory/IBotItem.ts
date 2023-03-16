@@ -1,6 +1,5 @@
-import { BotData } from '@nitro/renderer';
+import {BotData} from "@nitro/renderer";
 
-export interface IBotItem
-{
-    botData: BotData;
+export interface IBotItem {
+  botData: BotData;
 }

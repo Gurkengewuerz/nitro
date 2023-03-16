@@ -1,32 +1,33 @@
-import { GameConfigurationData } from '@nitro/renderer';
-import { LocalizeText } from '../../../api';
-import { Base, Flex } from '../../../common';
-import { useGameCenter } from '../../../hooks';
+import {GameConfigurationData} from "@nitro/renderer";
 
-export const GameListView = () => 
-{
-    const { games,selectedGame, setSelectedGame } = useGameCenter();
+import {LocalizeText} from "../../../api";
+import {Base, Flex} from "../../../common";
+import {useGameCenter} from "../../../hooks";
 
-    const getClasses = (game: GameConfigurationData) => 
-    {
-        let classes = [ 'game-icon' ];
+export const GameListView = () => {
+  const {games, selectedGame, setSelectedGame} = useGameCenter();
 
-        if(selectedGame === game) classes.push('selected');
+  const getClasses = (game: GameConfigurationData) => {
+    let classes = ["game-icon"];
 
-        return classes.join(' ');
-    }
-    
-    const getIconImage = (game: GameConfigurationData): string => 
-    {
-        return `url(${ game.assetUrl }${ game.gameNameId }_icon.png)`
-    }
+    if (selectedGame === game) classes.push("selected");
 
-    return <Base fullWidth className="gameList-container bg-dark p-1">
-        { LocalizeText('gamecenter.game_list_title') }
-        <Flex gap={ 3 }>
-            { games && games.map((game,index) => 
-                <Base key={ index } className={ getClasses(game) } onClick={ evt => setSelectedGame(game) } style={ { backgroundImage: getIconImage(game) } }/>
-            ) }
-        </Flex>
+    return classes.join(" ");
+  };
+
+  const getIconImage = (game: GameConfigurationData): string => {
+    return `url(${game.assetUrl}${game.gameNameId}_icon.png)`;
+  };
+
+  return (
+    <Base fullWidth className="gameList-container bg-dark p-1">
+      {LocalizeText("gamecenter.game_list_title")}
+      <Flex gap={3}>
+        {games &&
+          games.map((game, index) => (
+            <Base key={index} className={getClasses(game)} onClick={evt => setSelectedGame(game)} style={{backgroundImage: getIconImage(game)}} />
+          ))}
+      </Flex>
     </Base>
-}
+  );
+};

@@ -1,23 +1,22 @@
-import { RoomEventEvent, RoomEventMessageParser } from '@nitro/renderer';
-import { useState } from 'react';
-import { useBetween } from 'use-between';
-import { useMessageEvent } from '../../events';
+import {RoomEventEvent, RoomEventMessageParser} from "@nitro/renderer";
+import {useState} from "react";
+import {useBetween} from "use-between";
 
-const useRoomPromoteState = () =>
-{
-    const [ promoteInformation, setPromoteInformation ] = useState<RoomEventMessageParser>(null);
-    const [ isExtended, setIsExtended ] = useState<boolean>(false);
+import {useMessageEvent} from "../../events";
 
-    useMessageEvent<RoomEventEvent>(RoomEventEvent, event =>
-    {
-        const parser = event.getParser();
+const useRoomPromoteState = () => {
+  const [promoteInformation, setPromoteInformation] = useState<RoomEventMessageParser>(null);
+  const [isExtended, setIsExtended] = useState<boolean>(false);
 
-        if (!parser) return;
+  useMessageEvent<RoomEventEvent>(RoomEventEvent, event => {
+    const parser = event.getParser();
 
-        setPromoteInformation(parser);
-    });
+    if (!parser) return;
 
-    return { promoteInformation, isExtended, setPromoteInformation, setIsExtended };
-}
+    setPromoteInformation(parser);
+  });
+
+  return {promoteInformation, isExtended, setPromoteInformation, setIsExtended};
+};
 
 export const useRoomPromote = () => useBetween(useRoomPromoteState);

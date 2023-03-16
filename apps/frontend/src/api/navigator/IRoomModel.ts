@@ -1,6 +1,5 @@
-export interface IRoomModel
-{
-    clubLevel: number;
-    tileSize: number;
-    name: string;
+export interface IRoomModel {
+  clubLevel: number;
+  tileSize: number;
+  name: string;
 }

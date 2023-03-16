@@ -1,44 +1,38 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { FriendRequestData } from './FriendRequestData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {FriendRequestData} from "./FriendRequestData";
 
-export class FriendRequestsParser implements IMessageParser
-{
-    private _totalRequests: number;
-    private _requests: FriendRequestData[];
+export class FriendRequestsParser implements IMessageParser {
+  private _totalRequests: number;
+  private _requests: FriendRequestData[];
 
-    public flush(): boolean
-    {
-        this._totalRequests = 0;
-        this._requests = [];
+  public flush(): boolean {
+    this._totalRequests = 0;
+    this._requests = [];
 
-        return true;
+    return true;
+  }
+
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
+
+    this._totalRequests = wrapper.readInt();
+
+    let totalRequests = wrapper.readInt();
+
+    while (totalRequests > 0) {
+      this._requests.push(new FriendRequestData(wrapper));
+
+      totalRequests--;
     }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+    return true;
+  }
 
-        this._totalRequests = wrapper.readInt();
+  public get totalRequests(): number {
+    return this._totalRequests;
+  }
 
-        let totalRequests = wrapper.readInt();
-
-        while(totalRequests > 0)
-        {
-            this._requests.push(new FriendRequestData(wrapper));
-
-            totalRequests--;
-        }
-
-        return true;
-    }
-
-    public get totalRequests(): number
-    {
-        return this._totalRequests;
-    }
-
-    public get requests(): FriendRequestData[]
-    {
-        return this._requests;
-    }
+  public get requests(): FriendRequestData[] {
+    return this._requests;
+  }
 }

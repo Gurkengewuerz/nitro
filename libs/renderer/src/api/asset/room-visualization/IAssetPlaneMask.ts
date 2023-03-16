@@ -1,7 +1,6 @@
-import { IAssetPlaneMaskVisualization } from './IAssetPlaneMaskVisualization';
+import {IAssetPlaneMaskVisualization} from "./IAssetPlaneMaskVisualization";
 
-export interface IAssetPlaneMask
-{
-    id?: string;
-    visualizations?: IAssetPlaneMaskVisualization[];
+export interface IAssetPlaneMask {
+  id?: string;
+  visualizations?: IAssetPlaneMaskVisualization[];
 }

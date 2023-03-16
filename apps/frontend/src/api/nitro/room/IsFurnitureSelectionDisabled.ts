@@ -1,24 +1,22 @@
-import { RoomEngineObjectEvent, RoomObjectVariable } from '@nitro/renderer';
-import { GetSessionDataManager } from '../..';
-import { GetRoomEngine } from './GetRoomEngine';
+import {RoomEngineObjectEvent, RoomObjectVariable} from "@nitro/renderer";
 
-export function IsFurnitureSelectionDisabled(event: RoomEngineObjectEvent): boolean
-{
-    let result = false;
+import {GetSessionDataManager} from "../..";
+import {GetRoomEngine} from "./GetRoomEngine";
 
-    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+export function IsFurnitureSelectionDisabled(event: RoomEngineObjectEvent): boolean {
+  let result = false;
 
-    if(roomObject)
-    {
-        const selectionDisabled = (roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_SELECTION_DISABLED) === 1);
+  const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
-        if(selectionDisabled)
-        {
-            result = true;
+  if (roomObject) {
+    const selectionDisabled = roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_SELECTION_DISABLED) === 1;
 
-            if(GetSessionDataManager().isModerator) result = false;
-        }
+    if (selectionDisabled) {
+      result = true;
+
+      if (GetSessionDataManager().isModerator) result = false;
     }
+  }
 
-    return result;
+  return result;
 }

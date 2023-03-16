@@ -1,4 +1,3 @@
-import { Spritesheet } from '@pixi/spritesheet';
+import {Spritesheet} from "@pixi/spritesheet";
 
-export class NitroSpritesheet extends Spritesheet
-{}
+export class NitroSpritesheet extends Spritesheet {}

@@ -1,22 +1,19 @@
-import { FC, useMemo } from 'react';
-import { Flex, FlexProps } from './Flex';
+import {FC, useMemo} from "react";
 
-export interface FormGroupProps extends FlexProps
-{
-}
+import {Flex, FlexProps} from "./Flex";
 
-export const FormGroup: FC<FormGroupProps> = props =>
-{
-    const { classNames = [], ...rest } = props;
+export interface FormGroupProps extends FlexProps {}
 
-    const getClassNames = useMemo(() =>
-    {
-        const newClassNames: string[] = [ 'form-group' ];
+export const FormGroup: FC<FormGroupProps> = props => {
+  const {classNames = [], ...rest} = props;
 
-        if(classNames.length) newClassNames.push(...classNames);
+  const getClassNames = useMemo(() => {
+    const newClassNames: string[] = ["form-group"];
 
-        return newClassNames;
-    }, [ classNames ]);
+    if (classNames.length) newClassNames.push(...classNames);
 
-    return <Flex classNames={ getClassNames } { ...rest } />;
-}
+    return newClassNames;
+  }, [classNames]);
+
+  return <Flex classNames={getClassNames} {...rest} />;
+};

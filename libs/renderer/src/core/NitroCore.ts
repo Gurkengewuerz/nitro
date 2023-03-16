@@ -1,41 +1,35 @@
-import { ICommunicationManager, IConfigurationManager, INitroCore } from '../api';
-import { Disposable } from './common';
-import { CommunicationManager } from './communication';
-import { ConfigurationManager } from './configuration';
-import { NitroVersion } from './NitroVersion';
+import {ICommunicationManager, IConfigurationManager, INitroCore} from "../api";
+import {NitroVersion} from "./NitroVersion";
+import {Disposable} from "./common";
+import {CommunicationManager} from "./communication";
+import {ConfigurationManager} from "./configuration";
 
-export class NitroCore extends Disposable implements INitroCore
-{
-    private _configuration: IConfigurationManager;
-    private _communication: ICommunicationManager;
+export class NitroCore extends Disposable implements INitroCore {
+  private _configuration: IConfigurationManager;
+  private _communication: ICommunicationManager;
 
-    constructor()
-    {
-        super();
+  constructor() {
+    super();
 
-        NitroVersion.sayHello();
+    NitroVersion.sayHello();
 
-        this._configuration = new ConfigurationManager();
-        this._communication = new CommunicationManager();
+    this._configuration = new ConfigurationManager();
+    this._communication = new CommunicationManager();
+  }
+
+  protected onDispose(): void {
+    if (this._communication) {
+      this._communication.dispose();
+
+      this._communication = null;
     }
+  }
 
-    protected onDispose(): void
-    {
-        if(this._communication)
-        {
-            this._communication.dispose();
+  public get configuration(): IConfigurationManager {
+    return this._configuration;
+  }
 
-            this._communication = null;
-        }
-    }
-
-    public get configuration(): IConfigurationManager
-    {
-        return this._configuration;
-    }
-
-    public get communication(): ICommunicationManager
-    {
-        return this._communication;
-    }
+  public get communication(): ICommunicationManager {
+    return this._communication;
+  }
 }

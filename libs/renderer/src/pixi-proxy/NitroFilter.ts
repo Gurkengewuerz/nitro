@@ -1,4 +1,3 @@
-import { Filter } from '@pixi/core';
+import {Filter} from "@pixi/core";
 
-export class NitroFilter extends Filter
-{}
+export class NitroFilter extends Filter {}

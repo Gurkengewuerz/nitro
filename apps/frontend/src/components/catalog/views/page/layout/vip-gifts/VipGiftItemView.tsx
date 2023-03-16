@@ -1,63 +1,66 @@
-import { CatalogPageMessageOfferData } from '@nitro/renderer';
-import { FC, useCallback } from 'react';
-import { LocalizeText, ProductImageUtility } from '../../../../../../api';
-import { Button, LayoutGridItem, LayoutImage, Text } from '../../../../../../common';
+import {CatalogPageMessageOfferData} from "@nitro/renderer";
+import {FC, useCallback} from "react";
 
-export interface VipGiftItemViewProps
-{
-    offer: CatalogPageMessageOfferData;
-    isAvailable: boolean;
-    daysRequired: number;
-    onSelect(localizationId: string): void;
+import {LocalizeText, ProductImageUtility} from "../../../../../../api";
+import {Button, LayoutGridItem, LayoutImage, Text} from "../../../../../../common";
+
+export interface VipGiftItemViewProps {
+  offer: CatalogPageMessageOfferData;
+  isAvailable: boolean;
+  daysRequired: number;
+  onSelect(localizationId: string): void;
 }
 
-export const VipGiftItem : FC<VipGiftItemViewProps> = props =>
-{
-    const { offer = null, isAvailable = false, daysRequired = 0, onSelect = null } = props;
-    
-    const getImageUrlForOffer = useCallback( () =>
-    {
-        if(!offer || !offer.products.length) return '';
+export const VipGiftItem: FC<VipGiftItemViewProps> = props => {
+  const {offer = null, isAvailable = false, daysRequired = 0, onSelect = null} = props;
 
-        const productData = offer.products[0];
+  const getImageUrlForOffer = useCallback(() => {
+    if (!offer || !offer.products.length) return "";
 
-        return ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam);
-    }, [ offer ]);
-    
-    const getItemTitle = useCallback(() =>
-    {
-        if(!offer || !offer.products.length) return '';
+    const productData = offer.products[0];
 
-        const productData = offer.products[0];
+    return ProductImageUtility.getProductImageUrl(productData.productType, productData.furniClassId, productData.extraParam);
+  }, [offer]);
 
-        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.name.' + productData.furniClassId : 'roomItem.name.' + productData.furniClassId;
+  const getItemTitle = useCallback(() => {
+    if (!offer || !offer.products.length) return "";
 
-        return LocalizeText(localizationKey);
-    }, [ offer ]);
+    const productData = offer.products[0];
 
-    const getItemDesc = useCallback( () =>
-    {
-        if(!offer || !offer.products.length) return '';
+    const localizationKey =
+      ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2
+        ? "wallItem.name." + productData.furniClassId
+        : "roomItem.name." + productData.furniClassId;
 
-        const productData = offer.products[0];
+    return LocalizeText(localizationKey);
+  }, [offer]);
 
-        const localizationKey = ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2 ? 'wallItem.desc.' + productData.furniClassId : 'roomItem.desc.' + productData.furniClassId ;
+  const getItemDesc = useCallback(() => {
+    if (!offer || !offer.products.length) return "";
 
-        return LocalizeText(localizationKey);
-    }, [ offer ]);
+    const productData = offer.products[0];
 
-    const getMonthsRequired = useCallback(() => 
-    {
-        return Math.floor(daysRequired / 31);
-    },[ daysRequired ]);
+    const localizationKey =
+      ProductImageUtility.getProductCategory(productData.productType, productData.furniClassId) === 2
+        ? "wallItem.desc." + productData.furniClassId
+        : "roomItem.desc." + productData.furniClassId;
 
-    return (
-        <LayoutGridItem center={ false } column={ false } alignItems="center" className="p-1">
-            <LayoutImage imageUrl={ getImageUrlForOffer() } />
-            <Text grow fontWeight="bold">{ getItemTitle() }</Text>
-            <Button variant="secondary" onClick={ () => onSelect(offer.localizationId) } disabled={ !isAvailable }>
-                { LocalizeText('catalog.club_gift.select') }
-            </Button>
-        </LayoutGridItem>
-    );
-}
+    return LocalizeText(localizationKey);
+  }, [offer]);
+
+  const getMonthsRequired = useCallback(() => {
+    return Math.floor(daysRequired / 31);
+  }, [daysRequired]);
+
+  return (
+    <LayoutGridItem center={false} column={false} alignItems="center" className="p-1">
+      <LayoutImage imageUrl={getImageUrlForOffer()} />
+      <Text grow fontWeight="bold">
+        {getItemTitle()}
+      </Text>
+      <Button variant="secondary" onClick={() => onSelect(offer.localizationId)} disabled={!isAvailable}>
+        {LocalizeText("catalog.club_gift.select")}
+      </Button>
+    </LayoutGridItem>
+  );
+};

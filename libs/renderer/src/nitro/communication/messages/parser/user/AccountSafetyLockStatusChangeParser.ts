@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class AccountSafetyLockStatusChangeParser implements IMessageParser
-{
-    public static SAFETY_LOCK_STATUS_LOCKED: number = 0;
-    public static SAFETY_LOCK_STATUS_UNLOCKED: number = 1;
+export class AccountSafetyLockStatusChangeParser implements IMessageParser {
+  public static SAFETY_LOCK_STATUS_LOCKED: number = 0;
+  public static SAFETY_LOCK_STATUS_UNLOCKED: number = 1;
 
-    private _status: number;
+  private _status: number;
 
-    public flush(): boolean
-    {
-        return true;
-    }
+  public flush(): boolean {
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._status = wrapper.readInt();
+    this._status = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get status(): number
-    {
-        return this._status;
-    }
+  public get status(): number {
+    return this._status;
+  }
 }

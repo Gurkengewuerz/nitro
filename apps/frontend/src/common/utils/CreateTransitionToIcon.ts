@@ -1,14 +1,14 @@
-import { NitroToolbarAnimateIconEvent } from '@nitro/renderer';
-import { GetRoomEngine } from '../../api';
+import {NitroToolbarAnimateIconEvent} from "@nitro/renderer";
 
-export const CreateTransitionToIcon = (image: HTMLImageElement, fromElement: HTMLElement, icon: string) =>
-{
-    const bounds = fromElement.getBoundingClientRect();
-    const x = (bounds.x + (bounds.width / 2));
-    const y = (bounds.y + (bounds.height / 2));
-    const event = new NitroToolbarAnimateIconEvent(image, x, y);
+import {GetRoomEngine} from "../../api";
 
-    event.iconName = icon;
+export const CreateTransitionToIcon = (image: HTMLImageElement, fromElement: HTMLElement, icon: string) => {
+  const bounds = fromElement.getBoundingClientRect();
+  const x = bounds.x + bounds.width / 2;
+  const y = bounds.y + bounds.height / 2;
+  const event = new NitroToolbarAnimateIconEvent(image, x, y);
 
-    GetRoomEngine().events.dispatchEvent(event);
-}
+  event.iconName = icon;
+
+  GetRoomEngine().events.dispatchEvent(event);
+};

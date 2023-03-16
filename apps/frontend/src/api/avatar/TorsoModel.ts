@@ -1,23 +1,21 @@
-import { AvatarEditorFigureCategory } from '@nitro/renderer';
-import { CategoryBaseModel } from './CategoryBaseModel';
-import { FigureData } from './FigureData';
+import {AvatarEditorFigureCategory} from "@nitro/renderer";
 
-export class TorsoModel extends CategoryBaseModel
-{
-    public init(): void
-    {
-        super.init();
+import {CategoryBaseModel} from "./CategoryBaseModel";
+import {FigureData} from "./FigureData";
 
-        this.addCategory(FigureData.SHIRT);
-        this.addCategory(FigureData.CHEST_PRINTS);
-        this.addCategory(FigureData.JACKET);
-        this.addCategory(FigureData.CHEST_ACCESSORIES);
+export class TorsoModel extends CategoryBaseModel {
+  public init(): void {
+    super.init();
 
-        this._isInitalized = true;
-    }
+    this.addCategory(FigureData.SHIRT);
+    this.addCategory(FigureData.CHEST_PRINTS);
+    this.addCategory(FigureData.JACKET);
+    this.addCategory(FigureData.CHEST_ACCESSORIES);
 
-    public get name(): string
-    {
-        return AvatarEditorFigureCategory.TORSO;
-    }
+    this._isInitalized = true;
+  }
+
+  public get name(): string {
+    return AvatarEditorFigureCategory.TORSO;
+  }
 }

@@ -1,38 +1,47 @@
-﻿import { RenderTexture } from '@pixi/core';
-import { IVector3D, Vector3d } from '../../../../../../../api';
-import { PlaneTextureCache } from '../../../../../../../pixi-proxy';
-import { Plane } from './Plane';
+﻿import {RenderTexture} from "@pixi/core";
 
-export class FloorPlane extends Plane
-{
-    public static DEFAULT_COLOR: number = 0xFFFFFF;
-    public static HORIZONTAL_ANGLE_DEFAULT: number = 45;
-    public static VERTICAL_ANGLE_DEFAULT: number = 30;
+import {IVector3D, Vector3d} from "../../../../../../../api";
+import {PlaneTextureCache} from "../../../../../../../pixi-proxy";
+import {Plane} from "./Plane";
 
-    public render(planeId: string, textureCache: PlaneTextureCache, canvas: RenderTexture, width: number, height: number, scale: number, normal: IVector3D, useTexture: boolean, offsetX: number, offsetY: number): RenderTexture
-    {
-        const visualization = this.getPlaneVisualization(scale);
+export class FloorPlane extends Plane {
+  public static DEFAULT_COLOR: number = 0xffffff;
+  public static HORIZONTAL_ANGLE_DEFAULT: number = 45;
+  public static VERTICAL_ANGLE_DEFAULT: number = 30;
 
-        if(!visualization || !visualization.geometry) return null;
+  public render(
+    planeId: string,
+    textureCache: PlaneTextureCache,
+    canvas: RenderTexture,
+    width: number,
+    height: number,
+    scale: number,
+    normal: IVector3D,
+    useTexture: boolean,
+    offsetX: number,
+    offsetY: number
+  ): RenderTexture {
+    const visualization = this.getPlaneVisualization(scale);
 
-        const _local_10 = visualization.geometry.getScreenPoint(new Vector3d(0, 0, 0));
-        const _local_11 = visualization.geometry.getScreenPoint(new Vector3d(0, (height / visualization.geometry.scale), 0));
-        const _local_12 = visualization.geometry.getScreenPoint(new Vector3d((width / visualization.geometry.scale), 0, 0));
+    if (!visualization || !visualization.geometry) return null;
 
-        let x = 0;
-        let y = 0;
+    const _local_10 = visualization.geometry.getScreenPoint(new Vector3d(0, 0, 0));
+    const _local_11 = visualization.geometry.getScreenPoint(new Vector3d(0, height / visualization.geometry.scale, 0));
+    const _local_12 = visualization.geometry.getScreenPoint(new Vector3d(width / visualization.geometry.scale, 0, 0));
 
-        if(_local_10 && _local_11 && _local_12)
-        {
-            width = Math.round(Math.abs((_local_10.x - _local_12.x)));
-            height = Math.round(Math.abs((_local_10.x - _local_11.x)));
+    let x = 0;
+    let y = 0;
 
-            const _local_15 = (_local_10.x - visualization.geometry.getScreenPoint(new Vector3d(1, 0, 0)).x);
+    if (_local_10 && _local_11 && _local_12) {
+      width = Math.round(Math.abs(_local_10.x - _local_12.x));
+      height = Math.round(Math.abs(_local_10.x - _local_11.x));
 
-            x = (offsetX * Math.trunc(Math.abs(_local_15)));
-            y = (offsetY * Math.trunc(Math.abs(_local_15)));
-        }
+      const _local_15 = _local_10.x - visualization.geometry.getScreenPoint(new Vector3d(1, 0, 0)).x;
 
-        return visualization.render(planeId, textureCache, canvas, width, height, normal, useTexture, x, y);
+      x = offsetX * Math.trunc(Math.abs(_local_15));
+      y = offsetY * Math.trunc(Math.abs(_local_15));
     }
+
+    return visualization.render(planeId, textureCache, canvas, width, height, normal, useTexture, x, y);
+  }
 }

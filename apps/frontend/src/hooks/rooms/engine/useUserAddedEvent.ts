@@ -1,19 +1,17 @@
-import { useEffect } from 'react';
-import { RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER } from '../../../api';
+import {useEffect} from "react";
 
-export const useUserAddedEvent = (isActive: boolean, handler: (event: RoomWidgetUpdateRoomObjectEvent) => void) =>
-{
-    useEffect(() =>
-    {
-        if(!isActive) return;
+import {RoomWidgetUpdateRoomObjectEvent, UI_EVENT_DISPATCHER} from "../../../api";
 
-        const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event);
+export const useUserAddedEvent = (isActive: boolean, handler: (event: RoomWidgetUpdateRoomObjectEvent) => void) => {
+  useEffect(() => {
+    if (!isActive) return;
 
-        UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
+    const onRoomWidgetUpdateRoomObjectEvent = (event: RoomWidgetUpdateRoomObjectEvent) => handler(event);
 
-        return () =>
-        {
-            UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
-        }
-    }, [ isActive, handler ]);
-}
+    UI_EVENT_DISPATCHER.addEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
+
+    return () => {
+      UI_EVENT_DISPATCHER.removeEventListener(RoomWidgetUpdateRoomObjectEvent.USER_ADDED, onRoomWidgetUpdateRoomObjectEvent);
+    };
+  }, [isActive, handler]);
+};

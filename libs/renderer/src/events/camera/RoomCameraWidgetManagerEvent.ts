@@ -1,11 +1,9 @@
-import { NitroEvent } from '../core';
+import {NitroEvent} from "../core";
 
-export class RoomCameraWidgetManagerEvent extends NitroEvent
-{
-    public static INITIALIZED: string = 'RCWM_INITIALIZED';
+export class RoomCameraWidgetManagerEvent extends NitroEvent {
+  public static INITIALIZED: string = "RCWM_INITIALIZED";
 
-    constructor(type: string)
-    {
-        super(type);
-    }
+  constructor(type: string) {
+    super(type);
+  }
 }

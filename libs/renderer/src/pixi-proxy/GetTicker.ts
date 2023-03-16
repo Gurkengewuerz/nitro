@@ -1,3 +1,3 @@
-import { PixiApplicationProxy } from './PixiApplicationProxy';
+import {PixiApplicationProxy} from "./PixiApplicationProxy";
 
-export const GetTicker = () => (PixiApplicationProxy.instance?.ticker || null);
+export const GetTicker = () => PixiApplicationProxy.instance?.ticker || null;

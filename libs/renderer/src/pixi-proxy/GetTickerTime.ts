@@ -1,3 +1,3 @@
-import { GetTicker } from './GetTicker';
+import {GetTicker} from "./GetTicker";
 
-export const GetTickerTime = () => (GetTicker()?.lastTime || 0);
+export const GetTickerTime = () => GetTicker()?.lastTime || 0;

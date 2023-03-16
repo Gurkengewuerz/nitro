@@ -1,75 +1,73 @@
-import { CatalogGroupsComposer, StringDataType } from '@nitro/renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { LocalizeText, SendMessageComposer } from '../../../../../api';
-import { Base, Button, Flex } from '../../../../../common';
-import { useCatalog } from '../../../../../hooks';
+import {CatalogGroupsComposer, StringDataType} from "@nitro/renderer";
+import {FC, useEffect, useMemo, useState} from "react";
 
-export const CatalogGuildSelectorWidgetView: FC<{}> = props =>
-{
-    const [ selectedGroupIndex, setSelectedGroupIndex ] = useState<number>(0);
-    const { currentOffer = null, catalogOptions = null, setPurchaseOptions = null } = useCatalog();
-    const { groups = null } = catalogOptions;
+import {LocalizeText, SendMessageComposer} from "../../../../../api";
+import {Base, Button, Flex} from "../../../../../common";
+import {useCatalog} from "../../../../../hooks";
 
-    const previewStuffData = useMemo(() =>
-    {
-        if(!groups || !groups.length) return null;
+export const CatalogGuildSelectorWidgetView: FC<{}> = props => {
+  const [selectedGroupIndex, setSelectedGroupIndex] = useState<number>(0);
+  const {currentOffer = null, catalogOptions = null, setPurchaseOptions = null} = useCatalog();
+  const {groups = null} = catalogOptions;
 
-        const group = groups[selectedGroupIndex];
+  const previewStuffData = useMemo(() => {
+    if (!groups || !groups.length) return null;
 
-        if(!group) return null;
+    const group = groups[selectedGroupIndex];
 
-        const stuffData = new StringDataType();
+    if (!group) return null;
 
-        stuffData.setValue([ '0', group.groupId.toString(), group.badgeCode, group.colorA, group.colorB ]);
+    const stuffData = new StringDataType();
 
-        return stuffData;
-    }, [ selectedGroupIndex, groups ]);
+    stuffData.setValue(["0", group.groupId.toString(), group.badgeCode, group.colorA, group.colorB]);
 
-    useEffect(() =>
-    {
-        if(!currentOffer) return;
+    return stuffData;
+  }, [selectedGroupIndex, groups]);
 
-        setPurchaseOptions(prevValue =>
-        {
-            const newValue = { ...prevValue };
+  useEffect(() => {
+    if (!currentOffer) return;
 
-            newValue.extraParamRequired = true;
-            newValue.extraData = ((previewStuffData && previewStuffData.getValue(1)) || null);
-            newValue.previewStuffData = previewStuffData;
+    setPurchaseOptions(prevValue => {
+      const newValue = {...prevValue};
 
-            return newValue;
-        });
-    }, [ currentOffer, previewStuffData, setPurchaseOptions ]);
+      newValue.extraParamRequired = true;
+      newValue.extraData = (previewStuffData && previewStuffData.getValue(1)) || null;
+      newValue.previewStuffData = previewStuffData;
 
-    useEffect(() =>
-    {
-        SendMessageComposer(new CatalogGroupsComposer());
-    }, []);
+      return newValue;
+    });
+  }, [currentOffer, previewStuffData, setPurchaseOptions]);
 
-    if(!groups || !groups.length)
-    {
-        return (
-            <Base className="bg-muted rounded p-1 text-black text-center">
-                { LocalizeText('catalog.guild_selector.members_only') }
-                <Button className="mt-1">
-                    { LocalizeText('catalog.guild_selector.find_groups') }
-                </Button>
-            </Base>
-        );
-    }
+  useEffect(() => {
+    SendMessageComposer(new CatalogGroupsComposer());
+  }, []);
 
-    const selectedGroup = groups[selectedGroupIndex];
-
+  if (!groups || !groups.length) {
     return (
-        <Flex gap={ 1 }>
-            { !!selectedGroup &&
-                <Flex overflow="hidden" className="rounded border">
-                    <Base fullHeight style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorA } } />
-                    <Base fullHeight style={ { width: '20px', backgroundColor: '#' + selectedGroup.colorB } } />
-                </Flex> }
-            <select className="form-select form-select-sm" value={ selectedGroupIndex } onChange={ event => setSelectedGroupIndex(parseInt(event.target.value)) }>
-                { groups.map((group, index) => <option key={ index } value={ index }>{ group.groupName }</option>) }
-            </select>
-        </Flex>
+      <Base className="bg-muted rounded p-1 text-black text-center">
+        {LocalizeText("catalog.guild_selector.members_only")}
+        <Button className="mt-1">{LocalizeText("catalog.guild_selector.find_groups")}</Button>
+      </Base>
     );
-}
+  }
+
+  const selectedGroup = groups[selectedGroupIndex];
+
+  return (
+    <Flex gap={1}>
+      {!!selectedGroup && (
+        <Flex overflow="hidden" className="rounded border">
+          <Base fullHeight style={{width: "20px", backgroundColor: "#" + selectedGroup.colorA}} />
+          <Base fullHeight style={{width: "20px", backgroundColor: "#" + selectedGroup.colorB}} />
+        </Flex>
+      )}
+      <select className="form-select form-select-sm" value={selectedGroupIndex} onChange={event => setSelectedGroupIndex(parseInt(event.target.value))}>
+        {groups.map((group, index) => (
+          <option key={index} value={index}>
+            {group.groupName}
+          </option>
+        ))}
+      </select>
+    </Flex>
+  );
+};

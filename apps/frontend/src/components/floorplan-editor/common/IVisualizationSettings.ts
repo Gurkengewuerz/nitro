@@ -1,7 +1,6 @@
-export interface IVisualizationSettings
-{
-    entryPointDir: number;
-    wallHeight: number;
-    thicknessWall: number;
-    thicknessFloor: number;
+export interface IVisualizationSettings {
+  entryPointDir: number;
+  wallHeight: number;
+  thicknessWall: number;
+  thicknessFloor: number;
 }

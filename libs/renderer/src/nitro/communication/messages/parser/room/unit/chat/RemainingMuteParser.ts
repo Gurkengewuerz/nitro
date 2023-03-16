@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../../api";
 
-export class RemainingMuteParser implements IMessageParser
-{
-    private _seconds: number;
+export class RemainingMuteParser implements IMessageParser {
+  private _seconds: number;
 
-    public flush(): boolean
-    {
-        this._seconds = 0;
+  public flush(): boolean {
+    this._seconds = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._seconds = wrapper.readInt();
+    this._seconds = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get seconds(): number
-    {
-        return this._seconds;
-    }
+  public get seconds(): number {
+    return this._seconds;
+  }
 }

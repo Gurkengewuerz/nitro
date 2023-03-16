@@ -1,7 +1,7 @@
-import { INitroCommunicationManager } from '@nitro/renderer';
-import { GetNitroInstance } from './GetNitroInstance';
+import {INitroCommunicationManager} from "@nitro/renderer";
 
-export function GetCommunication(): INitroCommunicationManager
-{
-    return GetNitroInstance()?.communication;
+import {GetNitroInstance} from "./GetNitroInstance";
+
+export function GetCommunication(): INitroCommunicationManager {
+  return GetNitroInstance()?.communication;
 }

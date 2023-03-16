@@ -1,5 +1,5 @@
-import { NitroBaseTexture } from './NitroBaseTexture';
-import { NitroFilter } from './NitroFilter';
+import {NitroBaseTexture} from "./NitroBaseTexture";
+import {NitroFilter} from "./NitroFilter";
 
 const vertex = `
 attribute vec2 aVertexPosition;
@@ -39,56 +39,50 @@ void main(void) {
     gl_FragColor = vec4(adjusted.r, adjusted.g, adjusted.b, currentColor.a);
 }`;
 
-export class PaletteMapFilter extends NitroFilter
-{
-    public static readonly CHANNEL_RED = 0;
-    public static readonly CHANNEL_GREEN = 1;
-    public static readonly CHANNEL_BLUE = 2;
-    public static readonly CHANNEL_ALPHA = 3;
+export class PaletteMapFilter extends NitroFilter {
+  public static readonly CHANNEL_RED = 0;
+  public static readonly CHANNEL_GREEN = 1;
+  public static readonly CHANNEL_BLUE = 2;
+  public static readonly CHANNEL_ALPHA = 3;
 
-    private _lut: NitroBaseTexture;
-    private _channel: number;
+  private _lut: NitroBaseTexture;
+  private _channel: number;
 
-    constructor(palette: number[], channel = PaletteMapFilter.CHANNEL_RED)
-    {
-        super(vertex, fragment);
-        this._channel = channel;
-        let lut: number[] = [];
+  constructor(palette: number[], channel = PaletteMapFilter.CHANNEL_RED) {
+    super(vertex, fragment);
+    this._channel = channel;
+    let lut: number[] = [];
 
-        lut = this.getLutForPalette(palette);
+    lut = this.getLutForPalette(palette);
 
-        this._lut = NitroBaseTexture.fromBuffer(Uint8Array.from(lut), lut.length / 4, 1, { mipmap: 0, scaleMode: 0 });
+    this._lut = NitroBaseTexture.fromBuffer(Uint8Array.from(lut), lut.length / 4, 1, {mipmap: 0, scaleMode: 0});
 
-        this.uniforms.lut = this._lut;
-        this.uniforms.channel = this._channel;
+    this.uniforms.lut = this._lut;
+    this.uniforms.channel = this._channel;
+  }
+
+  private getLutForPalette(data: number[]): number[] {
+    const lut = [];
+
+    for (let i = 0; i < data.length; i++) {
+      // R
+      lut[i * 4 + PaletteMapFilter.CHANNEL_RED] = (data[i] >> 16) & 0xff;
+      // G
+      lut[i * 4 + PaletteMapFilter.CHANNEL_GREEN] = (data[i] >> 8) & 0xff;
+      // B
+      lut[i * 4 + PaletteMapFilter.CHANNEL_BLUE] = data[i] & 0xff;
+      // A
+      lut[i * 4 + PaletteMapFilter.CHANNEL_ALPHA] = (data[i] >> 24) & 0xff;
     }
 
-    private getLutForPalette(data: number[]): number[]
-    {
-        const lut = [];
+    return lut;
+  }
 
-        for(let i = 0; i < data.length; i++)
-        {
-            // R
-            lut[(i * 4) + PaletteMapFilter.CHANNEL_RED] = ((data[i] >> 16) & 0xFF);
-            // G
-            lut[(i * 4) + PaletteMapFilter.CHANNEL_GREEN] = ((data[i] >> 8) & 0xFF);
-            // B
-            lut[(i * 4) + PaletteMapFilter.CHANNEL_BLUE] = (data[i] & 0xFF);
-            // A
-            lut[(i * 4) + PaletteMapFilter.CHANNEL_ALPHA] = ((data[i] >> 24) & 0xFF);
-        }
+  public get lut(): NitroBaseTexture {
+    return this._lut;
+  }
 
-        return lut;
-    }
-
-    public get lut(): NitroBaseTexture
-    {
-        return this._lut;
-    }
-
-    public get channel(): number
-    {
-        return this._channel;
-    }
+  public get channel(): number {
+    return this._channel;
+  }
 }

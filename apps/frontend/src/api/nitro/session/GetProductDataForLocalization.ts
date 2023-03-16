@@ -1,9 +1,9 @@
-import { IProductData } from '@nitro/renderer';
-import { GetSessionDataManager } from './GetSessionDataManager';
+import {IProductData} from "@nitro/renderer";
 
-export function GetProductDataForLocalization(localizationId: string): IProductData
-{
-    if(!localizationId) return null;
+import {GetSessionDataManager} from "./GetSessionDataManager";
 
-    return GetSessionDataManager().getProductData(localizationId);
+export function GetProductDataForLocalization(localizationId: string): IProductData {
+  if (!localizationId) return null;
+
+  return GetSessionDataManager().getProductData(localizationId);
 }

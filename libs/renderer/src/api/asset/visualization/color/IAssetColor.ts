@@ -1,6 +1,5 @@
-import { IAssetColorLayer } from './IAssetColorLayer';
+import {IAssetColorLayer} from "./IAssetColorLayer";
 
-export interface IAssetColor
-{
-    layers?: { [index: string]: IAssetColorLayer };
+export interface IAssetColor {
+  layers?: {[index: string]: IAssetColorLayer};
 }

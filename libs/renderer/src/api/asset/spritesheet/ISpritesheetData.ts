@@ -1,7 +1,7 @@
-import { ISpritesheetData as PixiSpritesheet } from '@pixi/spritesheet';
-import { ISpritesheetMeta } from './ISpritesheetMeta';
+import {ISpritesheetData as PixiSpritesheet} from "@pixi/spritesheet";
 
-export interface ISpritesheetData extends PixiSpritesheet
-{
-    meta: ISpritesheetMeta;
+import {ISpritesheetMeta} from "./ISpritesheetMeta";
+
+export interface ISpritesheetData extends PixiSpritesheet {
+  meta: ISpritesheetMeta;
 }

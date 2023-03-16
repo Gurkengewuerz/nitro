@@ -1,1 +1,1 @@
-export * from './NitroLocalizationEvent';
+export * from "./NitroLocalizationEvent";

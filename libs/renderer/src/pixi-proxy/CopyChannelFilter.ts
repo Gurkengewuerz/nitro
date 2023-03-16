@@ -1,4 +1,4 @@
-import { Filter, RenderTexture } from '@pixi/core';
+import {Filter, RenderTexture} from "@pixi/core";
 
 const vertex = `
 attribute vec2 aVertexPosition;
@@ -31,19 +31,17 @@ void main(void) {
     gl_FragColor = vec4(adjusted.r, adjusted.g, adjusted.b, adjusted.a);
 }`;
 
-export class CopyChannelFilter extends Filter
-{
-    public static readonly CHANNEL_RED = 0;
-    public static readonly CHANNEL_GREEN = 1;
-    public static readonly CHANNEL_BLUE = 2;
-    public static readonly CHANNEL_ALPHA = 3;
+export class CopyChannelFilter extends Filter {
+  public static readonly CHANNEL_RED = 0;
+  public static readonly CHANNEL_GREEN = 1;
+  public static readonly CHANNEL_BLUE = 2;
+  public static readonly CHANNEL_ALPHA = 3;
 
-    constructor(mask: RenderTexture, fromChannel: number, toChannel: number)
-    {
-        super(vertex, fragment, {
-            mask: mask.castToBaseTexture(),
-            fromChannel,
-            toChannel
-        });
-    }
+  constructor(mask: RenderTexture, fromChannel: number, toChannel: number) {
+    super(vertex, fragment, {
+      mask: mask.castToBaseTexture(),
+      fromChannel,
+      toChannel,
+    });
+  }
 }

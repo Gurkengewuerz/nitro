@@ -1,28 +1,26 @@
-import { FriendlyTime } from '@nitro/renderer';
-import { FC, useEffect, useMemo, useState } from 'react';
-import { Base, BaseProps } from '..';
+import {FriendlyTime} from "@nitro/renderer";
+import {FC, useEffect, useMemo, useState} from "react";
 
-interface FriendlyTimeViewProps extends BaseProps<HTMLDivElement>
-{
-    seconds: number;
-    isShort?: boolean;
+import {Base, BaseProps} from "..";
+
+interface FriendlyTimeViewProps extends BaseProps<HTMLDivElement> {
+  seconds: number;
+  isShort?: boolean;
 }
 
-export const FriendlyTimeView: FC<FriendlyTimeViewProps> = props =>
-{
-    const { seconds = 0, isShort = false, children = null, ...rest } = props;
-    const [ updateId, setUpdateId ] = useState(-1);
+export const FriendlyTimeView: FC<FriendlyTimeViewProps> = props => {
+  const {seconds = 0, isShort = false, children = null, ...rest} = props;
+  const [updateId, setUpdateId] = useState(-1);
 
-    const getStartSeconds = useMemo(() => (Math.round(new Date().getSeconds()) - seconds), [ seconds ]);
+  const getStartSeconds = useMemo(() => Math.round(new Date().getSeconds()) - seconds, [seconds]);
 
-    useEffect(() =>
-    {
-        const interval = setInterval(() => setUpdateId(prevValue => (prevValue + 1)), 10000);
+  useEffect(() => {
+    const interval = setInterval(() => setUpdateId(prevValue => prevValue + 1), 10000);
 
-        return () => clearInterval(interval);
-    }, []);
+    return () => clearInterval(interval);
+  }, []);
 
-    const value = (Math.round(new Date().getSeconds()) - getStartSeconds);
+  const value = Math.round(new Date().getSeconds()) - getStartSeconds;
 
-    return <Base { ...rest }>{ isShort ? FriendlyTime.shortFormat(value) : FriendlyTime.format(value) }</Base>;
-}
+  return <Base {...rest}>{isShort ? FriendlyTime.shortFormat(value) : FriendlyTime.format(value)}</Base>;
+};

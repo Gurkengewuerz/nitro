@@ -1,3 +1,3 @@
-import { GetTicker } from './GetTicker';
+import {GetTicker} from "./GetTicker";
 
-export const GetTickerFPS = () => (GetTicker()?.FPS || 0);
+export const GetTickerFPS = () => GetTicker()?.FPS || 0;

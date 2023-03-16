@@ -1,7 +1,7 @@
-import { FC } from 'react';
-import { CatalogFirstProductSelectorWidgetView } from './CatalogFirstProductSelectorWidgetView';
+import {FC} from "react";
 
-export const CatalogSingleViewWidgetView: FC<{}> = props =>
-{
-    return <CatalogFirstProductSelectorWidgetView />;
-}
+import {CatalogFirstProductSelectorWidgetView} from "./CatalogFirstProductSelectorWidgetView";
+
+export const CatalogSingleViewWidgetView: FC<{}> = props => {
+  return <CatalogFirstProductSelectorWidgetView />;
+};

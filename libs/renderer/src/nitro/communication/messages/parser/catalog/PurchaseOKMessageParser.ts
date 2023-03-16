@@ -1,28 +1,24 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
-import { PurchaseOKMessageOfferData } from './PurchaseOKMessageOfferData';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
+import {PurchaseOKMessageOfferData} from "./PurchaseOKMessageOfferData";
 
-export class PurchaseOKMessageParser implements IMessageParser
-{
-    private _offer: PurchaseOKMessageOfferData;
+export class PurchaseOKMessageParser implements IMessageParser {
+  private _offer: PurchaseOKMessageOfferData;
 
-    public flush(): boolean
-    {
-        this._offer = null;
+  public flush(): boolean {
+    this._offer = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._offer = new PurchaseOKMessageOfferData(wrapper);
+    this._offer = new PurchaseOKMessageOfferData(wrapper);
 
-        return true;
-    }
+    return true;
+  }
 
-    public get offer(): PurchaseOKMessageOfferData
-    {
-        return this._offer;
-    }
+  public get offer(): PurchaseOKMessageOfferData {
+    return this._offer;
+  }
 }

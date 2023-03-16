@@ -1,51 +1,44 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class GuideSessionAttachedMessageParser implements IMessageParser
-{
-    private _asGuide: boolean;
-    private _helpRequestType: number;
-    private _helpRequestDescription: string;
-    private _roleSpecificWaitTime: number;
+export class GuideSessionAttachedMessageParser implements IMessageParser {
+  private _asGuide: boolean;
+  private _helpRequestType: number;
+  private _helpRequestDescription: string;
+  private _roleSpecificWaitTime: number;
 
-    public flush(): boolean
-    {
-        this._asGuide = false;
-        this._helpRequestType = 0;
-        this._helpRequestDescription = null;
-        this._roleSpecificWaitTime = 0;
+  public flush(): boolean {
+    this._asGuide = false;
+    this._helpRequestType = 0;
+    this._helpRequestDescription = null;
+    this._roleSpecificWaitTime = 0;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._asGuide = wrapper.readBoolean();
-        this._helpRequestType = wrapper.readInt();
-        this._helpRequestDescription = wrapper.readString();
-        this._roleSpecificWaitTime = wrapper.readInt();
+    this._asGuide = wrapper.readBoolean();
+    this._helpRequestType = wrapper.readInt();
+    this._helpRequestDescription = wrapper.readString();
+    this._roleSpecificWaitTime = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get asGuide(): boolean
-    {
-        return this._asGuide;
-    }
+  public get asGuide(): boolean {
+    return this._asGuide;
+  }
 
-    public get helpRequestType(): number
-    {
-        return this._helpRequestType;
-    }
+  public get helpRequestType(): number {
+    return this._helpRequestType;
+  }
 
-    public get helpRequestDescription(): string
-    {
-        return this._helpRequestDescription;
-    }
+  public get helpRequestDescription(): string {
+    return this._helpRequestDescription;
+  }
 
-    public get roleSpecificWaitTime(): number
-    {
-        return this._roleSpecificWaitTime;
-    }
+  public get roleSpecificWaitTime(): number {
+    return this._roleSpecificWaitTime;
+  }
 }

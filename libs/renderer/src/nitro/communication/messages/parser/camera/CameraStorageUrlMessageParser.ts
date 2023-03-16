@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class CameraStorageUrlMessageParser implements IMessageParser
-{
-    private _url: string;
+export class CameraStorageUrlMessageParser implements IMessageParser {
+  private _url: string;
 
-    public flush(): boolean
-    {
-        this._url = '';
+  public flush(): boolean {
+    this._url = "";
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._url = wrapper.readString();
+    this._url = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get url(): string
-    {
-        return this._url;
-    }
+  public get url(): string {
+    return this._url;
+  }
 }

@@ -1,55 +1,52 @@
-import { GroupBadgePartsComposer, GroupBadgePartsEvent } from '@nitro/renderer';
-import { useEffect, useState } from 'react';
-import { useBetween } from 'use-between';
-import { IGroupCustomize, SendMessageComposer } from '../../api';
-import { useMessageEvent } from '../events';
+import {GroupBadgePartsComposer, GroupBadgePartsEvent} from "@nitro/renderer";
+import {useEffect, useState} from "react";
+import {useBetween} from "use-between";
 
-const useGroupState = () =>
-{
-    const [ groupCustomize, setGroupCustomize ] = useState<IGroupCustomize>(null);
+import {IGroupCustomize, SendMessageComposer} from "../../api";
+import {useMessageEvent} from "../events";
 
-    useMessageEvent<GroupBadgePartsEvent>(GroupBadgePartsEvent, event =>
-    {
-        const parser = event.getParser();
+const useGroupState = () => {
+  const [groupCustomize, setGroupCustomize] = useState<IGroupCustomize>(null);
 
-        const customize: IGroupCustomize = {
-            badgeBases: [],
-            badgeSymbols: [],
-            badgePartColors: [],
-            groupColorsA: [],
-            groupColorsB: []
-        };
+  useMessageEvent<GroupBadgePartsEvent>(GroupBadgePartsEvent, event => {
+    const parser = event.getParser();
 
-        parser.bases.forEach((images, id) => customize.badgeBases.push({ id, images }));
-        parser.symbols.forEach((images, id) => customize.badgeSymbols.push({ id, images }));
-        parser.partColors.forEach((color, id) => customize.badgePartColors.push({ id, color }));
-        parser.colorsA.forEach((color, id) => customize.groupColorsA.push({ id, color }));
-        parser.colorsB.forEach((color, id) => customize.groupColorsB.push({ id, color }));
+    const customize: IGroupCustomize = {
+      badgeBases: [],
+      badgeSymbols: [],
+      badgePartColors: [],
+      groupColorsA: [],
+      groupColorsB: [],
+    };
 
-        const CompareId = (a: { id: number }, b: { id: number }) =>
-        {
-            if(a.id < b.id) return -1;
+    parser.bases.forEach((images, id) => customize.badgeBases.push({id, images}));
+    parser.symbols.forEach((images, id) => customize.badgeSymbols.push({id, images}));
+    parser.partColors.forEach((color, id) => customize.badgePartColors.push({id, color}));
+    parser.colorsA.forEach((color, id) => customize.groupColorsA.push({id, color}));
+    parser.colorsB.forEach((color, id) => customize.groupColorsB.push({id, color}));
 
-            if(a.id > b.id) return 1;
+    const CompareId = (a: {id: number}, b: {id: number}) => {
+      if (a.id < b.id) return -1;
 
-            return 0;
-        }
+      if (a.id > b.id) return 1;
 
-        customize.badgeBases.sort(CompareId);
-        customize.badgeSymbols.sort(CompareId);
-        customize.badgePartColors.sort(CompareId);
-        customize.groupColorsA.sort(CompareId);
-        customize.groupColorsB.sort(CompareId);
+      return 0;
+    };
 
-        setGroupCustomize(customize);
-    });
+    customize.badgeBases.sort(CompareId);
+    customize.badgeSymbols.sort(CompareId);
+    customize.badgePartColors.sort(CompareId);
+    customize.groupColorsA.sort(CompareId);
+    customize.groupColorsB.sort(CompareId);
 
-    useEffect(() =>
-    {
-        SendMessageComposer(new GroupBadgePartsComposer());
-    }, []);
+    setGroupCustomize(customize);
+  });
 
-    return { groupCustomize };
-}
+  useEffect(() => {
+    SendMessageComposer(new GroupBadgePartsComposer());
+  }, []);
+
+  return {groupCustomize};
+};
 
 export const useGroup = () => useBetween(useGroupState);

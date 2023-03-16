@@ -1,141 +1,121 @@
-import { IFigureDataSet, IFigurePart, IFigurePartSet } from '../../../../api';
-import { FigurePart } from './FigurePart';
+import {IFigureDataSet, IFigurePart, IFigurePartSet} from "../../../../api";
+import {FigurePart} from "./FigurePart";
 
-export class FigurePartSet implements IFigurePartSet
-{
-    private _id: number;
-    private _type: string;
-    private _gender: string;
-    private _clubLevel: number;
-    private _isColorable: boolean;
-    private _isSelectable: boolean;
-    private _parts: IFigurePart[];
-    private _hiddenLayers: string[];
-    private _isPreSelectable: boolean;
-    private _isSellable: boolean;
+export class FigurePartSet implements IFigurePartSet {
+  private _id: number;
+  private _type: string;
+  private _gender: string;
+  private _clubLevel: number;
+  private _isColorable: boolean;
+  private _isSelectable: boolean;
+  private _parts: IFigurePart[];
+  private _hiddenLayers: string[];
+  private _isPreSelectable: boolean;
+  private _isSellable: boolean;
 
-    constructor(type: string, data: IFigureDataSet)
-    {
-        if(!type || !data) throw new Error('invalid_data');
+  constructor(type: string, data: IFigureDataSet) {
+    if (!type || !data) throw new Error("invalid_data");
 
-        this._id = data.id;
-        this._type = type;
-        this._gender = data.gender;
-        this._clubLevel = data.club;
-        this._isColorable = data.colorable;
-        this._isSelectable = data.selectable;
-        this._parts = [];
-        this._hiddenLayers = [];
-        this._isPreSelectable = data.preselectable;
-        this._isSellable = data.sellable;
+    this._id = data.id;
+    this._type = type;
+    this._gender = data.gender;
+    this._clubLevel = data.club;
+    this._isColorable = data.colorable;
+    this._isSelectable = data.selectable;
+    this._parts = [];
+    this._hiddenLayers = [];
+    this._isPreSelectable = data.preselectable;
+    this._isSellable = data.sellable;
 
-        for(const part of data.parts)
-        {
-            const newPart = new FigurePart(part);
-            const partIndex = this.getPartIndex(newPart);
+    for (const part of data.parts) {
+      const newPart = new FigurePart(part);
+      const partIndex = this.getPartIndex(newPart);
 
-            if(partIndex !== -1) this._parts.splice(partIndex, 0, newPart);
-            else this._parts.push(newPart);
-        }
-
-        if(data.hiddenLayers)
-        {
-            for(const hiddenLayer of data.hiddenLayers) this._hiddenLayers.push(hiddenLayer.partType);
-        }
+      if (partIndex !== -1) this._parts.splice(partIndex, 0, newPart);
+      else this._parts.push(newPart);
     }
 
-    public dispose(): void
-    {
-        for(const part of this._parts)
-        {
-            const figurePart = part as FigurePart;
+    if (data.hiddenLayers) {
+      for (const hiddenLayer of data.hiddenLayers) this._hiddenLayers.push(hiddenLayer.partType);
+    }
+  }
 
-            figurePart.dispose();
-        }
+  public dispose(): void {
+    for (const part of this._parts) {
+      const figurePart = part as FigurePart;
 
-        this._parts = null;
-        this._hiddenLayers = null;
+      figurePart.dispose();
     }
 
-    private getPartIndex(part: FigurePart): number
-    {
-        const totalParts = this._parts.length;
+    this._parts = null;
+    this._hiddenLayers = null;
+  }
 
-        if(!totalParts) return -1;
+  private getPartIndex(part: FigurePart): number {
+    const totalParts = this._parts.length;
 
-        for(let i = 0; i < totalParts; i++)
-        {
-            const existingPart = this._parts[i];
+    if (!totalParts) return -1;
 
-            if(!existingPart) continue;
+    for (let i = 0; i < totalParts; i++) {
+      const existingPart = this._parts[i];
 
-            if(existingPart.type !== part.type || existingPart.index > part.index) continue;
+      if (!existingPart) continue;
 
-            return i;
-        }
+      if (existingPart.type !== part.type || existingPart.index > part.index) continue;
 
-        return -1;
+      return i;
     }
 
-    public getPart(k: string, _arg_2: number): IFigurePart
-    {
-        for(const part of this._parts)
-        {
-            if((part.type !== k) || (part.id !== _arg_2)) continue;
+    return -1;
+  }
 
-            return part;
-        }
+  public getPart(k: string, _arg_2: number): IFigurePart {
+    for (const part of this._parts) {
+      if (part.type !== k || part.id !== _arg_2) continue;
 
-        return null;
+      return part;
     }
 
-    public get id(): number
-    {
-        return this._id;
-    }
+    return null;
+  }
 
-    public get type(): string
-    {
-        return this._type;
-    }
+  public get id(): number {
+    return this._id;
+  }
 
-    public get gender(): string
-    {
-        return this._gender;
-    }
+  public get type(): string {
+    return this._type;
+  }
 
-    public get clubLevel(): number
-    {
-        return this._clubLevel;
-    }
+  public get gender(): string {
+    return this._gender;
+  }
 
-    public get isColorable(): boolean
-    {
-        return this._isColorable;
-    }
+  public get clubLevel(): number {
+    return this._clubLevel;
+  }
 
-    public get isSelectable(): boolean
-    {
-        return this._isSelectable;
-    }
+  public get isColorable(): boolean {
+    return this._isColorable;
+  }
 
-    public get parts(): IFigurePart[]
-    {
-        return this._parts;
-    }
+  public get isSelectable(): boolean {
+    return this._isSelectable;
+  }
 
-    public get hiddenLayers(): string[]
-    {
-        return this._hiddenLayers;
-    }
+  public get parts(): IFigurePart[] {
+    return this._parts;
+  }
 
-    public get isPreSelectable(): boolean
-    {
-        return this._isPreSelectable;
-    }
+  public get hiddenLayers(): string[] {
+    return this._hiddenLayers;
+  }
 
-    public get isSellable(): boolean
-    {
-        return this._isSellable;
-    }
+  public get isPreSelectable(): boolean {
+    return this._isPreSelectable;
+  }
+
+  public get isSellable(): boolean {
+    return this._isSellable;
+  }
 }

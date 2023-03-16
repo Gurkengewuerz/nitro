@@ -1,31 +1,29 @@
-import { ILinkEventTracker } from '@nitro/renderer';
-import { FC, useEffect } from 'react';
-import { AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker } from '../../../../api';
-import { useFurniChooserWidget } from '../../../../hooks';
-import { ChooserWidgetView } from './ChooserWidgetView';
+import {ILinkEventTracker} from "@nitro/renderer";
+import {FC, useEffect} from "react";
 
-export const FurniChooserWidgetView: FC<{}> = props =>
-{
-    const { items = null, onClose = null, selectItem = null, populateChooser = null } = useFurniChooserWidget();
+import {AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker} from "../../../../api";
+import {useFurniChooserWidget} from "../../../../hooks";
+import {ChooserWidgetView} from "./ChooserWidgetView";
 
-    useEffect(() =>
-    {
-        const linkTracker: ILinkEventTracker = {
-            linkReceived: (url: string) =>
-            {
-                const parts = url.split('/');
+export const FurniChooserWidgetView: FC<{}> = props => {
+  const {items = null, onClose = null, selectItem = null, populateChooser = null} = useFurniChooserWidget();
 
-                populateChooser();
-            },
-            eventUrlPrefix: 'furni-chooser/'
-        };
+  useEffect(() => {
+    const linkTracker: ILinkEventTracker = {
+      linkReceived: (url: string) => {
+        const parts = url.split("/");
 
-        AddEventLinkTracker(linkTracker);
+        populateChooser();
+      },
+      eventUrlPrefix: "furni-chooser/",
+    };
 
-        return () => RemoveLinkEventTracker(linkTracker);
-    }, [ populateChooser ]);
-    
-    if(!items) return null;
+    AddEventLinkTracker(linkTracker);
 
-    return <ChooserWidgetView title={ LocalizeText('widget.chooser.furni.title') } items={ items } selectItem={ selectItem } onClose={ onClose } />;
-}
+    return () => RemoveLinkEventTracker(linkTracker);
+  }, [populateChooser]);
+
+  if (!items) return null;
+
+  return <ChooserWidgetView title={LocalizeText("widget.chooser.furni.title")} items={items} selectItem={selectItem} onClose={onClose} />;
+};

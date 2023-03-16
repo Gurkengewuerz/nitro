@@ -1,19 +1,17 @@
-import { IObjectData, NitroEvent } from '@nitro/renderer';
-import { CatalogWidgetEvent } from './CatalogWidgetEvent';
+import {IObjectData, NitroEvent} from "@nitro/renderer";
 
-export class CatalogSetRoomPreviewerStuffDataEvent extends NitroEvent
-{
-    private _stuffData: IObjectData;
+import {CatalogWidgetEvent} from "./CatalogWidgetEvent";
 
-    constructor(stuffData: IObjectData)
-    {
-        super(CatalogWidgetEvent.SET_PREVIEWER_STUFFDATA);
+export class CatalogSetRoomPreviewerStuffDataEvent extends NitroEvent {
+  private _stuffData: IObjectData;
 
-        this._stuffData = stuffData;
-    }
+  constructor(stuffData: IObjectData) {
+    super(CatalogWidgetEvent.SET_PREVIEWER_STUFFDATA);
 
-    public get stuffData(): IObjectData
-    {
-        return this._stuffData;
-    }
+    this._stuffData = stuffData;
+  }
+
+  public get stuffData(): IObjectData {
+    return this._stuffData;
+  }
 }

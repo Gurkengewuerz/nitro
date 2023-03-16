@@ -1,19 +1,17 @@
-import { NitroEvent } from '@nitro/renderer';
-import { CatalogWidgetEvent } from './CatalogWidgetEvent';
+import {NitroEvent} from "@nitro/renderer";
 
-export class CatalogPurchaseOverrideEvent extends NitroEvent
-{
-    private _callback: Function;
+import {CatalogWidgetEvent} from "./CatalogWidgetEvent";
 
-    constructor(callback: Function)
-    {
-        super(CatalogWidgetEvent.PURCHASE_OVERRIDE);
+export class CatalogPurchaseOverrideEvent extends NitroEvent {
+  private _callback: Function;
 
-        this._callback = callback;
-    }
+  constructor(callback: Function) {
+    super(CatalogWidgetEvent.PURCHASE_OVERRIDE);
 
-    public get callback(): Function
-    {
-        return this._callback;
-    }
+    this._callback = callback;
+  }
+
+  public get callback(): Function {
+    return this._callback;
+  }
 }

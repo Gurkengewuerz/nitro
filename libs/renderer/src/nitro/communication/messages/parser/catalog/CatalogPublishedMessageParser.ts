@@ -1,36 +1,31 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class CatalogPublishedMessageParser implements IMessageParser
-{
-    private _instantlyRefreshCatalogue: boolean;
-    private _newFurniDataHash: string;
+export class CatalogPublishedMessageParser implements IMessageParser {
+  private _instantlyRefreshCatalogue: boolean;
+  private _newFurniDataHash: string;
 
-    public flush(): boolean
-    {
-        this._instantlyRefreshCatalogue = false;
-        this._newFurniDataHash = null;
+  public flush(): boolean {
+    this._instantlyRefreshCatalogue = false;
+    this._newFurniDataHash = null;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._instantlyRefreshCatalogue = wrapper.readBoolean();
+    this._instantlyRefreshCatalogue = wrapper.readBoolean();
 
-        if(wrapper.bytesAvailable) this._newFurniDataHash = wrapper.readString();
+    if (wrapper.bytesAvailable) this._newFurniDataHash = wrapper.readString();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get instantlyRefreshCatalogue(): boolean
-    {
-        return this._instantlyRefreshCatalogue;
-    }
+  public get instantlyRefreshCatalogue(): boolean {
+    return this._instantlyRefreshCatalogue;
+  }
 
-    public get newFurniDataHash(): string
-    {
-        return this._newFurniDataHash;
-    }
+  public get newFurniDataHash(): string {
+    return this._newFurniDataHash;
+  }
 }

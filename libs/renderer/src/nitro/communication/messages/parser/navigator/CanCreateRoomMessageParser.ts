@@ -1,35 +1,30 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../api";
 
-export class CanCreateRoomMessageParser implements IMessageParser
-{
-    public static readonly CREATION_ALLOWED = 0;
-    public static readonly ROOM_LIMIT_REACHED = 1;
+export class CanCreateRoomMessageParser implements IMessageParser {
+  public static readonly CREATION_ALLOWED = 0;
+  public static readonly ROOM_LIMIT_REACHED = 1;
 
-    private _resultCode: number;
-    private _roomLimit: number;
+  private _resultCode: number;
+  private _roomLimit: number;
 
-    public flush(): boolean
-    {
-        return true;
-    }
+  public flush(): boolean {
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._resultCode = wrapper.readInt();
-        this._roomLimit = wrapper.readInt();
+    this._resultCode = wrapper.readInt();
+    this._roomLimit = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get resultCode(): number
-    {
-        return this._resultCode;
-    }
+  public get resultCode(): number {
+    return this._resultCode;
+  }
 
-    public get roomLimit(): number
-    {
-        return this._roomLimit;
-    }
+  public get roomLimit(): number {
+    return this._roomLimit;
+  }
 }

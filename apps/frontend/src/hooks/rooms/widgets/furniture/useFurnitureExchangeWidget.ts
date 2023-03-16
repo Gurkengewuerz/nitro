@@ -1,48 +1,44 @@
-import { FurnitureExchangeComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitro/renderer';
-import { useState } from 'react';
-import { GetRoomEngine, GetRoomSession, IsOwnerOfFurniture } from '../../../../api';
-import { useRoomEngineEvent } from '../../../events';
-import { useFurniRemovedEvent } from '../../engine';
+import {FurnitureExchangeComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable} from "@nitro/renderer";
+import {useState} from "react";
 
-const useFurnitureExchangeWidgetState = () =>
-{
-    const [ objectId, setObjectId ] = useState(-1);
-    const [ category, setCategory ] = useState(-1);
-    const [ value, setValue ] = useState(0);
+import {GetRoomEngine, GetRoomSession, IsOwnerOfFurniture} from "../../../../api";
+import {useRoomEngineEvent} from "../../../events";
+import {useFurniRemovedEvent} from "../../engine";
 
-    const onClose = () =>
-    {
-        setObjectId(-1);
-        setCategory(-1);
-        setValue(0);
-    }
+const useFurnitureExchangeWidgetState = () => {
+  const [objectId, setObjectId] = useState(-1);
+  const [category, setCategory] = useState(-1);
+  const [value, setValue] = useState(0);
 
-    const redeem = () =>
-    {
-        GetRoomSession().connection.send(new FurnitureExchangeComposer(objectId));
+  const onClose = () => {
+    setObjectId(-1);
+    setCategory(-1);
+    setValue(0);
+  };
 
-        onClose();
-    }
+  const redeem = () => {
+    GetRoomSession().connection.send(new FurnitureExchangeComposer(objectId));
 
-    useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, event =>
-    {
-        const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
+    onClose();
+  };
 
-        if(!roomObject || !IsOwnerOfFurniture(roomObject)) return;
+  useRoomEngineEvent<RoomEngineTriggerWidgetEvent>(RoomEngineTriggerWidgetEvent.REQUEST_CREDITFURNI, event => {
+    const roomObject = GetRoomEngine().getRoomObject(event.roomId, event.objectId, event.category);
 
-        setObjectId(event.objectId);
-        setCategory(event.category);
-        setValue(roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_CREDIT_VALUE) || 0);
-    });
+    if (!roomObject || !IsOwnerOfFurniture(roomObject)) return;
 
-    useFurniRemovedEvent(((objectId !== -1) && (category !== -1)), event =>
-    {
-        if((event.id !== objectId) || (event.category !== category)) return;
+    setObjectId(event.objectId);
+    setCategory(event.category);
+    setValue(roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_CREDIT_VALUE) || 0);
+  });
 
-        onClose();
-    });
+  useFurniRemovedEvent(objectId !== -1 && category !== -1, event => {
+    if (event.id !== objectId || event.category !== category) return;
 
-    return { objectId, value, redeem, onClose };
-}
+    onClose();
+  });
+
+  return {objectId, value, redeem, onClose};
+};
 
 export const useFurnitureExchangeWidget = useFurnitureExchangeWidgetState;

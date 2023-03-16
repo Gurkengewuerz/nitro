@@ -1,44 +1,34 @@
-import { NitroLogger } from '@nitro/renderer';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { GetLocalStorage, SetLocalStorage } from '../api';
+import {NitroLogger} from "@nitro/renderer";
+import {Dispatch, SetStateAction, useState} from "react";
 
-const useLocalStorageState = <T>(key: string, initialValue: T): [ T, Dispatch<SetStateAction<T>>] =>
-{
-    const [ storedValue, setStoredValue ] = useState<T>(() =>
-    {
-        if(typeof window === 'undefined') return initialValue;
+import {GetLocalStorage, SetLocalStorage} from "../api";
 
-        try
-        {
-            const item = GetLocalStorage<T>(key);
+const useLocalStorageState = <T>(key: string, initialValue: T): [T, Dispatch<SetStateAction<T>>] => {
+  const [storedValue, setStoredValue] = useState<T>(() => {
+    if (typeof window === "undefined") return initialValue;
 
-            return item ?? initialValue;
-        }
+    try {
+      const item = GetLocalStorage<T>(key);
 
-        catch(error)
-        {
-            return initialValue;
-        }
-    });
-
-    const setValue = (value: T) =>
-    {
-        try
-        {
-            const valueToStore = value instanceof Function ? value(storedValue) : value;
-
-            setStoredValue(valueToStore);
-
-            if(typeof window !== 'undefined') SetLocalStorage(key, valueToStore);
-        }
-
-        catch(error)
-        {
-            NitroLogger.error(error);
-        }
+      return item ?? initialValue;
+    } catch (error) {
+      return initialValue;
     }
+  });
 
-    return [ storedValue, setValue ];
-}
+  const setValue = (value: T) => {
+    try {
+      const valueToStore = value instanceof Function ? value(storedValue) : value;
+
+      setStoredValue(valueToStore);
+
+      if (typeof window !== "undefined") SetLocalStorage(key, valueToStore);
+    } catch (error) {
+      NitroLogger.error(error);
+    }
+  };
+
+  return [storedValue, setValue];
+};
 
 export const useLocalStorage = useLocalStorageState;
