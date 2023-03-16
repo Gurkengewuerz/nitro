@@ -1,4 +1,4 @@
-import { NitroRectangle, TextureUtils } from '@nitrots/nitro-renderer';
+import { NitroRectangle, TextureUtils } from '@nitro/renderer';
 import { FC, useRef } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { CameraPicture, GetRoomEngine, GetRoomSession, LocalizeText, PlaySound, SoundNames } from '../../../api';

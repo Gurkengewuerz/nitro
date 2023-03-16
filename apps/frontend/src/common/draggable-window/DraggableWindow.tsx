@@ -1,4 +1,4 @@
-import { MouseEventType, TouchEventType } from '@nitrots/nitro-renderer';
+import { MouseEventType, TouchEventType } from '@nitro/renderer';
 import { CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, ReactNode, TouchEvent as ReactTouchEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Base } from '..';

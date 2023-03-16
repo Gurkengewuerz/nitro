@@ -1,4 +1,4 @@
-import { IPalette } from '@nitrots/nitro-renderer';
+import { IPalette } from '@nitro/renderer';
 import { GetAvatarRenderManager } from './GetAvatarRenderManager';
 
 export function GetAvatarPalette(paletteId: number): IPalette

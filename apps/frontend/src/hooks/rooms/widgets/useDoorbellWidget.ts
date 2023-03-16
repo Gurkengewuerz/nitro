@@ -1,4 +1,4 @@
-import { RoomSessionDoorbellEvent } from '@nitrots/nitro-renderer';
+import { RoomSessionDoorbellEvent } from '@nitro/renderer';
 import { useState } from 'react';
 import { GetRoomSession } from '../../../api';
 import { useRoomSessionManagerEvent } from '../../events';

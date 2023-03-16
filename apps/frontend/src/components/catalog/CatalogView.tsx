@@ -1,4 +1,4 @@
-import { ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { ILinkEventTracker } from '@nitro/renderer';
 import { FC, useEffect } from 'react';
 import { AddEventLinkTracker, GetConfiguration, LocalizeText, RemoveLinkEventTracker } from '../../api';
 import { Column, Flex, Grid, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../common';

@@ -1,4 +1,4 @@
-import { HabboClubLevelEnum, RoomControllerLevel } from '@nitrots/nitro-renderer';
+import { HabboClubLevelEnum, RoomControllerLevel } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetAvatarRenderManager, GetClubMemberLevel, GetRoomSession, GetSessionDataManager, LocalizeText, MannequinUtilities } from '../../../../api';
 import { Base, Button, Column, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';

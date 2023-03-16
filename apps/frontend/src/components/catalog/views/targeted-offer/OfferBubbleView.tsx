@@ -1,4 +1,4 @@
-import { TargetedOfferData } from '@nitrots/nitro-renderer';
+import { TargetedOfferData } from '@nitro/renderer';
 import { Dispatch, SetStateAction } from 'react';
 import { GetConfiguration } from '../../../../api';
 import { Base, LayoutNotificationBubbleView, Text } from '../../../../common';

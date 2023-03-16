@@ -1,4 +1,4 @@
-import { IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { IFurnitureData, IGetImageListener, PetFigureData, RoomEngineTriggerWidgetEvent, RoomObjectCategory, RoomObjectVariable, RoomSessionPresentEvent, TextureUtils, Vector3d } from '@nitro/renderer';
 import { useMemo, useState } from 'react';
 import { useRoom } from '../../..';
 import { GetRoomEngine, GetSessionDataManager, IsOwnerOfFurniture, LocalizeText, ProductTypeEnum } from '../../../../api';

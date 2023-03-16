@@ -1,4 +1,4 @@
-import { IssueMessageData } from '@nitrots/nitro-renderer';
+import { IssueMessageData } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { GetSessionDataManager } from '../../../../api';
 import { NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView } from '../../../../common';

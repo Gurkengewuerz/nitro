@@ -1,4 +1,4 @@
-import { RoomDataParser } from '@nitrots/nitro-renderer';
+import { RoomDataParser } from '@nitro/renderer';
 import { FC, useRef, useState } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 import { FaUser } from 'react-icons/fa';

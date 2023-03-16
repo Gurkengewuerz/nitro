@@ -1,4 +1,4 @@
-import { GetTargetedOfferComposer, TargetedOfferData, TargetedOfferEvent } from '@nitrots/nitro-renderer';
+import { GetTargetedOfferComposer, TargetedOfferData, TargetedOfferEvent } from '@nitro/renderer';
 import { useState } from 'react';
 import { SendMessageComposer } from '../../../../api';
 import { useMessageEvent, UseMountEffect } from '../../../../hooks';

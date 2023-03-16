@@ -1,4 +1,4 @@
-import { Vector3d } from '@nitrots/nitro-renderer';
+import { Vector3d } from '@nitro/renderer';
 import { FC, useEffect } from 'react';
 import { FurniCategory, GetAvatarRenderManager, GetSessionDataManager, Offer, ProductTypeEnum } from '../../../../../api';
 import { AutoGrid, Column, LayoutGridItem, LayoutRoomPreviewerView } from '../../../../../common';

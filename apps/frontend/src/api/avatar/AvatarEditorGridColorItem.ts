@@ -1,4 +1,4 @@
-import { ColorConverter, IPartColor } from '@nitrots/nitro-renderer';
+import { ColorConverter, IPartColor } from '@nitro/renderer';
 
 export class AvatarEditorGridColorItem
 {

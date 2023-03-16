@@ -1,4 +1,4 @@
-import { INitroLocalizationManager } from '@nitrots/nitro-renderer';
+import { INitroLocalizationManager } from '@nitro/renderer';
 import { GetNitroInstance } from './GetNitroInstance';
 
 export function GetLocalization(): INitroLocalizationManager

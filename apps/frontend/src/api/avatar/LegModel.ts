@@ -1,4 +1,4 @@
-import { AvatarEditorFigureCategory } from '@nitrots/nitro-renderer';
+import { AvatarEditorFigureCategory } from '@nitro/renderer';
 import { CategoryBaseModel } from './CategoryBaseModel';
 import { FigureData } from './FigureData';
 

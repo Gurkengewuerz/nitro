@@ -1,4 +1,4 @@
-import { FurnitureListAddOrUpdateEvent, FurnitureListComposer, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent } from '@nitrots/nitro-renderer';
+import { FurnitureListAddOrUpdateEvent, FurnitureListComposer, FurnitureListEvent, FurnitureListInvalidateEvent, FurnitureListItemParser, FurnitureListRemovedEvent, FurniturePostItPlacedEvent } from '@nitro/renderer';
 import { useEffect, useState } from 'react';
 import { useBetween } from 'use-between';
 import { addFurnitureItem, attemptItemPlacement, cancelRoomObjectPlacement, CloneObject, CreateLinkEvent, DispatchUiEvent, FurnitureItem, getAllItemIds, getPlacingItemId, GroupItem, mergeFurniFragments, SendMessageComposer, UnseenItemCategory } from '../../api';

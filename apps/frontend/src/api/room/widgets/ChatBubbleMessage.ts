@@ -1,4 +1,4 @@
-import { INitroPoint } from '@nitrots/nitro-renderer';
+import { INitroPoint } from '@nitro/renderer';
 
 export class ChatBubbleMessage
 {

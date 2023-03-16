@@ -1,4 +1,4 @@
-import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitrots/nitro-renderer';
+import { GroupDeleteComposer, GroupSaveInformationComposer } from '@nitro/renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { CreateLinkEvent, IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { Base, Button, Column, Flex, Text } from '../../../../common';

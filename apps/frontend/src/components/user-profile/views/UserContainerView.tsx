@@ -1,4 +1,4 @@
-import { FriendlyTime, RequestFriendComposer, UserProfileParser } from '@nitrots/nitro-renderer';
+import { FriendlyTime, RequestFriendComposer, UserProfileParser } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetSessionDataManager, LocalizeText, SendMessageComposer } from '../../../api';
 import { Column, Flex, LayoutAvatarImageView, Text } from '../../../common';

@@ -1,4 +1,4 @@
-import { NitroEvent } from '@nitrots/nitro-renderer';
+import { NitroEvent } from '@nitro/renderer';
 import { GetRoomEngine } from '../../../api';
 import { useEventDispatcher } from '../useEventDispatcher';
 

@@ -1,4 +1,4 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
+import { MouseEventType } from '@nitro/renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { GetUserProfile, LocalizeText, MessengerFriend, OpenMessengerChat } from '../../../../api';
 import { Base, LayoutAvatarImageView, LayoutBadgeImageView } from '../../../../common';

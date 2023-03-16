@@ -1,4 +1,4 @@
-import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitrots/nitro-renderer';
+import { GroupInformationParser, GroupRemoveMemberComposer } from '@nitro/renderer';
 import { FC } from 'react';
 import { CatalogPageName, CreateLinkEvent, GetGroupManager, GetGroupMembers, GetSessionDataManager, GroupMembershipType, GroupType, LocalizeText, SendMessageComposer, TryJoinGroup, TryVisitRoom } from '../../../api';
 import { Button, Column, Flex, Grid, GridProps, LayoutBadgeImageView, Text } from '../../../common';

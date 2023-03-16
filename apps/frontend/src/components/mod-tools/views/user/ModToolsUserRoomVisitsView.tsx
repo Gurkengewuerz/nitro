@@ -1,4 +1,4 @@
-import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitrots/nitro-renderer';
+import { GetRoomVisitsMessageComposer, RoomVisitsData, RoomVisitsEvent } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer, TryVisitRoom } from '../../../../api';
 import { Base, Column, DraggableWindowPosition, Grid, InfiniteScroll, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../common';

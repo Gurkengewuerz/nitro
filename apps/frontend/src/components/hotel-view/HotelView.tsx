@@ -1,4 +1,4 @@
-import { NitroConfiguration, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { NitroConfiguration, RoomSessionEvent } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { GetConfiguration } from '../../api';
 import { LayoutAvatarImageView } from '../../common';

@@ -1,4 +1,4 @@
-import { IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitrots/nitro-renderer';
+import { IRoomSession, RoomObjectVariable, RoomPreviewer } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { attemptPetPlacement, GetRoomEngine, LocalizeText, UnseenItemCategory } from '../../../../api';
 import { AutoGrid, Button, Column, Grid, LayoutRoomPreviewerView, Text } from '../../../../common';

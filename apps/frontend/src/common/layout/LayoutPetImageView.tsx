@@ -1,4 +1,4 @@
-import { IPetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitrots/nitro-renderer';
+import { IPetCustomPart, PetFigureData, TextureUtils, Vector3d } from '@nitro/renderer';
 import { CSSProperties, FC, useEffect, useMemo, useRef, useState } from 'react';
 import { GetRoomEngine } from '../../api';
 import { Base, BaseProps } from '../Base';

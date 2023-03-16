@@ -1,4 +1,4 @@
-import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitrots/nitro-renderer';
+import { RoomEngineTriggerWidgetEvent, RoomObjectVariable, StringDataType } from '@nitro/renderer';
 import { useState } from 'react';
 import { GetRoomEngine, GetSessionDataManager, LocalizeBadgeDescription, LocalizeBadgeName, LocalizeText } from '../../../../api';
 import { useRoomEngineEvent } from '../../../events';

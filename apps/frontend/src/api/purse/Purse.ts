@@ -1,4 +1,4 @@
-import { GetTickerTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
+import { GetTickerTime, HabboClubLevelEnum } from '@nitro/renderer';
 import { IPurse } from './IPurse';
 
 export class Purse implements IPurse

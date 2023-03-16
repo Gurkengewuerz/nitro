@@ -1,4 +1,4 @@
-import { NitroToolbarAnimateIconEvent } from '@nitrots/nitro-renderer';
+import { NitroToolbarAnimateIconEvent } from '@nitro/renderer';
 import { GetRoomEngine } from '../../api';
 
 export const CreateTransitionToIcon = (image: HTMLImageElement, fromElement: HTMLElement, icon: string) =>

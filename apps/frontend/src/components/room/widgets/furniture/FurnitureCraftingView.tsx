@@ -1,4 +1,4 @@
-import { RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { RoomObjectCategory } from '@nitro/renderer';
 import { FC, ReactElement, useEffect, useMemo, useState } from 'react';
 import { GetRoomEngine, IsOwnerOfFurniture, LocalizeText } from '../../../../api';
 import { AutoGrid, Button, Column, Flex, LayoutGridItem, LayoutLoadingSpinnerView, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../../common';

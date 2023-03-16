@@ -1,4 +1,4 @@
-import { FrontPageItem } from '@nitrots/nitro-renderer';
+import { FrontPageItem } from '@nitro/renderer';
 import { FC, useCallback, useEffect } from 'react';
 import { CreateLinkEvent } from '../../../../../../api';
 import { Column, Grid } from '../../../../../../common';

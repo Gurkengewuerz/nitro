@@ -1,4 +1,4 @@
-import { IRoomCameraWidgetManager } from '@nitrots/nitro-renderer';
+import { IRoomCameraWidgetManager } from '@nitro/renderer';
 import { GetNitroInstance } from '../GetNitroInstance';
 
 export function GetRoomCameraWidgetManager(): IRoomCameraWidgetManager

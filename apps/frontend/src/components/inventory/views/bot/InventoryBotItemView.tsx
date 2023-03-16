@@ -1,4 +1,4 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
+import { MouseEventType } from '@nitro/renderer';
 import { FC, MouseEvent, PropsWithChildren, useState } from 'react';
 import { attemptBotPlacement, IBotItem, UnseenItemCategory } from '../../../../api';
 import { LayoutAvatarImageView, LayoutGridItem } from '../../../../common';

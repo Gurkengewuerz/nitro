@@ -1,4 +1,4 @@
-import { BotRemoveComposer } from '@nitrots/nitro-renderer';
+import { BotRemoveComposer } from '@nitro/renderer';
 import { FC, useMemo } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AvatarInfoRentableBot, BotSkillsEnum, LocalizeText, SendMessageComposer } from '../../../../../api';

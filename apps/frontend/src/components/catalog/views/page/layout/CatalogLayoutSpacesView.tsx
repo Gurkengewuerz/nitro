@@ -1,4 +1,4 @@
-import { NitroPoint } from '@nitrots/nitro-renderer';
+import { NitroPoint } from '@nitro/renderer';
 import { FC, useEffect } from 'react';
 import { Base, Column, Flex, Grid, Text } from '../../../../../common';
 import { useCatalog } from '../../../../../hooks';

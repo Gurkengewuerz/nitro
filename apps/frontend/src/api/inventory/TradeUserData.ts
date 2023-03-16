@@ -1,4 +1,4 @@
-import { AdvancedMap } from '@nitrots/nitro-renderer';
+import { AdvancedMap } from '@nitro/renderer';
 import { GroupItem } from './GroupItem';
 
 export class TradeUserData

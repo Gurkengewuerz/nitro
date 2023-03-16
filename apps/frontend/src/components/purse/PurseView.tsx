@@ -1,4 +1,4 @@
-import { FriendlyTime, HabboClubLevelEnum } from '@nitrots/nitro-renderer';
+import { FriendlyTime, HabboClubLevelEnum } from '@nitro/renderer';
 import { FC, useMemo } from 'react';
 import { CreateLinkEvent, GetConfiguration, LocalizeText } from '../../api';
 import { Column, Flex, Grid, LayoutCurrencyIcon, Text } from '../../common';

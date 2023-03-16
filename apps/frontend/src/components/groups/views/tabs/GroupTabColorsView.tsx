@@ -1,4 +1,4 @@
-import { GroupSaveColorsComposer } from '@nitrots/nitro-renderer';
+import { GroupSaveColorsComposer } from '@nitro/renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { IGroupData, LocalizeText, SendMessageComposer } from '../../../../api';
 import { AutoGrid, Base, classNames, Column, Flex, Grid, Text } from '../../../../common';

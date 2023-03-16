@@ -1,4 +1,4 @@
-import { CatalogPageMessageProductData } from '@nitrots/nitro-renderer';
+import { CatalogPageMessageProductData } from '@nitro/renderer';
 import { FurniCategory } from '../inventory';
 import { GetRoomEngine } from '../nitro';
 

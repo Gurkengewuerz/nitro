@@ -1,4 +1,4 @@
-import { FriendlyTime } from '@nitrots/nitro-renderer';
+import { FriendlyTime } from '@nitro/renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { Base, BaseProps } from '..';
 

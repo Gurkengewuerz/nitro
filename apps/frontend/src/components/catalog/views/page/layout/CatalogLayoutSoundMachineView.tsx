@@ -1,4 +1,4 @@
-import { GetOfficialSongIdMessageComposer, MusicPriorities, OfficialSongIdMessageEvent } from '@nitrots/nitro-renderer';
+import { GetOfficialSongIdMessageComposer, MusicPriorities, OfficialSongIdMessageEvent } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { GetConfiguration, GetNitroInstance, LocalizeText, ProductTypeEnum, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, Grid, LayoutImage, Text } from '../../../../../common';

@@ -1,4 +1,4 @@
-import { IProductData } from '@nitrots/nitro-renderer';
+import { IProductData } from '@nitro/renderer';
 import { GetSessionDataManager } from './GetSessionDataManager';
 
 export function GetProductDataForLocalization(localizationId: string): IProductData

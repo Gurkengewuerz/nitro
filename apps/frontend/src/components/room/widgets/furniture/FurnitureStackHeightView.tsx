@@ -1,4 +1,4 @@
-import { FurnitureStackHeightComposer } from '@nitrots/nitro-renderer';
+import { FurnitureStackHeightComposer } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, SendMessageComposer } from '../../../../api';

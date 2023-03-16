@@ -1,4 +1,4 @@
-import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitrots/nitro-renderer';
+import { IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer } from '@nitro/renderer';
 import { Dispatch, FC, SetStateAction, useCallback, useMemo } from 'react';
 import { FigureData, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer } from '../../../api';
 import { AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem } from '../../../common';

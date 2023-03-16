@@ -1,4 +1,4 @@
-import { EditEventMessageComposer } from '@nitrots/nitro-renderer';
+import { EditEventMessageComposer } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Button, Column, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text } from '../../../../../common';

@@ -1,4 +1,4 @@
-import { IFurnitureData } from '@nitrots/nitro-renderer';
+import { IFurnitureData } from '@nitro/renderer';
 import { GetSessionDataManager } from '.';
 import { ProductTypeEnum } from '../../catalog';
 

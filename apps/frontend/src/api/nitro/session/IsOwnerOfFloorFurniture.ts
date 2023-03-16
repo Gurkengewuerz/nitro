@@ -1,4 +1,4 @@
-import { RoomObjectCategory, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { RoomObjectCategory, RoomObjectVariable } from '@nitro/renderer';
 import { GetRoomSession } from '.';
 import { GetRoomEngine } from '..';
 import { GetSessionDataManager } from '../../../api';

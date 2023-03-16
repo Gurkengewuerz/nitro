@@ -1,4 +1,4 @@
-import { RoomChatSettings } from '@nitrots/nitro-renderer';
+import { RoomChatSettings } from '@nitro/renderer';
 import { FC, useCallback, useEffect, useRef } from 'react';
 import { ChatBubbleMessage, DoChatsOverlap, GetConfiguration } from '../../../../api';
 import { useChatWidget } from '../../../../hooks';

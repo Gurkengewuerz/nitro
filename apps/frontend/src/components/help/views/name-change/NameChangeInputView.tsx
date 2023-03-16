@@ -1,4 +1,4 @@
-import { CheckUserNameMessageComposer, CheckUserNameResultMessageEvent } from '@nitrots/nitro-renderer';
+import { CheckUserNameMessageComposer, CheckUserNameResultMessageEvent } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../api';
 import { useMessageEvent } from '../../../../hooks';

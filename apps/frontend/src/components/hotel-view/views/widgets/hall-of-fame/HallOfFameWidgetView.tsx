@@ -1,4 +1,4 @@
-import { CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer } from '@nitrots/nitro-renderer';
+import { CommunityGoalHallOfFameData, CommunityGoalHallOfFameMessageEvent, GetCommunityGoalHallOfFameMessageComposer } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
 import { useMessageEvent } from '../../../../../hooks';

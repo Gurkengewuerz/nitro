@@ -1,4 +1,4 @@
-import { DesktopViewEvent } from '@nitrots/nitro-renderer';
+import { DesktopViewEvent } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import { GetSessionDataManager } from '../../../../api';

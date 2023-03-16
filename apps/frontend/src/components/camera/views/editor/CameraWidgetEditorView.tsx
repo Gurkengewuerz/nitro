@@ -1,4 +1,4 @@
-import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitrots/nitro-renderer';
+import { IRoomCameraWidgetEffect, IRoomCameraWidgetSelectedEffect, RoomCameraWidgetSelectedEffect } from '@nitro/renderer';
 import { FC, useCallback, useEffect, useMemo, useState } from 'react';
 import { FaSave, FaSearchMinus, FaSearchPlus, FaTrash } from 'react-icons/fa';
 import ReactSlider from 'react-slider';

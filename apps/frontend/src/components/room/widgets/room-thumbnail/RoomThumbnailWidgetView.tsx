@@ -1,4 +1,4 @@
-import { NitroRenderTexture } from '@nitrots/nitro-renderer';
+import { NitroRenderTexture } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutMiniCameraView } from '../../../../common';

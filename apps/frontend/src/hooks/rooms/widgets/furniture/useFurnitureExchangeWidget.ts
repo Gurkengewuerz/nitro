@@ -1,4 +1,4 @@
-import { FurnitureExchangeComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitrots/nitro-renderer';
+import { FurnitureExchangeComposer, RoomEngineTriggerWidgetEvent, RoomObjectVariable } from '@nitro/renderer';
 import { useState } from 'react';
 import { GetRoomEngine, GetRoomSession, IsOwnerOfFurniture } from '../../../../api';
 import { useRoomEngineEvent } from '../../../events';

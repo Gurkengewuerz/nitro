@@ -1,4 +1,4 @@
-import { FollowFriendMessageComposer, ILinkEventTracker } from '@nitrots/nitro-renderer';
+import { FollowFriendMessageComposer, ILinkEventTracker } from '@nitro/renderer';
 import { FC, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { AddEventLinkTracker, GetSessionDataManager, GetUserProfile, LocalizeText, RemoveLinkEventTracker, ReportType, SendMessageComposer } from '../../../../api';

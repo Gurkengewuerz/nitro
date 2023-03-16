@@ -1,4 +1,4 @@
-import { HabboClubLevelEnum } from '@nitrots/nitro-renderer';
+import { HabboClubLevelEnum } from '@nitro/renderer';
 import { GetConfiguration } from '..';
 import { GetSessionDataManager } from './GetSessionDataManager';
 

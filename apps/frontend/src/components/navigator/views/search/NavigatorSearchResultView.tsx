@@ -1,4 +1,4 @@
-import { NavigatorSearchComposer, NavigatorSearchResultList } from '@nitrots/nitro-renderer';
+import { NavigatorSearchComposer, NavigatorSearchResultList } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { FaBars, FaMinus, FaPlus, FaTh, FaWindowMaximize, FaWindowRestore } from 'react-icons/fa';
 import { LocalizeText, NavigatorSearchResultViewDisplayMode, SendMessageComposer } from '../../../../api';

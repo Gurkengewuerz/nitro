@@ -1,4 +1,4 @@
-import { NitroConfiguration } from '@nitrots/nitro-renderer';
+import { NitroConfiguration } from '@nitro/renderer';
 
 export function GetConfiguration<T>(key: string, value: T = null): T
 {

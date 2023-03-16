@@ -1,4 +1,4 @@
-import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitrots/nitro-renderer';
+import { BotCommandConfigurationEvent, BotRemoveComposer, BotSkillSaveComposer, RequestBotCommandConfigurationComposer, RoomObjectCategory, RoomObjectType } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { AvatarInfoRentableBot, BotSkillsEnum, DispatchUiEvent, GetConfiguration, GetNitroInstance, LocalizeText, RoomWidgetUpdateRentableBotChatEvent, SendMessageComposer } from '../../../../../api';
 import { Button, Column, Flex, Text } from '../../../../../common';

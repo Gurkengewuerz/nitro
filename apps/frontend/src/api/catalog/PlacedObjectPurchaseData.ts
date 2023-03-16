@@ -1,4 +1,4 @@
-import { IFurnitureData, IProductData } from '@nitrots/nitro-renderer';
+import { IFurnitureData, IProductData } from '@nitro/renderer';
 import { IPurchasableOffer } from './IPurchasableOffer';
 
 export class PlacedObjectPurchaseData

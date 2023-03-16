@@ -1,4 +1,4 @@
-import { IRoomEngine } from '@nitrots/nitro-renderer';
+import { IRoomEngine } from '@nitro/renderer';
 import { GetNitroInstance } from '../GetNitroInstance';
 
 export function GetRoomEngine(): IRoomEngine

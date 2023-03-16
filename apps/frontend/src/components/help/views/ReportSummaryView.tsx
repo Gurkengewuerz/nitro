@@ -1,4 +1,4 @@
-import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitrots/nitro-renderer';
+import { CallForHelpFromForumMessageMessageComposer, CallForHelpFromForumThreadMessageComposer, CallForHelpFromIMMessageComposer, CallForHelpFromPhotoMessageComposer, CallForHelpMessageComposer } from '@nitro/renderer';
 import { FC } from 'react';
 import { LocalizeText, ReportType, SendMessageComposer } from '../../../api';
 import { Button, Column, Text } from '../../../common';

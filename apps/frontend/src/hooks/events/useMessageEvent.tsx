@@ -1,4 +1,4 @@
-import { IMessageEvent, MessageEvent } from '@nitrots/nitro-renderer';
+import { IMessageEvent, MessageEvent } from '@nitro/renderer';
 import { useEffect } from 'react';
 import { GetCommunication } from '../../api';
 

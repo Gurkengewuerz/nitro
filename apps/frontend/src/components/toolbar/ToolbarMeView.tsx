@@ -1,4 +1,4 @@
-import { MouseEventType, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { MouseEventType, RoomObjectCategory } from '@nitro/renderer';
 import { Dispatch, FC, PropsWithChildren, SetStateAction, useEffect, useRef } from 'react';
 import { CreateLinkEvent, DispatchUiEvent, GetConfiguration, GetRoomEngine, GetRoomSession, GetSessionDataManager, GetUserProfile } from '../../api';
 import { Base, Flex, LayoutItemCountView } from '../../common';

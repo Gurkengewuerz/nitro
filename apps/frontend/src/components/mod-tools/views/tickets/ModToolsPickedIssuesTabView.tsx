@@ -1,4 +1,4 @@
-import { IssueMessageData } from '@nitrots/nitro-renderer';
+import { IssueMessageData } from '@nitro/renderer';
 import { FC } from 'react';
 import { Base, Column, Grid } from '../../../../common';
 

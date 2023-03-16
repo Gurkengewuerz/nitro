@@ -1,4 +1,4 @@
-import { ColorConverter, GetTicker, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitrots/nitro-renderer';
+import { ColorConverter, GetTicker, IRoomRenderingCanvas, RoomPreviewer, TextureUtils } from '@nitro/renderer';
 import { FC, MouseEvent, ReactNode, useEffect, useRef, useState } from 'react';
 
 export interface LayoutRoomPreviewerViewProps

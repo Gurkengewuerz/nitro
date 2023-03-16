@@ -1,4 +1,4 @@
-import { CatalogGroupsComposer, StringDataType } from '@nitrots/nitro-renderer';
+import { CatalogGroupsComposer, StringDataType } from '@nitro/renderer';
 import { FC, useEffect, useMemo, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../../../api';
 import { Base, Button, Flex } from '../../../../../common';

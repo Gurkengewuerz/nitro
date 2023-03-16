@@ -1,4 +1,4 @@
-import { HallOfFameEntryData } from '@nitrots/nitro-renderer';
+import { HallOfFameEntryData } from '@nitro/renderer';
 import { FC } from 'react';
 import { LocalizeFormattedNumber, LocalizeText } from '../../../../../api';
 import { LayoutAvatarImageView, UserProfileIconView } from '../../../../../common';

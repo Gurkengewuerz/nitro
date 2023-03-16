@@ -1,4 +1,4 @@
-import { SellablePetPaletteData } from '@nitrots/nitro-renderer';
+import { SellablePetPaletteData } from '@nitro/renderer';
 import { GetRoomEngine } from '../nitro';
 import { ICatalogNode } from './ICatalogNode';
 

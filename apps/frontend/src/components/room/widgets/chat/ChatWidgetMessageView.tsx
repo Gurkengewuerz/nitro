@@ -1,4 +1,4 @@
-import { RoomChatSettings, RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { RoomChatSettings, RoomObjectCategory } from '@nitro/renderer';
 import { FC, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatBubbleMessage, GetRoomEngine } from '../../../../api';
 

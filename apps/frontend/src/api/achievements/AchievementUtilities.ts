@@ -1,4 +1,4 @@
-import { AchievementData } from '@nitrots/nitro-renderer';
+import { AchievementData } from '@nitro/renderer';
 import { GetConfiguration, GetLocalization } from '../nitro';
 import { IAchievementCategory } from './IAchievementCategory';
 

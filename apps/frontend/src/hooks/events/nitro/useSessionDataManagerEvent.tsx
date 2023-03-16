@@ -1,4 +1,4 @@
-import { NitroEvent } from '@nitrots/nitro-renderer';
+import { NitroEvent } from '@nitro/renderer';
 import { GetSessionDataManager } from '../../../api';
 import { useEventDispatcher } from '../useEventDispatcher';
 

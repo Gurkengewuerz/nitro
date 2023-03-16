@@ -1,4 +1,4 @@
-import { RoomChatSettings } from '@nitrots/nitro-renderer';
+import { RoomChatSettings } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { IRoomData, LocalizeText } from '../../../../api';
 import { Column, Flex, Grid, Text } from '../../../../common';

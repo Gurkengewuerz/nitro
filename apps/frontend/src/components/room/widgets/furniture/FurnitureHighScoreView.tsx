@@ -1,4 +1,4 @@
-import { RoomObjectCategory } from '@nitrots/nitro-renderer';
+import { RoomObjectCategory } from '@nitro/renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../../api';
 import { Column, Flex, Text } from '../../../../common';

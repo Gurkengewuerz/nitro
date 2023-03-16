@@ -1,4 +1,4 @@
-import { ChatRecordData } from '@nitrots/nitro-renderer';
+import { ChatRecordData } from '@nitro/renderer';
 import { FC, useMemo } from 'react';
 import { CreateLinkEvent, TryVisitRoom } from '../../../../api';
 import { Base, Button, Column, Flex, Grid, InfiniteScroll, Text } from '../../../../common';

@@ -1,4 +1,4 @@
-import { AvatarFigurePartType, IAvatarFigureContainer } from '@nitrots/nitro-renderer';
+import { AvatarFigurePartType, IAvatarFigureContainer } from '@nitro/renderer';
 import { GetAvatarRenderManager } from '../../nitro';
 
 export class MannequinUtilities

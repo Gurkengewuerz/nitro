@@ -1,4 +1,4 @@
-import { GetTicker } from '@nitrots/nitro-renderer';
+import { GetTicker } from '@nitro/renderer';
 import { FC, useEffect, useRef, useState } from 'react';
 import { GetRoomObjectBounds, GetRoomSession } from '../../../../api';
 import { Base, BaseProps } from '../../../../common';

@@ -1,4 +1,4 @@
-import { AvatarDirectionAngle } from '@nitrots/nitro-renderer';
+import { AvatarDirectionAngle } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { FigureData } from '../../../api';
 import { Base, Column, LayoutAvatarImageView } from '../../../common';

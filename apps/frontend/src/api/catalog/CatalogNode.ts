@@ -1,4 +1,4 @@
-import { NodeData } from '@nitrots/nitro-renderer';
+import { NodeData } from '@nitro/renderer';
 import { ICatalogNode } from './ICatalogNode';
 
 export class CatalogNode implements ICatalogNode 

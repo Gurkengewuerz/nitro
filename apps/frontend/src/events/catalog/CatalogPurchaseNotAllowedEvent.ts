@@ -1,4 +1,4 @@
-import { NitroEvent } from '@nitrots/nitro-renderer';
+import { NitroEvent } from '@nitro/renderer';
 
 export class CatalogPurchaseNotAllowedEvent extends NitroEvent
 {

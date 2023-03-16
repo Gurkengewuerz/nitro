@@ -1,4 +1,4 @@
-import { BonusRareInfoMessageEvent, GetBonusRareInfoMessageComposer } from '@nitrots/nitro-renderer';
+import { BonusRareInfoMessageEvent, GetBonusRareInfoMessageComposer } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { SendMessageComposer } from '../../../../../api';
 import { useMessageEvent } from '../../../../../hooks';

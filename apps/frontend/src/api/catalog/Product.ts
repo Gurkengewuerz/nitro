@@ -1,4 +1,4 @@
-import { IFurnitureData, IObjectData, IProductData } from '@nitrots/nitro-renderer';
+import { IFurnitureData, IObjectData, IProductData } from '@nitro/renderer';
 import { GetConfiguration, GetRoomEngine, GetSessionDataManager } from '../nitro';
 import { GetPixelEffectIcon, GetSubscriptionProductIcon } from './CatalogUtilities';
 import { IProduct } from './IProduct';

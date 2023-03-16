@@ -1,4 +1,4 @@
-import { FrontPageItem } from '@nitrots/nitro-renderer';
+import { FrontPageItem } from '@nitro/renderer';
 import { FC, useMemo } from 'react';
 import { GetConfiguration } from '../../../../../../api';
 import { LayoutBackgroundImage, LayoutBackgroundImageProps } from '../../../../../../common';

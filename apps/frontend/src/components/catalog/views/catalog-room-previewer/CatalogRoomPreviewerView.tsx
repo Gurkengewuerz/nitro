@@ -1,4 +1,4 @@
-import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitrots/nitro-renderer';
+import { NitroToolbarAnimateIconEvent, TextureUtils, ToolbarIconEnum } from '@nitro/renderer';
 import { FC, useRef } from 'react';
 import { GetRoomEngine } from '../../../../api';
 import { LayoutRoomPreviewerView, LayoutRoomPreviewerViewProps } from '../../../../common';

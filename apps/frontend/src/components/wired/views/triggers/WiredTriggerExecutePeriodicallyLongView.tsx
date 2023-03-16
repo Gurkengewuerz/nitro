@@ -1,4 +1,4 @@
-import { FriendlyTime } from '@nitrots/nitro-renderer';
+import { FriendlyTime } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import ReactSlider from 'react-slider';
 import { LocalizeText, WiredFurniType } from '../../../../api';

@@ -1,4 +1,4 @@
-import { NitroConfiguration } from '@nitrots/nitro-renderer';
+import { NitroConfiguration } from '@nitro/renderer';
 import { FC } from 'react';
 import { LocalizeText, OpenUrl } from '../../../../../api';
 

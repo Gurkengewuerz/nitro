@@ -1,4 +1,4 @@
-import { UpdateFloorPropertiesMessageComposer } from '@nitrots/nitro-renderer';
+import { UpdateFloorPropertiesMessageComposer } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { LocalizeText, SendMessageComposer } from '../../../api';
 import { Button, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView } from '../../../common';

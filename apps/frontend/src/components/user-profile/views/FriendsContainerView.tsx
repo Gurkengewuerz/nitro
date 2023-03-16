@@ -1,4 +1,4 @@
-import { RelationshipStatusInfoMessageParser } from '@nitrots/nitro-renderer';
+import { RelationshipStatusInfoMessageParser } from '@nitro/renderer';
 import { FC } from 'react';
 import { LocalizeText } from '../../../api';
 import { Column, Text } from '../../../common';

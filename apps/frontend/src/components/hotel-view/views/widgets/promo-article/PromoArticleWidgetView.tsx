@@ -1,4 +1,4 @@
-import { GetPromoArticlesComposer, PromoArticleData, PromoArticlesMessageEvent } from '@nitrots/nitro-renderer';
+import { GetPromoArticlesComposer, PromoArticleData, PromoArticlesMessageEvent } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { LocalizeText, OpenUrl, SendMessageComposer } from '../../../../../api';
 import { useMessageEvent } from '../../../../../hooks';

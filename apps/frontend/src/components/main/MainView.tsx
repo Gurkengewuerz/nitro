@@ -1,4 +1,4 @@
-import { HabboWebTools, ILinkEventTracker, RoomSessionEvent } from '@nitrots/nitro-renderer';
+import { HabboWebTools, ILinkEventTracker, RoomSessionEvent } from '@nitro/renderer';
 import { FC, useEffect, useState } from 'react';
 import { AddEventLinkTracker, GetCommunication, RemoveLinkEventTracker } from '../../api';
 import { Base, TransitionAnimation, TransitionAnimationTypes } from '../../common';

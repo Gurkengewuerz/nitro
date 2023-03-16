@@ -1,4 +1,4 @@
-import { ISongInfo } from '@nitrots/nitro-renderer';
+import { ISongInfo } from '@nitro/renderer';
 import { FC, useState } from 'react';
 import { GetConfiguration, GetDiskColor, LocalizeText } from '../../../../../api';
 import { Base, Button, Flex, Text } from '../../../../../common';

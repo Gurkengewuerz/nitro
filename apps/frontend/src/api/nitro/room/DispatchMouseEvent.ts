@@ -1,4 +1,4 @@
-import { MouseEventType } from '@nitrots/nitro-renderer';
+import { MouseEventType } from '@nitro/renderer';
 import { GetRoomEngine } from './GetRoomEngine';
 
 let didMouseMove = false;

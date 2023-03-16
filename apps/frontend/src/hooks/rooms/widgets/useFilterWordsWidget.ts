@@ -1,4 +1,4 @@
-import { RoomFilterSettingsMessageEvent } from '@nitrots/nitro-renderer';
+import { RoomFilterSettingsMessageEvent } from '@nitro/renderer';
 import { useState } from 'react';
 import { useMessageEvent } from '../../events';
 
