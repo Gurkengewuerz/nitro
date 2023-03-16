@@ -4,6 +4,7 @@ import {
   CallForHelpFromIMMessageComposer,
   CallForHelpFromPhotoMessageComposer,
   CallForHelpMessageComposer,
+  GuideSessionReportMessageComposer,
 } from "@nitro/renderer";
 import {FC} from "react";
 
@@ -59,6 +60,9 @@ export const ReportSummaryView: FC<{}> = props => {
             activeReport.roomObjectId
           )
         );
+        break;
+      case ReportType.GUIDE:
+        SendMessageComposer(new GuideSessionReportMessageComposer(""));
         break;
     }
 
