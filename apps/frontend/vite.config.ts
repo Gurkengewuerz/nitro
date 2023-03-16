@@ -1,7 +1,7 @@
 /// <reference types="vitest" />
-import react from "@vitejs/plugin-react";
+import react from "@vitejs/plugin-react-swc";
 import {resolve} from "path";
-import {defineConfig} from "vite";
+import {defineConfig, searchForWorkspaceRoot} from "vite";
 import viteTsConfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
@@ -17,6 +17,9 @@ export default defineConfig({
   server: {
     port: 4200,
     host: "localhost",
+    fs: {
+      allow: [searchForWorkspaceRoot(process.cwd())],
+    },
   },
 
   preview: {
