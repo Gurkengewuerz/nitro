@@ -1,9 +1,9 @@
-import {NavigatorSearchComposer, NavigatorSearchResultList} from "@nitro/renderer";
+import {NavigatorSearchComposer, NavigatorSearchResultList, NavigatorSearchSaveComposer} from "@nitro/renderer";
 import {FC, useEffect, useState} from "react";
 import {FaBars, FaMinus, FaPlus, FaTh, FaWindowMaximize, FaWindowRestore} from "react-icons/fa";
 
 import {LocalizeText, NavigatorSearchResultViewDisplayMode, SendMessageComposer} from "../../../../api";
-import {AutoGrid, AutoGridProps, Column, Flex, Grid, Text} from "../../../../common";
+import {AutoGrid, AutoGridProps, Column, Flex, Grid, LayoutSearchSavesView, Text} from "../../../../common";
 import {useNavigator} from "../../../../hooks";
 import {NavigatorSearchResultItemView} from "./NavigatorSearchResultItemView";
 
@@ -16,7 +16,7 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
   const [isExtended, setIsExtended] = useState(true);
   const [displayMode, setDisplayMode] = useState<number>(0);
 
-  const {topLevelContext = null} = useNavigator();
+  const {topLevelContext = null, searchResultQuery = null} = useNavigator();
 
   const getResultTitle = () => {
     let name = searchResult.code;
@@ -64,6 +64,12 @@ export const NavigatorSearchResultView: FC<NavigatorSearchResultViewProps> = pro
           {displayMode >= NavigatorSearchResultViewDisplayMode.THUMBNAILS && <FaBars className="text-secondary fa-icon" onClick={toggleDisplayMode} />}
           {searchResult.action > 0 && searchResult.action === 1 && <FaWindowMaximize className="text-secondary fa-icon" onClick={showMore} />}
           {searchResult.action > 0 && searchResult.action !== 1 && <FaWindowRestore className="text-secondary fa-icon" onClick={showMore} />}
+          {topLevelContext.code !== "official_view" && (
+            <LayoutSearchSavesView
+              title={LocalizeText("navigator.tooltip.add.saved.search")}
+              onSaveSearch={() => SendMessageComposer(new NavigatorSearchSaveComposer(getResultTitle(), searchResultQuery))}
+            />
+          )}
         </Flex>
       </Flex>{" "}
       {isExtended && (

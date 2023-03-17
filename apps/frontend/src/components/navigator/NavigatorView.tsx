@@ -11,7 +11,17 @@ import {FC, useCallback, useEffect, useRef, useState} from "react";
 import {FaPlus} from "react-icons/fa";
 
 import {AddEventLinkTracker, LocalizeText, RemoveLinkEventTracker, SendMessageComposer, TryVisitRoom} from "../../api";
-import {Base, Column, NitroCardContentView, NitroCardHeaderView, NitroCardTabsItemView, NitroCardTabsView, NitroCardView} from "../../common";
+import {
+  Base,
+  Column,
+  Flex,
+  LayoutSearchSavesView,
+  NitroCardContentView,
+  NitroCardHeaderView,
+  NitroCardTabsItemView,
+  NitroCardTabsView,
+  NitroCardView,
+} from "../../common";
 import {useNavigator, useRoomSessionManagerEvent} from "../../hooks";
 import {NavigatorDoorStateView} from "./views/NavigatorDoorStateView";
 import {NavigatorRoomCreatorView} from "./views/NavigatorRoomCreatorView";
@@ -19,6 +29,7 @@ import {NavigatorRoomInfoView} from "./views/NavigatorRoomInfoView";
 import {NavigatorRoomLinkView} from "./views/NavigatorRoomLinkView";
 import {NavigatorRoomSettingsView} from "./views/room-settings/NavigatorRoomSettingsView";
 import {NavigatorSearchResultView} from "./views/search/NavigatorSearchResultView";
+import {NavigatorSearchSavesResultView} from "./views/search/NavigatorSearchSavesResultView";
 import {NavigatorSearchView} from "./views/search/NavigatorSearchView";
 
 export const NavigatorView: FC<{}> = props => {
@@ -27,10 +38,11 @@ export const NavigatorView: FC<{}> = props => {
   const [isCreatorOpen, setCreatorOpen] = useState(false);
   const [isRoomInfoOpen, setRoomInfoOpen] = useState(false);
   const [isRoomLinkOpen, setRoomLinkOpen] = useState(false);
+  const [isOpenSavesSearchs, setIsOpenSavesSearchs] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [needsInit, setNeedsInit] = useState(true);
   const [needsSearch, setNeedsSearch] = useState(false);
-  const {searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null} = useNavigator();
+  const {searchResult = null, topLevelContext = null, topLevelContexts = null, navigatorData = null, navigatorSearches = null} = useNavigator();
   const pendingSearch = useRef<{value: string; code: string}>(null);
   const elementRef = useRef<HTMLDivElement>();
 
@@ -195,6 +207,9 @@ export const NavigatorView: FC<{}> = props => {
             onCloseClick={event => setIsVisible(false)}
           />
           <NitroCardTabsView>
+            <Base className="mt-1">
+              <LayoutSearchSavesView title={LocalizeText("navigator.tooltip.left.show.hide")} onClick={() => setIsOpenSavesSearchs(prevValue => !prevValue)} />
+            </Base>
             {topLevelContexts &&
               topLevelContexts.length > 0 &&
               topLevelContexts.map((context, index) => {
@@ -212,10 +227,19 @@ export const NavigatorView: FC<{}> = props => {
             {isLoading && <Base fit position="absolute" className="top-0 start-0 z-index-1 bg-muted opacity-0-5" />}
             {!isCreatorOpen && (
               <>
-                <NavigatorSearchView sendSearch={sendSearch} />
-                <Column innerRef={elementRef} overflow="auto">
-                  {searchResult && searchResult.results.map((result, index) => <NavigatorSearchResultView key={index} searchResult={result} />)}
-                </Column>
+                <Flex gap={1}>
+                  {isOpenSavesSearchs && (
+                    <Column>
+                      <NavigatorSearchSavesResultView searchs={navigatorSearches} />
+                    </Column>
+                  )}
+                  <Column fullWidth>
+                    <NavigatorSearchView sendSearch={sendSearch} />
+                    <Column innerRef={elementRef} overflow="auto">
+                      {searchResult && searchResult.results.map((result, index) => <NavigatorSearchResultView key={index} searchResult={result} />)}
+                    </Column>
+                  </Column>
+                </Flex>
               </>
             )}
             {isCreatorOpen && <NavigatorRoomCreatorView />}

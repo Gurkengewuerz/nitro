@@ -17,8 +17,10 @@ import {
   NavigatorHomeRoomEvent,
   NavigatorMetadataEvent,
   NavigatorOpenRoomCreatorEvent,
+  NavigatorSavedSearch,
   NavigatorSearchEvent,
   NavigatorSearchResultSet,
+  NavigatorSearchesEvent,
   NavigatorTopLevelContext,
   RoomDataParser,
   RoomDoorbellAcceptedEvent,
@@ -59,6 +61,8 @@ const useNavigatorState = () => {
   const [topLevelContexts, setTopLevelContexts] = useState<NavigatorTopLevelContext[]>(null);
   const [doorData, setDoorData] = useState<{roomInfo: RoomDataParser; state: number}>({roomInfo: null, state: DoorStateType.NONE});
   const [searchResult, setSearchResult] = useState<NavigatorSearchResultSet>(null);
+  const [searchResultQuery, setSearchResultQuery] = useState<string>("");
+  const [navigatorSearches, setNavigatorSearches] = useState<NavigatorSavedSearch[]>(null);
   const [navigatorData, setNavigatorData] = useState<INavigatorData>({
     settingsReceived: false,
     homeRoomId: 0,
@@ -334,6 +338,7 @@ const useNavigatorState = () => {
     });
 
     setSearchResult(parser.result);
+    setSearchResultQuery(parser.result.data);
   });
 
   useMessageEvent<UserFlatCatsEvent>(UserFlatCatsEvent, event => {
@@ -428,7 +433,15 @@ const useNavigatorState = () => {
 
   useMessageEvent<NavigatorOpenRoomCreatorEvent>(NavigatorOpenRoomCreatorEvent, event => CreateLinkEvent("navigator/show"));
 
-  return {categories, doorData, setDoorData, topLevelContext, topLevelContexts, searchResult, navigatorData};
+  useMessageEvent<NavigatorSearchesEvent>(NavigatorSearchesEvent, event => {
+    const parser = event.getParser();
+
+    if (!parser) return;
+
+    setNavigatorSearches(parser.searches);
+  });
+
+  return {categories, doorData, setDoorData, topLevelContext, topLevelContexts, searchResult, navigatorData, navigatorSearches, searchResultQuery};
 };
 
 export const useNavigator = () => useBetween(useNavigatorState);
