@@ -12,12 +12,13 @@ import {
   RoomEngineEvent,
 } from "@nitro/renderer";
 import {FC, useCallback, useEffect, useState} from "react";
+import FPSStats from "react-fps-stats";
 
 import {GetCommunication, GetConfiguration, GetNitroInstance, GetUIVersion} from "./api";
 import {Base, TransitionAnimation, TransitionAnimationTypes} from "./common";
 import {LoadingView} from "./components/loading/LoadingView";
 import {MainView} from "./components/main/MainView";
-import {useConfigurationEvent, useLocalizationEvent, useMainEvent, useRoomEngineEvent} from "./hooks";
+import {useConfigurationEvent, useLocalizationEvent, useMainEvent, useRoomEngineEvent, useUiFPSCounter} from "./hooks";
 
 NitroVersion.UI_VERSION = GetUIVersion();
 
@@ -27,6 +28,7 @@ export const App: FC<{}> = props => {
   const [message, setMessage] = useState("Getting Ready");
   const [percent, setPercent] = useState(0);
   const [imageRendering, setImageRendering] = useState<boolean>(true);
+  const [uiFPSCounter, setUiFPSCounter] = useUiFPSCounter();
 
   if (!GetNitroInstance()) {
     //@ts-ignore
@@ -135,6 +137,7 @@ export const App: FC<{}> = props => {
   return (
     <Base fit overflow="hidden" className={imageRendering && "image-rendering-pixelated"}>
       {(!isReady || isError) && <LoadingView isError={isError} message={message} percent={percent} />}
+      {uiFPSCounter && <FPSStats />}
       <TransitionAnimation type={TransitionAnimationTypes.FADE_IN} inProp={isReady}>
         <MainView />
       </TransitionAnimation>

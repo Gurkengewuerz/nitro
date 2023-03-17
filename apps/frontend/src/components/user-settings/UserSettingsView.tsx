@@ -12,13 +12,14 @@ import {FaVolumeDown, FaVolumeMute, FaVolumeUp} from "react-icons/fa";
 
 import {AddEventLinkTracker, DispatchMainEvent, DispatchUiEvent, LocalizeText, RemoveLinkEventTracker, SendMessageComposer} from "../../api";
 import {Column, Flex, NitroCardContentView, NitroCardHeaderView, NitroCardView, Text, classNames} from "../../common";
-import {useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent} from "../../hooks";
+import {useCatalogPlaceMultipleItems, useCatalogSkipPurchaseConfirmation, useMessageEvent, useUiFPSCounter} from "../../hooks";
 
 export const UserSettingsView: FC<{}> = props => {
   const [isVisible, setIsVisible] = useState(false);
   const [userSettings, setUserSettings] = useState<NitroSettingsEvent>(null);
   const [catalogPlaceMultipleObjects, setCatalogPlaceMultipleObjects] = useCatalogPlaceMultipleItems();
   const [catalogSkipPurchaseConfirmation, setCatalogSkipPurchaseConfirmation] = useCatalogSkipPurchaseConfirmation();
+  const [uiFPSCounter, setUiFPSCounter] = useUiFPSCounter();
 
   const processAction = (type: string, value?: boolean | number | string) => {
     let doUpdate = true;
@@ -175,6 +176,15 @@ export const UserSettingsView: FC<{}> = props => {
               onChange={event => setCatalogSkipPurchaseConfirmation(event.target.checked)}
             />
             <Text>{LocalizeText("memenu.settings.other.skip.purchase.confirmation")}</Text>
+          </Flex>
+          <Flex alignItems="center" gap={1}>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={uiFPSCounter}
+              onChange={event => setUiFPSCounter(event.target.checked)}
+            />
+            <Text>{LocalizeText("memenu.settings.other.ui.show.fpscounter")}</Text>
           </Flex>
         </Column>
         <Column>
