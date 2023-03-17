@@ -81,6 +81,9 @@ export const App: FC<{}> = props => {
         setMessage("Connection Error");
 
         HabboWebTools.send(-1, "client.init.handshake.fail");
+
+        setIsError(true);
+        setMessage("Server closed Connection");
         return;
       case RoomEngineEvent.ENGINE_INITIALIZED:
         setPercent(prevValue => prevValue + 20);
