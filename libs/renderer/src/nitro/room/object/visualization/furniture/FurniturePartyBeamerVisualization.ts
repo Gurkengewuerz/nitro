@@ -20,7 +20,7 @@ export class FurniturePartyBeamerVisualization extends FurnitureAnimatedVisualiz
     this._animOffsetIndex = [];
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (!this._animSpeedIndex) this.initItems(scale);
 
     let sprite = this.getSprite(2);
@@ -111,7 +111,7 @@ export class FurniturePartyBeamerVisualization extends FurnitureAnimatedVisualiz
     this._animFactorIndex.push(this.getRandomAmplitudeFactor());
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     if (layerId === 2 || layerId === 3) {
       if (this._animOffsetIndex.length == 2) {
         return this._animOffsetIndex[layerId - 2].x;
@@ -120,7 +120,7 @@ export class FurniturePartyBeamerVisualization extends FurnitureAnimatedVisualiz
     return super.getLayerXOffset(scale, direction, layerId);
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     if (layerId === 2 || layerId === 3) {
       if (this._animOffsetIndex.length == 2) {
         return this._animOffsetIndex[layerId - 2].y;

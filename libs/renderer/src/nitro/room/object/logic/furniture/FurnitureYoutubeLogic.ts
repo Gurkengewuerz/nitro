@@ -3,13 +3,13 @@ import {RoomObjectDataRequestEvent, RoomObjectWidgetRequestEvent} from "../../..
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureYoutubeLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.YOUTUBE, RoomObjectDataRequestEvent.RODRE_URL_PREFIX];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (!this.object.model.getValue<string>(RoomObjectVariable.SESSION_URL_PREFIX)) {
@@ -17,7 +17,7 @@ export class FurnitureYoutubeLogic extends FurnitureLogic {
     }
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.YOUTUBE, this.object));

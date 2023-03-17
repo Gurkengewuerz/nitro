@@ -18,7 +18,7 @@ export class StringDataType extends ObjectDataBase {
     this._data = [];
   }
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._data = [];
@@ -30,26 +30,26 @@ export class StringDataType extends ObjectDataBase {
     super.parseWrapper(wrapper);
   }
 
-  public initializeFromRoomObjectModel(model: IRoomObjectModel): void {
+  public override initializeFromRoomObjectModel(model: IRoomObjectModel): void {
     super.initializeFromRoomObjectModel(model);
 
     this._data = model.getValue<string[]>(RoomObjectVariable.FURNITURE_DATA);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, StringDataType.FORMAT_KEY);
     model.setValue(RoomObjectVariable.FURNITURE_DATA, this._data);
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     if (!this._data || !this._data.length) return "";
 
     return this._data[StringDataType.STATE];
   }
 
-  public compare(data: IObjectData): boolean {
+  public override compare(data: IObjectData): boolean {
     if (!(data instanceof StringDataType)) return false;
 
     let i = 0;

@@ -23,7 +23,7 @@ export class HighScoreDataType extends ObjectDataBase implements IObjectData {
     this._entries = [];
   }
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._state = wrapper.readString();
@@ -53,7 +53,7 @@ export class HighScoreDataType extends ObjectDataBase implements IObjectData {
     super.parseWrapper(wrapper);
   }
 
-  public initializeFromRoomObjectModel(model: IRoomObjectModel): void {
+  public override initializeFromRoomObjectModel(model: IRoomObjectModel): void {
     this._scoreType = model.getValue<number>(RoomObjectVariable.FURNITURE_HIGHSCORE_SCORE_TYPE);
     this._clearType = model.getValue<number>(RoomObjectVariable.FURNITURE_HIGHSCORE_CLEAR_TYPE);
     this._entries = [];
@@ -76,7 +76,7 @@ export class HighScoreDataType extends ObjectDataBase implements IObjectData {
     super.initializeFromRoomObjectModel(model);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, HighScoreDataType.FORMAT_KEY);
@@ -99,7 +99,7 @@ export class HighScoreDataType extends ObjectDataBase implements IObjectData {
     }
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     return this._state;
   }
 

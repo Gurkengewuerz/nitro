@@ -13,13 +13,13 @@ export class FurnitureEditableInternalLinkLogic extends FurnitureLogic {
     this._updateCount = 0;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.INERNAL_LINK];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {
@@ -29,7 +29,7 @@ export class FurnitureEditableInternalLinkLogic extends FurnitureLogic {
     }
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (!this._showStateOnceRendered) return;
@@ -51,7 +51,7 @@ export class FurnitureEditableInternalLinkLogic extends FurnitureLogic {
     }
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry) return;
 
     if (event.type === MouseEventType.DOUBLE_CLICK) {
@@ -61,7 +61,7 @@ export class FurnitureEditableInternalLinkLogic extends FurnitureLogic {
     super.mouseEvent(event, geometry);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.INERNAL_LINK, this.object));

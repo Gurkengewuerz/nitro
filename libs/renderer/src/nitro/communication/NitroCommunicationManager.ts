@@ -38,7 +38,7 @@ export class NitroCommunicationManager extends NitroManager implements INitroCom
     this.onConnectionAuthenticatedEvent = this.onConnectionAuthenticatedEvent.bind(this);
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     if (this._connection) return;
 
     Nitro.instance.events.addEventListener(NitroCommunicationDemoEvent.CONNECTION_AUTHENTICATED, this.onConnectionAuthenticatedEvent);
@@ -56,7 +56,7 @@ export class NitroCommunicationManager extends NitroManager implements INitroCom
     this._connection.init(NitroConfiguration.getValue<string>("socket.url"));
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._demo) this._demo.dispose();
 
     if (this._connection) {

@@ -9,13 +9,13 @@ export class FurnitureChangeStateWhenStepOnLogic extends FurnitureLogic {
     this.onRoomToObjectOwnAvatarMoveEvent = this.onRoomToObjectOwnAvatarMoveEvent.bind(this);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (this.eventDispatcher) this.eventDispatcher.addEventListener(RoomToObjectOwnAvatarMoveEvent.ROAME_MOVE_TO, this.onRoomToObjectOwnAvatarMoveEvent);
   }
 
-  public tearDown(): void {
+  public override tearDown(): void {
     if (this.eventDispatcher) this.eventDispatcher.removeEventListener(RoomToObjectOwnAvatarMoveEvent.ROAME_MOVE_TO, this.onRoomToObjectOwnAvatarMoveEvent);
 
     super.tearDown();

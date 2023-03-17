@@ -16,14 +16,14 @@ export class Interval extends Motion {
     return this._duration;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._complete = false;
     this._startTimeMs = GetTickerTime();
   }
 
-  public tick(time: number): void {
+  public override tick(time: number): void {
     super.tick(time);
 
     const elapsed = (time - this._startTimeMs) / this._duration;

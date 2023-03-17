@@ -7,7 +7,7 @@ import {PlaneRasterizer} from "./PlaneRasterizer";
 import {WallPlane} from "./WallPlane";
 
 export class WallRasterizer extends PlaneRasterizer {
-  protected initializePlanes(): void {
+  protected override initializePlanes(): void {
     if (!this.data) return;
 
     const walls = this.data.planes;
@@ -33,7 +33,7 @@ export class WallRasterizer extends PlaneRasterizer {
     }
   }
 
-  public render(
+  public override render(
     planeId: string,
     textureCache: PlaneTextureCache,
     canvas: RenderTexture,
@@ -68,7 +68,7 @@ export class WallRasterizer extends PlaneRasterizer {
     return new PlaneBitmapData(graphic, -1);
   }
 
-  public getTextureIdentifier(k: number, normal: IVector3D): string {
+  public override getTextureIdentifier(k: number, normal: IVector3D): string {
     if (normal) {
       return `${k}_${normal.x}_${normal.y}_${normal.z}`;
     }

@@ -6,7 +6,7 @@ export class FurnitureScoreBoardVisualization extends FurnitureAnimatedVisualiza
   private static HUNDREDS_SPRITE: string = "hundreds_sprite";
   private static THOUSANDS_SPRITE: string = "thousands_sprite";
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     const tag = this.getLayerTag(scale, this.direction, layerId);
     const animation = this.object.getState(0);
 

@@ -127,13 +127,13 @@ export class FurnitureIsometricBBVisualization extends FurnitureBBVisualization 
     this._needsTransform = false;
   }
 
-  protected checkAndCreateImageForCurrentState(): void {
+  protected override checkAndCreateImageForCurrentState(): void {
     super.checkAndCreateImageForCurrentState();
 
     this._needsTransform = true;
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     const tag = this.getLayerTag(scale, this._direction, layerId);
 
     if (tag === FurnitureBrandedImageVisualization.BRANDED_IMAGE && this._imageUrl) {

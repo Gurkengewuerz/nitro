@@ -42,7 +42,7 @@ export class RoomVisualizationData extends Disposable implements IObjectVisualiz
     return true;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._wallRasterizer) {
       this._wallRasterizer.dispose();
 

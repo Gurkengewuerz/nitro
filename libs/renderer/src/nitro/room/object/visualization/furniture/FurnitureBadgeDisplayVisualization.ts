@@ -18,7 +18,7 @@ export class FurnitureBadgeDisplayVisualization extends FurnitureAnimatedVisuali
     this._badgeVisibleInState = -1;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     let updateModel = super.updateModel(scale);
 
     const badgeStatus = this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_BADGE_IMAGE_STATUS);
@@ -43,7 +43,7 @@ export class FurnitureBadgeDisplayVisualization extends FurnitureAnimatedVisuali
     return updateModel;
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     const tag = this.getLayerTag(scale, this.direction, layerId);
 
     if (tag !== FurnitureBadgeDisplayVisualization.BADGE || (this._badgeVisibleInState !== -1 && this.object.getState(0) !== this._badgeVisibleInState))
@@ -54,7 +54,7 @@ export class FurnitureBadgeDisplayVisualization extends FurnitureAnimatedVisuali
     return this._badgeAssetNameNormalScale;
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     let offset = super.getLayerXOffset(scale, direction, layerId);
 
     if (this.getLayerTag(scale, direction, layerId) === FurnitureBadgeDisplayVisualization.BADGE) {
@@ -69,7 +69,7 @@ export class FurnitureBadgeDisplayVisualization extends FurnitureAnimatedVisuali
     return offset;
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     let offset = super.getLayerYOffset(scale, direction, layerId);
 
     if (this.getLayerTag(scale, direction, layerId) === FurnitureBadgeDisplayVisualization.BADGE) {

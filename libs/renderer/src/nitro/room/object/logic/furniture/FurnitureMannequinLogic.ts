@@ -9,13 +9,13 @@ export class FurnitureMannequinLogic extends FurnitureLogic {
   private static FIGURE: string = "FIGURE";
   private static OUTFIT_NAME: string = "OUTFIT_NAME";
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.MANNEQUIN];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {
@@ -37,7 +37,7 @@ export class FurnitureMannequinLogic extends FurnitureLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_MANNEQUIN_NAME, data.getValue(FurnitureMannequinLogic.OUTFIT_NAME));
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.MANNEQUIN, this.object));

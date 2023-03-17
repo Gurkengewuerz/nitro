@@ -154,7 +154,7 @@ export class AvatarVisualization extends RoomObjectSpriteVisualization implement
     this._additions = new Map();
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     if (!(data instanceof AvatarVisualizationData)) return false;
 
     this._data = data;
@@ -166,7 +166,7 @@ export class AvatarVisualization extends RoomObjectSpriteVisualization implement
     return true;
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._disposed) return;
 
     super.dispose();
@@ -177,7 +177,7 @@ export class AvatarVisualization extends RoomObjectSpriteVisualization implement
     this._disposed = true;
   }
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
     if (!this.object || !geometry || !this._data) return;
 
     if (time < this._lastUpdate + AvatarVisualization.UPDATE_TIME_INCREASER) return;
@@ -918,7 +918,7 @@ export class AvatarVisualization extends RoomObjectSpriteVisualization implement
   private addAddition(addition: IAvatarAddition): IAvatarAddition {
     const existing = this.getAddition(addition.id);
 
-    if (existing) return;
+    if (existing) return null;
 
     this._additions.set(addition.id, addition);
 

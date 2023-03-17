@@ -94,7 +94,7 @@ export class RoomMessageHandler extends Disposable {
     this._requesterId = -1;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     super.onDispose();
 
     this._connection = null;

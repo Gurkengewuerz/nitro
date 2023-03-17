@@ -59,7 +59,7 @@ export class SocketConnection extends EventDispatcher implements IConnection {
     this.createSocket(socketUrl);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     super.onDispose();
 
     this.destroySocket();
@@ -115,7 +115,7 @@ export class SocketConnection extends EventDispatcher implements IConnection {
     this.dispatchConnectionEvent(SocketConnectionEvent.CONNECTION_OPENED, event);
   }
 
-  private onClose(event: CloseEvent): void {
+  private onClose(event: Event): void {
     this.dispatchConnectionEvent(SocketConnectionEvent.CONNECTION_CLOSED, event);
   }
 
@@ -123,8 +123,9 @@ export class SocketConnection extends EventDispatcher implements IConnection {
     this.dispatchConnectionEvent(SocketConnectionEvent.CONNECTION_ERROR, event);
   }
 
-  private onMessage(event: MessageEvent): void {
+  private onMessage(event: Event): void {
     if (!event) return;
+    if (!(event instanceof MessageEvent)) return;
 
     //this.dispatchConnectionEvent(SocketConnectionEvent.CONNECTION_MESSAGE, event);
 
@@ -257,7 +258,7 @@ export class SocketConnection extends EventDispatcher implements IConnection {
     if (!events || !events.length) {
       NitroLogger.packets("IncomingMessage", wrapper.header, "UNREGISTERED", wrapper);
 
-      return;
+      return null;
     }
 
     try {

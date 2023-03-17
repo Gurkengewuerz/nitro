@@ -111,7 +111,7 @@ export class RoomVisualization extends RoomObjectSpriteVisualization implements 
     this._typeVisibility[RoomPlane.TYPE_LANDSCAPE] = true;
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     if (!(data instanceof RoomVisualizationData)) return false;
 
     this._data = data;
@@ -123,7 +123,7 @@ export class RoomVisualization extends RoomObjectSpriteVisualization implements 
     return true;
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     this.clearPlanes();
@@ -155,7 +155,7 @@ export class RoomVisualization extends RoomObjectSpriteVisualization implements 
     }
   }
 
-  protected reset(): void {
+  protected override reset(): void {
     super.reset();
 
     this._floorType = null;
@@ -166,7 +166,7 @@ export class RoomVisualization extends RoomObjectSpriteVisualization implements 
     this._roomScale = 0;
   }
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
     if (!this.object || !geometry) return;
 
     const geometryUpdate = this.updateGeometry(geometry);
@@ -836,7 +836,7 @@ export class RoomVisualization extends RoomObjectSpriteVisualization implements 
     sprite.name = _arg_3 + "_" + this._assetUpdateCounter;
   }
 
-  public getBoundingRectangle(): Rectangle {
+  public override getBoundingRectangle(): Rectangle {
     if (!this._boundingRectangle) this._boundingRectangle = super.getBoundingRectangle();
 
     return new Rectangle(this._boundingRectangle.x, this._boundingRectangle.y, this._boundingRectangle.width, this._boundingRectangle.height);

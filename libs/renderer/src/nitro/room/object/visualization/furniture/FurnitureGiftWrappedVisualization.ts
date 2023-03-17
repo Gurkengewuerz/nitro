@@ -5,7 +5,7 @@ export class FurnitureGiftWrappedVisualization extends FurnitureVisualization {
   private _packetType: number = 0;
   private _ribbonType: number = 0;
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
     this.updatePresentWrap();
 
     super.update(geometry, time, update, skipUpdate);
@@ -23,13 +23,13 @@ export class FurnitureGiftWrappedVisualization extends FurnitureVisualization {
     this._ribbonType = typeIndex % local3;
   }
 
-  public getFrameNumber(scale: number, layerId: number): number {
+  public override getFrameNumber(scale: number, layerId: number): number {
     if (layerId <= 1) return this._packetType;
 
     return this._ribbonType;
   }
 
-  public getSpriteAssetName(scale: number, layerId: number): string {
+  public override getSpriteAssetName(scale: number, layerId: number): string {
     const size = this.getValidSize(scale);
 
     let assetName = this._type;

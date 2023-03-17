@@ -20,7 +20,7 @@ export class FurnitureVoteCounterLogic extends FurnitureMultiStateLogic {
     this._interval = 33;
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {
@@ -56,7 +56,7 @@ export class FurnitureVoteCounterLogic extends FurnitureMultiStateLogic {
     }
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (this.object) {

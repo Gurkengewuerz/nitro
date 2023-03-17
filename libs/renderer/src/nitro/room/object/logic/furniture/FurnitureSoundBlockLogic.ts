@@ -14,7 +14,7 @@ export class FurnitureSoundBlockLogic extends FurnitureMultiStateLogic {
   private _noPitch: boolean = false;
   private _lastLocZ: number = 0;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectSamplePlaybackEvent.ROOM_OBJECT_INITIALIZED,
       RoomObjectSamplePlaybackEvent.ROOM_OBJECT_DISPOSED,
@@ -25,7 +25,7 @@ export class FurnitureSoundBlockLogic extends FurnitureMultiStateLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {
@@ -38,7 +38,7 @@ export class FurnitureSoundBlockLogic extends FurnitureMultiStateLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_SOUNDBLOCK_RELATIVE_ANIMATION_SPEED, 1);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._state !== FurnitureSoundBlockLogic.STATE_UNINITIALIZED) {
       this.eventDispatcher.dispatchEvent(new RoomObjectSamplePlaybackEvent(RoomObjectSamplePlaybackEvent.ROOM_OBJECT_DISPOSED, this.object, this._sampleId));
     }
@@ -46,7 +46,7 @@ export class FurnitureSoundBlockLogic extends FurnitureMultiStateLogic {
     super.onDispose();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) this.updateSoundBlockMessage(message);

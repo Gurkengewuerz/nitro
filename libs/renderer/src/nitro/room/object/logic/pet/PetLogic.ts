@@ -41,13 +41,13 @@ export class PetLogic extends MovingObjectLogic {
     this._expressionEndTimestamp = 0;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectMouseEvent.CLICK, RoomObjectMoveEvent.POSITION_CHANGED];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     if (!asset) return;
 
     const model = this.object && this.object.model;
@@ -69,7 +69,7 @@ export class PetLogic extends MovingObjectLogic {
     model.setValue(RoomObjectVariable.PET_ALLOWED_DIRECTIONS, this._directions);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._selected && this.object) {
       if (this.eventDispatcher) this.eventDispatcher.dispatchEvent(new RoomObjectMoveEvent(RoomObjectMoveEvent.OBJECT_REMOVED, this.object));
     }
@@ -78,7 +78,7 @@ export class PetLogic extends MovingObjectLogic {
     this._reportedLocation = null;
   }
 
-  public update(totalTimeRunning: number): void {
+  public override update(totalTimeRunning: number): void {
     super.update(totalTimeRunning);
 
     if (this._selected && this.object) {
@@ -125,7 +125,7 @@ export class PetLogic extends MovingObjectLogic {
     }
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (!message || !this.object) return;
 
     super.processUpdateMessage(message);
@@ -199,7 +199,7 @@ export class PetLogic extends MovingObjectLogic {
     }
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     let eventType: string = null;
 
     switch (event.type) {

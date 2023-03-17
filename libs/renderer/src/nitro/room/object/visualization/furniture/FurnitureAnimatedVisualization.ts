@@ -4,7 +4,7 @@ import {FurnitureAnimatedVisualizationData} from "./FurnitureAnimatedVisualizati
 import {FurnitureVisualization} from "./FurnitureVisualization";
 
 export class FurnitureAnimatedVisualization extends FurnitureVisualization {
-  public static TYPE: string = RoomObjectVisualizationType.FURNITURE_ANIMATED;
+  public static override TYPE: string = RoomObjectVisualizationType.FURNITURE_ANIMATED;
   public static DEFAULT_ANIMATION_ID: number = 0;
 
   protected _state: number;
@@ -27,13 +27,13 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     this._directionChanged = false;
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     if (!(data instanceof FurnitureAnimatedVisualizationData)) return false;
 
     return super.initialize(data);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     if (this._animationData) {
@@ -58,7 +58,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return FurnitureAnimatedVisualization.DEFAULT_ANIMATION_ID;
   }
 
-  protected updateObject(scale: number, direction: number): boolean {
+  protected override updateObject(scale: number, direction: number): boolean {
     if (super.updateObject(scale, direction)) {
       const state = this.object.getState(0);
 
@@ -76,7 +76,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return false;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     if (super.updateModel(scale)) {
       if (this.usesAnimationResetting()) {
         const updateTime = this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_STATE_UPDATE_TIME);
@@ -197,7 +197,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     this._animationData.setLayerCount(this._animatedLayerCount);
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (!this.data) return 0;
 
     if (scale !== this._animationScale) {
@@ -308,7 +308,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return update;
   }
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     const currentFrame = this._animationData.getFrame(layerId);
 
     if (!currentFrame) return super.getFrameNumber(scale, layerId);
@@ -316,7 +316,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return currentFrame.id;
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     const offset = super.getLayerXOffset(scale, direction, layerId);
 
     const currentFrame = this._animationData.getFrame(layerId);
@@ -326,7 +326,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return offset + currentFrame.x;
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     const offset = super.getLayerYOffset(scale, direction, layerId);
 
     const currentFrame = this._animationData.getFrame(layerId);
@@ -340,7 +340,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return false;
   }
 
-  protected setDirection(direction: number): void {
+  protected override setDirection(direction: number): void {
     if (this._direction === direction) return;
 
     super.setDirection(direction);
@@ -352,7 +352,7 @@ export class FurnitureAnimatedVisualization extends FurnitureVisualization {
     return this._frameIncrease;
   }
 
-  protected get data(): FurnitureAnimatedVisualizationData {
+  protected override get data(): FurnitureAnimatedVisualizationData {
     return this._data as FurnitureAnimatedVisualizationData;
   }
 }

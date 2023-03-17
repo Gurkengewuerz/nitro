@@ -5,20 +5,28 @@
   "projectType": "library",
   "targets": {
     "build": {
-      "executor": "@nrwl/js:tsc",
-      "outputs": ["{options.outputPath}"],
+      "executor": "@nrwl/js:swc",
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/libs/renderer",
         "main": "libs/renderer/src/index.ts",
         "tsConfig": "libs/renderer/tsconfig.lib.json",
-        "assets": ["libs/renderer/*.md"]
+        "assets": [
+          "libs/renderer/*.md"
+        ]
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
-      "outputs": ["{options.outputFile}"],
+      "outputs": [
+        "{options.outputFile}"
+      ],
       "options": {
-        "lintFilePatterns": ["libs/renderer/**/*.ts"]
+        "lintFilePatterns": [
+          "libs/renderer/**/*.ts"
+        ]
       }
     }
   },

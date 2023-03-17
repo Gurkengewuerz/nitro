@@ -15,7 +15,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
     this._rootPosition = new Vector3d();
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._planetIndex) {
       while (this._planetIndex.length > 0) {
         const planet = this._planetIndex.shift();
@@ -28,7 +28,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
     this._planetNameIndex = null;
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (!this._planetIndex && this.spriteCount > 0) {
       if (!this.processPlanets()) return 0;
     }
@@ -42,7 +42,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
     return 0;
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     if (this._offsetArray[layerId]) {
       return this._offsetArray[layerId].x;
     }
@@ -50,7 +50,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
     return super.getLayerXOffset(scale, direction, layerId);
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     if (this._offsetArray[layerId]) {
       return this._offsetArray[layerId].y;
     }
@@ -58,7 +58,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
     return super.getLayerYOffset(scale, direction, layerId);
   }
 
-  protected getLayerZOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerZOffset(scale: number, direction: number, layerId: number): number {
     if (this._offsetArray[layerId]) {
       return this._offsetArray[layerId].z;
     }
@@ -67,7 +67,7 @@ export class FurniturePlanetSystemVisualization extends FurnitureAnimatedVisuali
   }
 
   private processPlanets(): boolean {
-    if (!this.object || !this.object.model) return;
+    if (!this.object || !this.object.model) return false;
 
     const planetSystems = this.object.model.getValue<IAssetLogicPlanetSystem[]>(RoomObjectVariable.FURNITURE_PLANETSYSTEM_DATA);
 

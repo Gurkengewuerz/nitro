@@ -44,7 +44,7 @@ export class RoomSessionManager extends NitroManager implements IRoomSessionMana
     this.onRoomEngineEvent = this.onRoomEngineEvent.bind(this);
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     this.createHandlers();
 
     this.processPendingSession();
@@ -52,7 +52,7 @@ export class RoomSessionManager extends NitroManager implements IRoomSessionMana
     this._roomEngine.events.addEventListener(RoomEngineEvent.ENGINE_INITIALIZED, this.onRoomEngineEvent);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._roomEngine.events.removeEventListener(RoomEngineEvent.ENGINE_INITIALIZED, this.onRoomEngineEvent);
 
     super.onDispose();

@@ -11,18 +11,18 @@ export class PetVisualizationData extends FurnitureAnimatedVisualizationData {
     this._isAllowedToTurnHead = true;
   }
 
-  protected createSizeData(scale: number, layerCount: number, angle: number): SizeData {
+  protected override createSizeData(scale: number, layerCount: number, angle: number): SizeData {
     if (scale > 1) return new PetSizeData(layerCount, angle);
     else return new AnimationSizeData(layerCount, angle);
   }
 
-  protected defineVisualizations(visualizations: IAssetVisualizationData[]): boolean {
+  protected override defineVisualizations(visualizations: IAssetVisualizationData[]): boolean {
     this._isAllowedToTurnHead = true; //check visualization for '@disableheadturn'
 
     return super.defineVisualizations(visualizations);
   }
 
-  protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
+  protected override processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
     if (!sizeData || !key || !data) return false;
 
     switch (key) {

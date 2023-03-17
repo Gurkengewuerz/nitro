@@ -166,7 +166,7 @@ export class MusicController implements IMusicController {
   public get samplesIdsInUse(): number[] {
     let _local_3: SongStartRequestData;
     let _local_4: SongDataEntry;
-    let k = [];
+    let k = [] as number[];
     for (let i = 0; i < this._songRequestsPerPriority.length; i++) {
       if (this._songRequestsPerPriority[i]) {
         _local_3 = this._songRequestsPerPriority[i];

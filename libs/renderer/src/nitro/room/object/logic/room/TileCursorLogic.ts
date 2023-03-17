@@ -17,7 +17,7 @@ export class TileCursorLogic extends RoomObjectLogicBase {
     this._isHidden = false;
   }
 
-  public initialize(data: IAssetData): void {
+  public override initialize(data: IAssetData): void {
     if (!this.object) return;
 
     this.object.model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 1);
@@ -25,7 +25,7 @@ export class TileCursorLogic extends RoomObjectLogicBase {
     this.object.setState(TileCursorLogic.CURSOR_HIDDEN_STATE, 0);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (!(message instanceof ObjectTileCursorUpdateMessage)) return;
 
     if (this._lastEventId && this._lastEventId === message.sourceEventId) return;

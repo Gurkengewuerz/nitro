@@ -26,7 +26,7 @@ export class WiredActionDefinition extends Triggerable {
     return this._type;
   }
 
-  public get code(): number {
+  public override get code(): number {
     return this._type;
   }
 

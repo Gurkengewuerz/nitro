@@ -16,7 +16,7 @@ export class LegacyDataType extends ObjectDataBase implements IObjectData {
     this._data = "";
   }
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._data = wrapper.readString();
@@ -24,24 +24,24 @@ export class LegacyDataType extends ObjectDataBase implements IObjectData {
     super.parseWrapper(wrapper);
   }
 
-  public initializeFromRoomObjectModel(model: IRoomObjectModel): void {
+  public override initializeFromRoomObjectModel(model: IRoomObjectModel): void {
     super.initializeFromRoomObjectModel(model);
 
     this._data = model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, LegacyDataType.FORMAT_KEY);
     model.setValue(RoomObjectVariable.FURNITURE_DATA, this._data);
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     return this._data;
   }
 
-  public compare(data: IObjectData): boolean {
+  public override compare(data: IObjectData): boolean {
     return this._data === data.getLegacyString();
   }
 

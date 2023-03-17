@@ -2,7 +2,7 @@ import {IAssetData, RoomObjectVariable} from "../../../../../api";
 import {FurnitureMultiStateLogic} from "./FurnitureMultiStateLogic";
 
 export class FurnitureWindowLogic extends FurnitureMultiStateLogic {
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     let maskType = "";

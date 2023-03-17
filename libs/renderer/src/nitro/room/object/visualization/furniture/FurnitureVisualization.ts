@@ -82,7 +82,7 @@ export class FurnitureVisualization extends RoomObjectSpriteVisualization {
     this._animationNumber = 0;
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     this.reset();
 
     if (!(data instanceof FurnitureVisualizationData)) return false;
@@ -93,7 +93,7 @@ export class FurnitureVisualization extends RoomObjectSpriteVisualization {
     return true;
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     this._data = null;
@@ -109,7 +109,7 @@ export class FurnitureVisualization extends RoomObjectSpriteVisualization {
     this._spriteZOffsets = null;
   }
 
-  protected reset(): void {
+  protected override reset(): void {
     super.reset();
 
     this.setDirection(-1);
@@ -150,7 +150,7 @@ export class FurnitureVisualization extends RoomObjectSpriteVisualization {
     this.setLayerCount(((this._data && this._data.getLayerCount(scale)) || 0) + this.getAdditionalLayerCount());
   }
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
     if (!geometry) return;
 
     const scale = geometry.scale;

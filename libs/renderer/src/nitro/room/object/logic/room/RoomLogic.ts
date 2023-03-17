@@ -51,13 +51,13 @@ export class RoomLogic extends RoomObjectLogicBase {
     this._skipColorTransition = false;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectMouseEvent.MOUSE_MOVE, RoomObjectMouseEvent.CLICK];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     if (this._planeParser) {
@@ -73,7 +73,7 @@ export class RoomLogic extends RoomObjectLogicBase {
     }
   }
 
-  public initialize(roomMap: RoomMapData): void {
+  public override initialize(roomMap: RoomMapData): void {
     if (!roomMap || !this.object) return;
 
     if (!(roomMap instanceof RoomMapData)) return;
@@ -89,7 +89,7 @@ export class RoomLogic extends RoomObjectLogicBase {
     this._skipColorTransition = NitroConfiguration.getValue<boolean>("room.color.skip.transition") === true;
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     this.updateBackgroundColor(time);
@@ -153,7 +153,7 @@ export class RoomLogic extends RoomObjectLogicBase {
     if (this.object.model) this.object.model.setValue(RoomObjectVariable.ROOM_BACKGROUND_COLOR, color);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (!message || !this.object) return;
 
     const model = this.object.model;
@@ -303,7 +303,7 @@ export class RoomLogic extends RoomObjectLogicBase {
     this._planeParser.initializeFromMapData(message.mapData);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object || !this.object.model) return;
 
     const tag = event.spriteTag;

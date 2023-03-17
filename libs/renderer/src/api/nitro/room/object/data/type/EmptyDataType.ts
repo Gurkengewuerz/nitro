@@ -10,7 +10,7 @@ export class EmptyDataType extends ObjectDataBase implements IObjectData {
 
   private _state: string;
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._state = "";
@@ -18,17 +18,17 @@ export class EmptyDataType extends ObjectDataBase implements IObjectData {
     super.parseWrapper(wrapper);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, EmptyDataType.FORMAT_KEY);
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     return this._state;
   }
 
-  public compare(data: IObjectData): boolean {
+  public override compare(data: IObjectData): boolean {
     return super.compare(data);
   }
 }

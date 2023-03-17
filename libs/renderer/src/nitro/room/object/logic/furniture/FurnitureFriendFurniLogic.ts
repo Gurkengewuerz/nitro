@@ -11,13 +11,13 @@ export class FurnitureFriendFurniLogic extends FurnitureMultiStateLogic {
 
   private _state: number = -1;
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (this.object) this.object.model.setValue(RoomObjectVariable.FURNITURE_FRIENDFURNI_ENGRAVING, this.engravingDialogType);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (message instanceof ObjectDataUpdateMessage) {
       const data = message.data as StringDataType;
 
@@ -31,13 +31,13 @@ export class FurnitureFriendFurniLogic extends FurnitureMultiStateLogic {
     super.processUpdateMessage(message);
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.FRIEND_FURNITURE_ENGRAVING];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     if (this._state === FurnitureFriendFurniLogic.STATE_LOCKED) {
@@ -51,7 +51,7 @@ export class FurnitureFriendFurniLogic extends FurnitureMultiStateLogic {
     return 0;
   }
 
-  public get contextMenu(): string {
+  public override get contextMenu(): string {
     return this._state === FurnitureFriendFurniLogic.STATE_UNLOCKED ? ContextMenuEnum.FRIEND_FURNITURE : ContextMenuEnum.DUMMY;
   }
 }

@@ -33,7 +33,7 @@ export class IsometricImageFurniVisualization extends FurnitureAnimatedVisualiza
     this._thumbnailChanged = true;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     const flag = super.updateModel(scale);
 
     if (!this._thumbnailChanged && this._thumbnailDirection === this.direction) return flag;
@@ -137,7 +137,7 @@ export class IsometricImageFurniVisualization extends FurnitureAnimatedVisualiza
     return TextureUtils.generateTexture(sprite);
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     if (this._thumbnailImageNormal && this.getLayerTag(scale, this.direction, layerId) === IsometricImageFurniVisualization.THUMBNAIL)
       return this.getThumbnailAssetName(scale);
 

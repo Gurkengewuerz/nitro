@@ -16,7 +16,7 @@ export class FurnitureHabboWheelVisualization extends FurnitureAnimatedVisualiza
     this._running = false;
   }
 
-  protected setAnimation(animationId: number): void {
+  protected override setAnimation(animationId: number): void {
     if (animationId === -1) {
       if (!this._running) {
         this._running = true;
@@ -45,7 +45,7 @@ export class FurnitureHabboWheelVisualization extends FurnitureAnimatedVisualiza
     }
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (this.getLastFramePlayed(1) && this.getLastFramePlayed(2) && this.getLastFramePlayed(3)) {
       if (this._stateQueue.length) super.setAnimation(this._stateQueue.shift());
     }

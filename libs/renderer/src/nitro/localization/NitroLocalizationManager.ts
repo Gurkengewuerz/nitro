@@ -54,7 +54,7 @@ export class NitroLocalizationManager extends NitroManager implements INitroLoca
     this._pendingUrls = [];
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     this._communication.registerMessageEvent(new BadgePointLimitsEvent(this.onBadgePointLimitsEvent.bind(this)));
 
     let urls: string[] = NitroConfiguration.getValue<string[]>("external.texts.url");

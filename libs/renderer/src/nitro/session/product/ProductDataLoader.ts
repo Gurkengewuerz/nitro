@@ -15,7 +15,7 @@ export class ProductDataLoader extends EventDispatcher {
     this._products = products;
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     this._products = null;
   }
 
@@ -31,7 +31,7 @@ export class ProductDataLoader extends EventDispatcher {
   private onProductDataLoadedEvent(data: {[index: string]: any}): void {
     if (!data) return;
 
-    this.parseProducts(data.productdata);
+    this.parseProducts(data["productdata"]);
 
     this.dispatchEvent(new NitroEvent(ProductDataLoader.PDP_PRODUCT_DATA_READY));
   }
@@ -45,6 +45,6 @@ export class ProductDataLoader extends EventDispatcher {
   private parseProducts(data: {[index: string]: any}): void {
     if (!data) return;
 
-    for (const product of data.product) product && this._products.set(product.code, new ProductData(product.code, product.name, product.description));
+    for (const product of data["product"]) product && this._products.set(product.code, new ProductData(product.code, product.name, product.description));
   }
 }

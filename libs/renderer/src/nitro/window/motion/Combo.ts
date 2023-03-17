@@ -13,13 +13,13 @@ export class Combo extends Motion {
     for (const motion of motions) this._runningMotions.push(motion);
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     for (const motion of this._runningMotions) motion.start();
   }
 
-  public tick(k: number): void {
+  public override tick(k: number): void {
     super.tick(k);
 
     let motion: Motion = null;

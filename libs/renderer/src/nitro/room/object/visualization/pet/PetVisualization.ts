@@ -7,7 +7,7 @@ import {ExperienceData} from "./ExperienceData";
 import {PetVisualizationData} from "./PetVisualizationData";
 
 export class PetVisualization extends FurnitureAnimatedVisualization {
-  public static TYPE: string = RoomObjectVisualizationType.PET_ANIMATED;
+  public static override TYPE: string = RoomObjectVisualizationType.PET_ANIMATED;
 
   private static HEAD: string = "head";
   private static SADDLE: string = "saddle";
@@ -71,7 +71,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     while (this._animationStates.length < PetVisualization.ANIMATION_INDEX_COUNT) this._animationStates.push(new AnimationStateData());
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     if (!(data instanceof PetVisualizationData)) return false;
 
     const texture = this.getPetAdditionAsset(PetVisualization.PET_EXPERIENCE_BUBBLE);
@@ -83,7 +83,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return super.initialize(data);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     if (this._animationStates) {
@@ -99,11 +99,11 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     }
   }
 
-  protected getAnimationId(animationData: AnimationStateData): number {
+  protected override getAnimationId(animationData: AnimationStateData): number {
     return animationData.animationId;
   }
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean): void {
     super.update(geometry, time, update, skipUpdate);
 
     this.updateExperienceBubble(time);
@@ -147,7 +147,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     }
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     const model = this.object && this.object.model;
 
     if (!model) return false;
@@ -208,7 +208,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return true;
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (this.object) {
       const direction = this.object.getDirection().x;
 
@@ -254,7 +254,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     }
   }
 
-  protected resetAllAnimationFrames(): void {
+  protected override resetAllAnimationFrames(): void {
     this._animationOver = false;
 
     let index = this._animationStates.length - 1;
@@ -268,7 +268,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     }
   }
 
-  protected updateAnimations(scale: number): number {
+  protected override updateAnimations(scale: number): number {
     if (this._animationOver) return 0;
 
     let animationOver = true;
@@ -304,7 +304,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return _local_3;
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     if (this._headOnly && this.isNonHeadSprite(layerId)) return null;
 
     if (this._isRiding && this._parser3(layerId)) return null;
@@ -330,13 +330,13 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return null;
   }
 
-  protected getLayerColor(scale: number, layerId: number, colorId: number): number {
+  protected override getLayerColor(scale: number, layerId: number, colorId: number): number {
     if (layerId < this.totalSprites - PetVisualization.ADDITIONAL_SPRITE_COUNT) return this._color;
 
     return 0xffffff;
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     let offset = super.getLayerXOffset(scale, direction, layerId);
     let index = this._animationStates.length - 1;
 
@@ -355,7 +355,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return offset;
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     let offset = super.getLayerYOffset(scale, direction, layerId);
     let index = this._animationStates.length - 1;
 
@@ -374,7 +374,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return offset;
   }
 
-  protected getLayerZOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerZOffset(scale: number, direction: number, layerId: number): number {
     if (!this.data) return LayerData.DEFAULT_ZOFFSET;
 
     return this.data.getLayerZOffset(scale, this.getDirection(scale, layerId), layerId);
@@ -386,7 +386,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return this.data.getValidDirection(scale, this._headDirection);
   }
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     let index = this._animationStates.length - 1;
 
     while (index >= 0) {
@@ -446,7 +446,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return this._saddleSprites[layerId];
   }
 
-  public getAsset(name: string, layerId: number = -1): IGraphicAsset {
+  public override getAsset(name: string, layerId: number = -1): IGraphicAsset {
     if (!this.asset) return null;
 
     const layerIndex = this._customLayerIds.indexOf(layerId);
@@ -467,17 +467,17 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return this.asset.getAssetWithPalette(name, paletteName);
   }
 
-  protected getAdditionalLayerCount(): number {
+  protected override getAdditionalLayerCount(): number {
     return super.getAdditionalLayerCount() + PetVisualization.ADDITIONAL_SPRITE_COUNT;
   }
 
-  protected setLayerCount(count: number): void {
+  protected override setLayerCount(count: number): void {
     super.setLayerCount(count);
 
     this._headSprites = [];
   }
 
-  protected getPostureForAsset(scale: number, name: string): string {
+  protected override getPostureForAsset(scale: number, name: string): string {
     const parts = name.split("_");
     let length = parts.length;
     let i = 0;
@@ -511,7 +511,7 @@ export class PetVisualization extends FurnitureAnimatedVisualization {
     return GetAssetManager().getTexture(name);
   }
 
-  protected get data(): PetVisualizationData {
+  protected override get data(): PetVisualizationData {
     return this._data as PetVisualizationData;
   }
 }

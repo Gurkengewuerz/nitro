@@ -102,15 +102,15 @@ export class AdjustmentFilter extends Filter {
    * Override existing apply method in PIXI.Filter
    * @ignore
    */
-  apply(filterManager: FilterSystem, input: RenderTexture, output: RenderTexture, clear: CLEAR_MODES): void {
-    this.uniforms.gamma = Math.max(this.gamma, 0.0001);
-    this.uniforms.saturation = this.saturation;
-    this.uniforms.contrast = this.contrast;
-    this.uniforms.brightness = this.brightness;
-    this.uniforms.red = this.red;
-    this.uniforms.green = this.green;
-    this.uniforms.blue = this.blue;
-    this.uniforms.alpha = this.alpha;
+  override apply(filterManager: FilterSystem, input: RenderTexture, output: RenderTexture, clear: CLEAR_MODES): void {
+    this.uniforms["gamma"] = Math.max(this.gamma, 0.0001);
+    this.uniforms["saturation"] = this.saturation;
+    this.uniforms["contrast"] = this.contrast;
+    this.uniforms["brightness"] = this.brightness;
+    this.uniforms["red"] = this.red;
+    this.uniforms["green"] = this.green;
+    this.uniforms["blue"] = this.blue;
+    this.uniforms["alpha"] = this.alpha;
 
     filterManager.applyFilter(this, input, output, clear);
   }

@@ -16,8 +16,7 @@
     "allowJs": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "strict": false,
-    "noFallthroughCasesInSwitch": false,
+    "strictNullChecks": false,
     "baseUrl": ".",
     "paths": {
       "@nitro/renderer": ["libs/renderer/src/index.ts"]

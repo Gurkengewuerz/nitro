@@ -25,8 +25,7 @@ export class NitroConfiguration {
 
       return true;
     } catch (e) {
-      NitroLogger.error(e.stack);
-
+      if (e instanceof Error) NitroLogger.error(e.stack);
       return false;
     }
   }

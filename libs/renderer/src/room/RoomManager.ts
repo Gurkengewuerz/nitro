@@ -66,7 +66,7 @@ export class RoomManager extends NitroManager implements IRoomManager, IRoomInst
     this.events.addEventListener(RoomContentLoadedEvent.RCLE_CANCEL, this.onRoomContentLoadedEvent);
   }
 
-  public onInit(): void {
+  public override onInit(): void {
     if (this._state >= RoomManager.ROOM_MANAGER_INITIALIZING || !this._contentLoader) return;
 
     const mandatoryLibraries = RoomContentLoader.MANDATORY_LIBRARIES;
@@ -360,7 +360,7 @@ export class RoomManager extends NitroManager implements IRoomManager, IRoomInst
     return this._rooms;
   }
 
-  public get disposed(): boolean {
+  public override get disposed(): boolean {
     return this._disposed;
   }
 }

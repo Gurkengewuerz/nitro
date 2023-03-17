@@ -101,6 +101,7 @@ export class RoomUnitStatusParser implements IMessageParser {
         new RoomUnitStatusMessage(unitId, x, y, z, height, headDirection, direction, targetX, targetY, targetZ, didMove, canStandUp, statusActions)
       );
     }
+    return null;
   }
 
   public get statuses(): RoomUnitStatusMessage[] {

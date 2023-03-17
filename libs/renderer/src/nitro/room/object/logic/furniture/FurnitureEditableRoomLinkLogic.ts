@@ -5,13 +5,13 @@ import {FurnitureLogic} from "./FurnitureLogic";
 export class FurnitureEditableRoomLinkLogic extends FurnitureLogic {
   private _timer: any;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.ROOM_LINK];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {
@@ -23,7 +23,7 @@ export class FurnitureEditableRoomLinkLogic extends FurnitureLogic {
     }
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._timer) {
       clearTimeout(this._timer);
 
@@ -41,7 +41,7 @@ export class FurnitureEditableRoomLinkLogic extends FurnitureLogic {
     }
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     this.setAutomaticStateIndex(1);
 
     if (this._timer) {

@@ -15,7 +15,7 @@ export class MoveTo extends Interval {
     this._endY = _arg_4;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._startX = this.target.offsetLeft;
@@ -24,7 +24,7 @@ export class MoveTo extends Interval {
     this._deltaY = this._endY - this._startY;
   }
 
-  public update(k: number): void {
+  public override update(k: number): void {
     this.target.style.left = this._startX + this._deltaX * k + "px";
     this.target.style.top = this._startY + this._deltaY * k + "px";
   }

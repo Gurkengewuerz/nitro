@@ -12,7 +12,7 @@ export class LandscapePlane extends Plane {
   private _width: number = 0;
   private _height: number = 0;
 
-  public isStatic(scale: number): boolean {
+  public override isStatic(scale: number): boolean {
     const visualization = this.getPlaneVisualization(scale);
 
     if (visualization) return !visualization.hasAnimationLayers;

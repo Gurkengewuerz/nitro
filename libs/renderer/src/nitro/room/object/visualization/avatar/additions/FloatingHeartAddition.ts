@@ -30,7 +30,7 @@ export class FloatingHeartAddition extends ExpressionAddition {
     this._state = 0;
   }
 
-  public update(sprite: IRoomObjectSprite, scale: number): void {
+  public override update(sprite: IRoomObjectSprite, scale: number): void {
     if (!sprite) return;
 
     this._scale = scale;
@@ -83,7 +83,7 @@ export class FloatingHeartAddition extends ExpressionAddition {
     }
   }
 
-  public animate(sprite: IRoomObjectSprite): boolean {
+  public override animate(sprite: IRoomObjectSprite): boolean {
     if (!sprite) return false;
 
     if (this._asset) sprite.texture = this._asset;

@@ -39,7 +39,7 @@ export class FurnitureBrandedImageVisualization extends FurnitureVisualization {
     this._totalFrames = -1;
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     if (this._imageUrl) {
@@ -48,7 +48,7 @@ export class FurnitureBrandedImageVisualization extends FurnitureVisualization {
     }
   }
 
-  protected updateObject(scale: number, direction: number): boolean {
+  protected override updateObject(scale: number, direction: number): boolean {
     if (!super.updateObject(scale, direction)) return false;
 
     if (this._imageReady) this.checkAndCreateImageForCurrentState();
@@ -56,7 +56,7 @@ export class FurnitureBrandedImageVisualization extends FurnitureVisualization {
     return true;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     const flag = super.updateModel(scale);
 
     if (flag) {
@@ -227,7 +227,7 @@ export class FurnitureBrandedImageVisualization extends FurnitureVisualization {
     this.asset.addAsset(`${this._imageUrl}_${frame}`, texture, true, x, y, flipH, flipV);
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     const tag = this.getLayerTag(scale, this._direction, layerId);
 
     if (tag === FurnitureBrandedImageVisualization.BRANDED_IMAGE && this._imageUrl) {
@@ -237,13 +237,13 @@ export class FurnitureBrandedImageVisualization extends FurnitureVisualization {
     return super.getSpriteAssetName(scale, layerId);
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (!this._imageReady || !this._isAnimated || this._totalFrames <= 0) return 0;
 
     return 1;
   }
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     if (!this._imageReady || !this._isAnimated || this._totalFrames <= 0) return 0;
 
     const tag = this.getLayerTag(scale, this._direction, layerId);

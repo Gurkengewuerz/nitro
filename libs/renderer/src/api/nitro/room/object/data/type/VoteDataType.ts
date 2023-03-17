@@ -18,7 +18,7 @@ export class VoteDataType extends ObjectDataBase {
     this._result = 0;
   }
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._state = wrapper.readString();
@@ -27,7 +27,7 @@ export class VoteDataType extends ObjectDataBase {
     super.parseWrapper(wrapper);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, VoteDataType.FORMAT_KEY);
@@ -40,11 +40,11 @@ export class VoteDataType extends ObjectDataBase {
     model.setValue(RoomObjectVariable.FURNITURE_DATA, data);
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     return this._state;
   }
 
-  public compare(data: IObjectData): boolean {
+  public override compare(data: IObjectData): boolean {
     return true;
   }
 

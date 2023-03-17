@@ -6,7 +6,7 @@ import {FurnitureBrandedImageVisualization} from "./FurnitureBrandedImageVisuali
 export class FurnitureRoomBackgroundVisualization extends FurnitureBrandedImageVisualization {
   private _imageOffset: DirectionalOffsetData;
 
-  protected imageReady(texture: Texture<Resource>, imageUrl: string): void {
+  protected override imageReady(texture: Texture<Resource>, imageUrl: string): void {
     super.imageReady(texture, imageUrl);
 
     if (!texture) return;
@@ -26,7 +26,7 @@ export class FurnitureRoomBackgroundVisualization extends FurnitureBrandedImageV
     this._imageOffset = offsetData;
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     if (this._imageOffset) {
       const offset = this._imageOffset.getXOffset(direction, 0);
 
@@ -36,7 +36,7 @@ export class FurnitureRoomBackgroundVisualization extends FurnitureBrandedImageV
     return super.getLayerXOffset(scale, direction, layerId) + this._offsetX;
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     if (this._imageOffset) {
       const offset = this._imageOffset.getYOffset(direction, 0);
 
@@ -46,11 +46,11 @@ export class FurnitureRoomBackgroundVisualization extends FurnitureBrandedImageV
     return super.getLayerYOffset(scale, direction, layerId) + this._offsetY;
   }
 
-  protected getLayerZOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerZOffset(scale: number, direction: number, layerId: number): number {
     return super.getLayerZOffset(scale, direction, layerId) + -this._offsetZ;
   }
 
-  protected getLayerIgnoreMouse(scale: number, direction: number, layerId: number): boolean {
+  protected override getLayerIgnoreMouse(scale: number, direction: number, layerId: number): boolean {
     return true;
   }
 }

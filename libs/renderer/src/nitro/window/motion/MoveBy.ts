@@ -5,7 +5,7 @@ export class MoveBy extends MoveTo {
     super(k, _arg_2, _arg_3, _arg_4);
   }
 
-  public start(): void {
+  public override start(): void {
     this._endX = this.target.offsetLeft + this._endX;
     this._endY = this.target.offsetTop + this._endY;
 

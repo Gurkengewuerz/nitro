@@ -16,7 +16,7 @@ export class LandscapeRasterizer extends PlaneRasterizer {
   private _landscapeHeight: number = 0;
   private _cachedBitmap: RenderTexture = null;
 
-  public initializeDimensions(k: number, _arg_2: number): boolean {
+  public override initializeDimensions(k: number, _arg_2: number): boolean {
     if (k < 0) k = 0;
 
     if (_arg_2 < 0) _arg_2 = 0;
@@ -27,7 +27,7 @@ export class LandscapeRasterizer extends PlaneRasterizer {
     return true;
   }
 
-  protected initializePlanes(): void {
+  protected override initializePlanes(): void {
     if (!this.data) return;
 
     const landscapes = this.data.planes;
@@ -161,7 +161,7 @@ export class LandscapeRasterizer extends PlaneRasterizer {
     return _local_3;
   }
 
-  public render(
+  public override render(
     planeId: string,
     textureCache: PlaneTextureCache,
     canvas: RenderTexture,
@@ -207,7 +207,7 @@ export class LandscapeRasterizer extends PlaneRasterizer {
     return planeBitmapData;
   }
 
-  public getTextureIdentifier(k: number, _arg_2: IVector3D): string {
+  public override getTextureIdentifier(k: number, _arg_2: IVector3D): string {
     if (_arg_2) {
       if (_arg_2.x < 0) return k + "_0";
 

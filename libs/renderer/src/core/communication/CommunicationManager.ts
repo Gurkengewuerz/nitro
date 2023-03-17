@@ -11,7 +11,7 @@ export class CommunicationManager extends Disposable implements ICommunicationMa
     this._connections = [];
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (!this._connections || !this._connections.length) return;
 
     for (const connection of this._connections.values()) connection && connection.dispose();
@@ -20,7 +20,7 @@ export class CommunicationManager extends Disposable implements ICommunicationMa
   public createConnection(stateListener: IConnectionStateListener = null): IConnection {
     const connection = new SocketConnection(this, stateListener);
 
-    if (!connection) return;
+    if (!connection) return null;
 
     this._connections.push(connection);
 

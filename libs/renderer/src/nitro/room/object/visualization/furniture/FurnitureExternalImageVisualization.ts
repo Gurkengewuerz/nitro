@@ -12,7 +12,7 @@ export class FurnitureExternalImageVisualization extends FurnitureDynamicThumbna
     this._typePrefix = null;
   }
 
-  protected getThumbnailURL(): string {
+  protected override getThumbnailURL(): string {
     if (!this.object) return null;
 
     if (this._url) return this._url;

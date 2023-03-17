@@ -6,13 +6,13 @@ import {FurnitureMultiStateLogic} from "./FurnitureMultiStateLogic";
 export class FurnitureCuckooClockLogic extends FurnitureMultiStateLogic {
   private _state: number = 1;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectPlaySoundIdEvent.PLAY_SOUND_AT_PITCH];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {

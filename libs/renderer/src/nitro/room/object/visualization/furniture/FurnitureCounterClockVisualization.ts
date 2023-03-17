@@ -6,7 +6,7 @@ export class FurnitureCounterClockVisualization extends FurnitureAnimatedVisuali
   private static MINUTES_SPRITE: string = "minutes_sprite";
   private static TEN_MINUTES_SPRITE: string = "ten_minutes_sprite";
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     const tag = this.getLayerTag(scale, this.direction, layerId);
     const animation = this.object.getState(0);
 
@@ -24,7 +24,7 @@ export class FurnitureCounterClockVisualization extends FurnitureAnimatedVisuali
     }
   }
 
-  public get animationId(): number {
+  public override get animationId(): number {
     return 0;
   }
 }

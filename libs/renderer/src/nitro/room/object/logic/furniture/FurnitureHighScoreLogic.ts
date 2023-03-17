@@ -9,11 +9,11 @@ export class FurnitureHighScoreLogic extends FurnitureLogic {
 
   private _state = -1;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     return [RoomObjectWidgetRequestEvent.HIGH_SCORE_DISPLAY, RoomObjectWidgetRequestEvent.HIDE_HIGH_SCORE_DISPLAY];
   }
 
-  public tearDown(): void {
+  public override tearDown(): void {
     if (this.object.model.getValue(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT) === 1) {
       this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.HIDE_HIGH_SCORE_DISPLAY, this.object));
     }
@@ -21,7 +21,7 @@ export class FurnitureHighScoreLogic extends FurnitureLogic {
     super.tearDown();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (this.object.model.getValue(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT) !== 1) return;

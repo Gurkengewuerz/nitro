@@ -32,7 +32,7 @@ export class NitroManager extends Disposable implements INitroManager {
     return;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._events) this._events.dispose();
 
     super.onDispose();

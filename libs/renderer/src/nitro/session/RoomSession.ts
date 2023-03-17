@@ -88,7 +88,7 @@ export class RoomSession extends Disposable implements IRoomSession {
     this._moderationSettings = null;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._userData) {
       this._userData.dispose();
 

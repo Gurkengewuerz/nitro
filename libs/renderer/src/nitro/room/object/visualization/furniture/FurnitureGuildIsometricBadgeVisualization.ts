@@ -14,7 +14,7 @@ export class FurnitureGuildIsometricBadgeVisualization extends IsometricImageFur
   private _color1: number;
   private _color2: number;
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     const flag = super.updateModel(scale);
 
     if (!this.hasThumbnailImage) {
@@ -34,7 +34,7 @@ export class FurnitureGuildIsometricBadgeVisualization extends IsometricImageFur
     return flag;
   }
 
-  protected generateTransformedThumbnail(texture: Texture<Resource>, asset: IGraphicAsset): Texture<Resource> {
+  protected override generateTransformedThumbnail(texture: Texture<Resource>, asset: IGraphicAsset): Texture<Resource> {
     const scale = 1.1;
     const matrix = new Matrix();
     const difference = asset.width / texture.width;
@@ -104,7 +104,7 @@ export class FurnitureGuildIsometricBadgeVisualization extends IsometricImageFur
         return renderTexture; */
   }
 
-  protected getLayerColor(scale: number, layerId: number, colorId: number): number {
+  protected override getLayerColor(scale: number, layerId: number, colorId: number): number {
     const tag = this.getLayerTag(scale, this._direction, layerId);
 
     switch (tag) {
@@ -117,7 +117,7 @@ export class FurnitureGuildIsometricBadgeVisualization extends IsometricImageFur
     return super.getLayerColor(scale, layerId, colorId);
   }
 
-  protected getLibraryAssetNameForSprite(asset: IGraphicAsset, sprite: IRoomObjectSprite): string {
+  protected override getLibraryAssetNameForSprite(asset: IGraphicAsset, sprite: IRoomObjectSprite): string {
     if (sprite.tag === FurnitureGuildIsometricBadgeVisualization.THUMBNAIL) {
       if (this.object && this.object.model.getValue<string>(RoomObjectVariable.FURNITURE_GUILD_CUSTOMIZED_ASSET_NAME)) {
         return "%group.badge.url%" + this.object.model.getValue<string>(RoomObjectVariable.FURNITURE_GUILD_CUSTOMIZED_ASSET_NAME);

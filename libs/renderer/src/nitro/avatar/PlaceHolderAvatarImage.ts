@@ -9,7 +9,7 @@ export class PlaceHolderAvatarImage extends AvatarImage {
     super(k, _arg_2, _arg_3, _arg_4, _arg_5, null);
   }
 
-  public isPlaceholder(): boolean {
+  public override isPlaceholder(): boolean {
     return true;
   }
 }

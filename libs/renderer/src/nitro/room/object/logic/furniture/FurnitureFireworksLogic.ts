@@ -3,13 +3,13 @@ import {RoomObjectEvent, RoomObjectStateChangedEvent, RoomSpriteMouseEvent} from
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureFireworksLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectStateChangedEvent.STATE_CHANGE];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {
@@ -19,7 +19,7 @@ export class FurnitureFireworksLogic extends FurnitureLogic {
     }
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     let objectEvent: RoomObjectEvent = null;
@@ -46,7 +46,7 @@ export class FurnitureFireworksLogic extends FurnitureLogic {
     super.mouseEvent(event, geometry);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectStateChangedEvent(RoomObjectStateChangedEvent.STATE_CHANGE, this.object, 0));

@@ -11,7 +11,7 @@ export class FurnitureGuildCustomizedLogic extends FurnitureMultiStateLogic {
   public static COLOR1_KEY: number = 3;
   public static COLOR2_KEY: number = 4;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectBadgeAssetEvent.LOAD_BADGE,
       RoomObjectWidgetRequestEvent.GUILD_FURNI_CONTEXT_MENU,
@@ -21,7 +21,7 @@ export class FurnitureGuildCustomizedLogic extends FurnitureMultiStateLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {
@@ -58,7 +58,7 @@ export class FurnitureGuildCustomizedLogic extends FurnitureMultiStateLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_GUILD_CUSTOMIZED_COLOR_2, parseInt(color2, 16));
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     switch (event.type) {

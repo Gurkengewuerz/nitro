@@ -11,18 +11,18 @@ export class Wait extends Motion {
     this._waitTimeMs = k;
   }
 
-  public get running(): boolean {
+  public override get running(): boolean {
     return this._running;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._complete = false;
     this._startTimeMs = GetTickerTime();
   }
 
-  public tick(k: number): void {
+  public override tick(k: number): void {
     super.tick(k);
 
     this._complete = k - this._startTimeMs >= this._waitTimeMs;

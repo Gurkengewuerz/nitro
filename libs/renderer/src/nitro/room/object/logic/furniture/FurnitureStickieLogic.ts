@@ -7,13 +7,13 @@ import {FurnitureLogic} from "./FurnitureLogic";
 export class FurnitureStickieLogic extends FurnitureLogic {
   private static STICKIE_COLORS: string[] = ["9CCEFF", "FF9CFF", "9CFF9C", "FFFF33"];
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.STICKIE, RoomObjectFurnitureActionEvent.STICKIE];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     this.updateColor();
@@ -21,7 +21,7 @@ export class FurnitureStickieLogic extends FurnitureLogic {
     if (this.object) this.object.model.setValue(RoomObjectVariable.FURNITURE_IS_STICKIE, "");
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectItemDataUpdateMessage) {
@@ -43,7 +43,7 @@ export class FurnitureStickieLogic extends FurnitureLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_COLOR, colorIndex + 1);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectFurnitureActionEvent(RoomObjectFurnitureActionEvent.STICKIE, this.object));

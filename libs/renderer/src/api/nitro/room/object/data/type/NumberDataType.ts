@@ -18,7 +18,7 @@ export class NumberDataType extends ObjectDataBase {
     this._data = [];
   }
 
-  public parseWrapper(wrapper: IMessageDataWrapper): void {
+  public override parseWrapper(wrapper: IMessageDataWrapper): void {
     if (!wrapper) return;
 
     this._data = [];
@@ -30,26 +30,26 @@ export class NumberDataType extends ObjectDataBase {
     super.parseWrapper(wrapper);
   }
 
-  public initializeFromRoomObjectModel(model: IRoomObjectModel): void {
+  public override initializeFromRoomObjectModel(model: IRoomObjectModel): void {
     super.initializeFromRoomObjectModel(model);
 
     this._data = model.getValue<number[]>(RoomObjectVariable.FURNITURE_DATA);
   }
 
-  public writeRoomObjectModel(model: IRoomObjectModel): void {
+  public override writeRoomObjectModel(model: IRoomObjectModel): void {
     super.writeRoomObjectModel(model);
 
     model.setValue(RoomObjectVariable.FURNITURE_DATA_FORMAT, NumberDataType.FORMAT_KEY);
     model.setValue(RoomObjectVariable.FURNITURE_DATA, this._data);
   }
 
-  public getLegacyString(): string {
+  public override getLegacyString(): string {
     if (!this._data || !this._data.length) return "";
 
     return this._data[NumberDataType.STATE].toString();
   }
 
-  public compare(data: IObjectData): boolean {
+  public override compare(data: IObjectData): boolean {
     if (!(data instanceof NumberDataType)) return false;
 
     let i = 0;

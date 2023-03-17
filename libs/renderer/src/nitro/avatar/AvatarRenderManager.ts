@@ -74,7 +74,7 @@ export class AvatarRenderManager extends NitroManager implements IAvatarRenderMa
     this.onAvatarStructureDownloadDone = this.onAvatarStructureDownloadDone.bind(this);
   }
 
-  public onInit(): void {
+  public override onInit(): void {
     this._structure = new AvatarStructure(this);
 
     this.loadGeometry();
@@ -104,7 +104,7 @@ export class AvatarRenderManager extends NitroManager implements IAvatarRenderMa
     this.checkReady();
   }
 
-  public onDispose(): void {
+  public override onDispose(): void {
     if (this._avatarAssetDownloadManager) {
       this._avatarAssetDownloadManager.removeEventListener(AvatarAssetDownloadManager.DOWNLOADER_READY, this.onAvatarAssetDownloaderReady);
 

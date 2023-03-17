@@ -20,7 +20,7 @@ export class TriggerDefinition extends Triggerable {
     }
   }
 
-  public get code(): number {
+  public override get code(): number {
     return this._triggerConf;
   }
 

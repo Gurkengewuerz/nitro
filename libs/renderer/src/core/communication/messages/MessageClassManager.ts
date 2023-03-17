@@ -81,11 +81,11 @@ export class MessageClassManager {
   }
 
   public getEvents(header: number): IMessageEvent[] {
-    if (!header) return;
+    if (!header) return null;
 
     const existing = this._messageInstancesById.get(header);
 
-    if (!existing) return;
+    if (!existing) return null;
 
     return existing;
   }

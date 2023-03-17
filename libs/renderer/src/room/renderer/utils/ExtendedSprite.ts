@@ -40,7 +40,7 @@ export class ExtendedSprite extends Sprite {
     return true;
   }
 
-  public calculateVertices(): void {
+  public override calculateVertices(): void {
     if (!this.texture.orig) return;
 
     super.calculateVertices();
@@ -59,7 +59,7 @@ export class ExtendedSprite extends Sprite {
     this.texture = texture;
   }
 
-  public containsPoint(point: Point): boolean {
+  public override containsPoint(point: Point): boolean {
     return ExtendedSprite.containsPoint(this, point);
   }
 
@@ -68,7 +68,7 @@ export class ExtendedSprite extends Sprite {
 
     if (!(sprite instanceof Sprite)) return false;
 
-    if (sprite.texture === Texture.EMPTY || sprite.blendMode !== BLEND_MODES.NORMAL) return;
+    if (sprite.texture === Texture.EMPTY || sprite.blendMode !== BLEND_MODES.NORMAL) return false;
 
     const texture = sprite.texture;
     const baseTexture = texture.baseTexture;

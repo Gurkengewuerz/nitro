@@ -3,7 +3,7 @@ import {RoomObjectStateChangedEvent, RoomSpriteMouseEvent} from "../../../../../
 import {FurnitureMultiStateLogic} from "./FurnitureMultiStateLogic";
 
 export class FurnitureWelcomeGiftLogic extends FurnitureMultiStateLogic {
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry) return;
 
     if (event.type === MouseEventType.DOUBLE_CLICK) {

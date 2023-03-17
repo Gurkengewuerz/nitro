@@ -13,7 +13,7 @@ export class FurnitureDynamicThumbnailVisualization extends IsometricImageFurniV
     this._hasOutline = true;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     if (this.object) {
       const thumbnailUrl = this.getThumbnailURL();
 

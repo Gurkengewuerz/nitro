@@ -37,7 +37,7 @@ export class GeometryItem extends Node3D {
     return this._isDoubleSided;
   }
 
-  public toString(): string {
+  public override toString(): string {
     return this._id + ": " + this.location + " - " + this.transformedLocation;
   }
 

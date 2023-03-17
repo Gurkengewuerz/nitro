@@ -21,7 +21,7 @@ export class RoomObjectLogicBase extends Disposable implements IRoomObjectEventH
     return;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._object = null;
   }
 

@@ -19,7 +19,7 @@ export class FurnitureValRandomizerVisualization extends FurnitureAnimatedVisual
     super.setAnimation(FurnitureValRandomizerVisualization.ANIMATION_ID_OFF);
   }
 
-  protected setAnimation(animationId: number): void {
+  protected override setAnimation(animationId: number): void {
     if (animationId === 0) {
       if (!this._running) {
         this._running = true;
@@ -54,7 +54,7 @@ export class FurnitureValRandomizerVisualization extends FurnitureAnimatedVisual
     }
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (this.getLastFramePlayed(11)) {
       if (this._stateQueue.length) super.setAnimation(this._stateQueue.shift());
     }

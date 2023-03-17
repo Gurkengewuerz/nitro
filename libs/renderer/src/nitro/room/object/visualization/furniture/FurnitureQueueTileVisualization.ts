@@ -16,7 +16,7 @@ export class FurnitureQueueTileVisualization extends FurnitureAnimatedVisualizat
     this._animationCounter = -1;
   }
 
-  protected setAnimation(animationId: number): void {
+  protected override setAnimation(animationId: number): void {
     if (animationId === FurnitureQueueTileVisualization.ANIMATION_ID_ROLL_ONCE) {
       this._stateQueue = [];
       this._stateQueue.push(FurnitureQueueTileVisualization.ANIMATION_ID_NORMAL);
@@ -27,7 +27,7 @@ export class FurnitureQueueTileVisualization extends FurnitureAnimatedVisualizat
     return super.setAnimation(animationId);
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (this._animationCounter > 0) this._animationCounter--;
 
     if (!this._animationCounter) {
@@ -37,7 +37,7 @@ export class FurnitureQueueTileVisualization extends FurnitureAnimatedVisualizat
     return super.updateAnimation(scale);
   }
 
-  protected usesAnimationResetting(): boolean {
+  protected override usesAnimationResetting(): boolean {
     return true;
   }
 }

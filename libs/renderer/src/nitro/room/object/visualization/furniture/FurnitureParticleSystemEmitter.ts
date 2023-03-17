@@ -35,7 +35,7 @@ export class FurnitureParticleSystemEmitter extends FurnitureParticleSystemParti
     this._particleConfigurations = [];
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     for (const k of this._particles) k.dispose();
 
     this._particles = null;
@@ -106,7 +106,7 @@ export class FurnitureParticleSystemEmitter extends FurnitureParticleSystemParti
     this._particleConfigurations.push(particle);
   }
 
-  protected ignite(): void {
+  protected override ignite(): void {
     this._hasIgnited = true;
 
     if (this._emittedParticles < this._maxNumberOfParticles) {
@@ -176,7 +176,7 @@ export class FurnitureParticleSystemEmitter extends FurnitureParticleSystemParti
     return this._particleConfigurations[index];
   }
 
-  public update(): void {
+  public override update(): void {
     super.update();
 
     this.accumulateForces();

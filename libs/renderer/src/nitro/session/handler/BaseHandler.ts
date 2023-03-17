@@ -14,7 +14,7 @@ export class BaseHandler extends Disposable {
     this._roomId = 0;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._connection = null;
     this._listener = null;
   }

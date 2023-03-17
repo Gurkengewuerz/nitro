@@ -61,7 +61,7 @@ export class PlaneTextureCache {
     return renderTexture;
   }
 
-  public createAndFillRenderTexture(width: number, height: number, planeId = null, color: number = 16777215): RenderTexture {
+  public createAndFillRenderTexture(width: number, height: number, planeId: string = null, color: number = 16777215): RenderTexture {
     if (width < 0 || height < 0) return null;
 
     const renderTexture = this.createRenderTexture(width, height, planeId);
@@ -117,6 +117,6 @@ export class PlaneTextureCache {
   }
 
   public getExtractor(): Extract {
-    return this.getRenderer().plugins.extract as Extract;
+    return this.getRenderer().plugins["extract"] as Extract;
   }
 }

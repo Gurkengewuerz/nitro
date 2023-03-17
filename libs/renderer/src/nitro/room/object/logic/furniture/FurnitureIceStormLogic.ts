@@ -15,7 +15,7 @@ export class FurnitureIceStormLogic extends FurnitureMultiStateLogic {
     this._nextStateTimestamp = 0;
   }
 
-  public update(totalTimeRunning: number): void {
+  public override update(totalTimeRunning: number): void {
     if (this._nextStateTimestamp > 0 && totalTimeRunning >= this._nextStateTimestamp) {
       this._nextStateTimestamp = 0;
 
@@ -29,7 +29,7 @@ export class FurnitureIceStormLogic extends FurnitureMultiStateLogic {
     super.update(totalTimeRunning);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (message instanceof ObjectDataUpdateMessage) {
       this.processUpdate(message);
 

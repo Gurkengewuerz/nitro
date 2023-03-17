@@ -13,13 +13,13 @@ export class FurnitureRoomBackgroundColorLogic extends FurnitureMultiStateLogic 
     this._roomColorUpdated = false;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.BACKGROUND_COLOR, RoomObjectHSLColorEnableEvent.ROOM_BACKGROUND_COLOR];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._roomColorUpdated) {
       if (this.eventDispatcher && this.object) {
         const realRoomObject = this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT);
@@ -37,7 +37,7 @@ export class FurnitureRoomBackgroundColorLogic extends FurnitureMultiStateLogic 
     super.onDispose();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {
@@ -78,7 +78,7 @@ export class FurnitureRoomBackgroundColorLogic extends FurnitureMultiStateLogic 
     }
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     switch (event.type) {

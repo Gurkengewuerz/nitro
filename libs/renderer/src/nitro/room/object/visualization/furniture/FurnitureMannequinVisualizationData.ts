@@ -11,7 +11,7 @@ export class FurnitureMannequinVisualizationData extends FurnitureVisualizationD
     this._avatarData = new AvatarVisualizationData();
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     if (this._avatarData) {

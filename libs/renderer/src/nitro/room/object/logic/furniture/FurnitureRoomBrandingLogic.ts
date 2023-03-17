@@ -34,13 +34,13 @@ export class FurnitureRoomBrandingLogic extends FurnitureLogic {
     this._hasClickUrl = false;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectRoomAdEvent.ROOM_AD_LOAD_IMAGE];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (this._disableFurnitureSelection) {
@@ -48,7 +48,7 @@ export class FurnitureRoomBrandingLogic extends FurnitureLogic {
     }
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) this.processAdDataUpdateMessage(message);
@@ -121,7 +121,7 @@ export class FurnitureRoomBrandingLogic extends FurnitureLogic {
     }
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry) return;
 
     if (event.type === MouseEventType.MOUSE_MOVE || event.type === MouseEventType.DOUBLE_CLICK) return;

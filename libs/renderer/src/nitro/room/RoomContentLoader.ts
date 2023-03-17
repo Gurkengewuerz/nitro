@@ -358,6 +358,7 @@ export class RoomContentLoader implements IFurnitureDataListener, IRoomContentLo
 
       this._petColors.set(petIndex, palettes);
     }
+    return null;
   }
 
   public getPlaceholderName(type: string): string {

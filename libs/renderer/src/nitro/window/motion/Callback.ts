@@ -9,11 +9,11 @@ export class Callback extends Motion {
     this._callback = k;
   }
 
-  public get running(): boolean {
+  public override get running(): boolean {
     return this._running && !!this._callback;
   }
 
-  public tick(k: number): void {
+  public override tick(k: number): void {
     super.tick(k);
 
     if (this._callback) {

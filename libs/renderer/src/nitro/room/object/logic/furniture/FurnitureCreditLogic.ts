@@ -3,13 +3,13 @@ import {RoomObjectWidgetRequestEvent} from "../../../../../events";
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureCreditLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.CREDITFURNI];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     let creditValue = 0;
@@ -21,7 +21,7 @@ export class FurnitureCreditLogic extends FurnitureLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_CREDIT_VALUE, creditValue);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.CREDITFURNI, this.object));

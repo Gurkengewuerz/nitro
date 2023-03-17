@@ -7,13 +7,13 @@ export class FurnitureVoteCounterVisualization extends FurnitureAnimatedVisualiz
   private static HUNDREDS_SPRITE: string = "hundreds_sprite";
   private static HIDE_COUNTER_SCORE: number = -1;
 
-  protected updateObject(scale: number, direction: number): boolean {
+  protected override updateObject(scale: number, direction: number): boolean {
     super.updateObject(scale, direction);
 
     return true;
   }
 
-  protected getFrameNumber(scale: number, layerId: number): number {
+  protected override getFrameNumber(scale: number, layerId: number): number {
     const result = this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_VOTE_COUNTER_COUNT);
     const tag = this.getLayerTag(scale, this.direction, layerId);
 
@@ -29,7 +29,7 @@ export class FurnitureVoteCounterVisualization extends FurnitureAnimatedVisualiz
     }
   }
 
-  protected getLayerAlpha(scale: number, direction: number, layerId: number): number {
+  protected override getLayerAlpha(scale: number, direction: number, layerId: number): number {
     const result = this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_VOTE_COUNTER_COUNT);
 
     if (result === FurnitureVoteCounterVisualization.HIDE_COUNTER_SCORE) {

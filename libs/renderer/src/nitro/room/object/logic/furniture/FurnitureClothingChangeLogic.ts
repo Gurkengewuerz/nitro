@@ -5,13 +5,13 @@ import {ObjectDataUpdateMessage} from "../../../messages";
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureClothingChangeLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.CLOTHING_CHANGE];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     const furniData = this.object.model.getValue<string>(RoomObjectVariable.FURNITURE_DATA);
@@ -19,7 +19,7 @@ export class FurnitureClothingChangeLogic extends FurnitureLogic {
     this.updateClothingData(furniData);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) message.data && this.updateClothingData(message.data.getLegacyString());
@@ -34,7 +34,7 @@ export class FurnitureClothingChangeLogic extends FurnitureLogic {
     if (girlClothing && girlClothing.length) this.object.model.setValue<string>(RoomObjectVariable.FURNITURE_CLOTHING_GIRL, girlClothing);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.CLOTHING_CHANGE, this.object));

@@ -57,8 +57,8 @@ export class PaletteMapFilter extends NitroFilter {
 
     this._lut = NitroBaseTexture.fromBuffer(Uint8Array.from(lut), lut.length / 4, 1, {mipmap: 0, scaleMode: 0});
 
-    this.uniforms.lut = this._lut;
-    this.uniforms.channel = this._channel;
+    this.uniforms["lut"] = this._lut;
+    this.uniforms["channel"] = this._channel;
   }
 
   private getLutForPalette(data: number[]): number[] {

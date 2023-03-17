@@ -3,13 +3,13 @@ import {RoomObjectWidgetRequestEvent} from "../../../../../events";
 import {FurnitureMultiStateLogic} from "./FurnitureMultiStateLogic";
 
 export class FurnitureExternalImageLogic extends FurnitureMultiStateLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.EXTERNAL_IMAGE];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (!asset) return;
@@ -26,7 +26,7 @@ export class FurnitureExternalImageLogic extends FurnitureMultiStateLogic {
     }
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.EXTERNAL_IMAGE, this.object));

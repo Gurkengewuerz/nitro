@@ -14,7 +14,7 @@ export class ExtendedForumData extends ForumData {
   private _canChangeSettings: boolean;
   private _isStaff: boolean;
 
-  public static parse(wrapper: IMessageDataWrapper): ExtendedForumData {
+  public static override parse(wrapper: IMessageDataWrapper): ExtendedForumData {
     const extendedForumData: ExtendedForumData = new ExtendedForumData();
 
     ForumData.fillFromMessage(extendedForumData, wrapper);

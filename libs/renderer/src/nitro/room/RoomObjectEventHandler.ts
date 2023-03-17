@@ -117,7 +117,7 @@ export class RoomObjectEventHandler extends Disposable implements IRoomCanvasMou
     this._roomEngine.events.addEventListener(RoomEngineObjectEvent.ADDED, this.onRoomEngineObjectEvent);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._eventIds) {
       this._eventIds = null;
     }
@@ -1618,7 +1618,7 @@ export class RoomObjectEventHandler extends Disposable implements IRoomCanvasMou
       _arg_2.objectType === RoomObjectUserType.RENTABLE_BOT ||
       _arg_2.objectType === RoomObjectUserType.MONSTER_PLANT
     )
-      return;
+      return false;
 
     const _local_3 = this._roomEngine.getRoomObject(k, _arg_2.objectId, RoomObjectCategory.FLOOR);
     const _local_4 = this.getActiveSurfaceLocation(_local_3, _arg_2);

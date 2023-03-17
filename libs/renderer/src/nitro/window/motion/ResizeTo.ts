@@ -15,7 +15,7 @@ export class ResizeTo extends Interval {
     this._endH = _arg_4;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._startW = this.target.offsetWidth;
@@ -24,7 +24,7 @@ export class ResizeTo extends Interval {
     this._deltaH = this._endH - this._startH;
   }
 
-  public update(k: number): void {
+  public override update(k: number): void {
     this.target.style.width = this._startW + this._deltaW * k + "px";
     this.target.style.height = this._startH + this._deltaH * k + "px";
   }

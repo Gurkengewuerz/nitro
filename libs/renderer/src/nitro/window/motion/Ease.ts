@@ -9,19 +9,19 @@ export class Ease extends Interval {
     this._interval = k;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._interval.start();
   }
 
-  public update(k: number): void {
+  public override update(k: number): void {
     super.update(k);
 
     this._interval.update(k);
   }
 
-  public stop(): void {
+  public override stop(): void {
     super.stop();
 
     this._interval.stop();

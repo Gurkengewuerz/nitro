@@ -7,7 +7,7 @@ import {FloorPlane} from "./FloorPlane";
 import {PlaneRasterizer} from "./PlaneRasterizer";
 
 export class FloorRasterizer extends PlaneRasterizer {
-  protected initializePlanes(): void {
+  protected override initializePlanes(): void {
     if (!this.data) return;
 
     const floors = this.data.planes;
@@ -33,7 +33,7 @@ export class FloorRasterizer extends PlaneRasterizer {
     }
   }
 
-  public render(
+  public override render(
     planeId: string,
     textureCache: PlaneTextureCache,
     canvas: RenderTexture,

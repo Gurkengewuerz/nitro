@@ -10,7 +10,7 @@ export class FurnitureGiftWrappedFireworksVisualization extends FurnitureFirewor
   private _ribbonType: number = 0;
   private _lastAnimationId: number = 0;
 
-  public update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean) {
+  public override update(geometry: IRoomGeometry, time: number, update: boolean, skipUpdate: boolean) {
     this.updatePresentWrap();
 
     super.update(geometry, time, update, skipUpdate);
@@ -30,7 +30,7 @@ export class FurnitureGiftWrappedFireworksVisualization extends FurnitureFirewor
     this._ribbonType = ribbonType > FurnitureGiftWrappedFireworksVisualization.MAX_RIBBON_TYPE_VALUE ? 0 : ribbonType;
   }
 
-  public getFrameNumber(scale: number, layerId: number): number {
+  public override getFrameNumber(scale: number, layerId: number): number {
     if (this._lastAnimationId === FurnitureGiftWrappedFireworksVisualization.PRESENT_DEFAULT_STATE) {
       if (layerId <= 1) return this._packetType;
 
@@ -40,7 +40,7 @@ export class FurnitureGiftWrappedFireworksVisualization extends FurnitureFirewor
     return super.getFrameNumber(scale, layerId);
   }
 
-  public getSpriteAssetName(scale: number, layerId: number): string {
+  public override getSpriteAssetName(scale: number, layerId: number): string {
     const size = this.getValidSize(scale);
 
     let assetName = this._type;
@@ -60,7 +60,7 @@ export class FurnitureGiftWrappedFireworksVisualization extends FurnitureFirewor
     return assetName;
   }
 
-  protected setAnimation(animationId: number): void {
+  protected override setAnimation(animationId: number): void {
     this._lastAnimationId = animationId;
 
     super.setAnimation(animationId);

@@ -10,17 +10,17 @@ export class AnimationFrameDirectionalData extends AnimationFrameData {
     this._directionalOffsets = offsets;
   }
 
-  public hasDirectionalOffsets(): boolean {
+  public override hasDirectionalOffsets(): boolean {
     return this._directionalOffsets !== null;
   }
 
-  public getX(direction: number): number {
+  public override getX(direction: number): number {
     if (!this._directionalOffsets) return super.getX(direction);
 
     return this._directionalOffsets.getXOffset(direction, super.getX(direction));
   }
 
-  public getY(direction: number): number {
+  public override getY(direction: number): number {
     if (!this._directionalOffsets) return super.getY(direction);
 
     return this._directionalOffsets.getYOffset(direction, super.getY(direction));

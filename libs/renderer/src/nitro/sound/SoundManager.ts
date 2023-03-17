@@ -30,7 +30,7 @@ export class SoundManager extends NitroManager implements ISoundManager {
     this.onEvent = this.onEvent.bind(this);
   }
 
-  public onInit(): void {
+  public override onInit(): void {
     this._musicController.init();
 
     Nitro.instance.roomEngine.events.addEventListener(RoomEngineSamplePlaybackEvent.PLAY_SAMPLE, this.onEvent);
@@ -40,7 +40,7 @@ export class SoundManager extends NitroManager implements ISoundManager {
     Nitro.instance.events.addEventListener(NitroSoundEvent.PLAY_SOUND, this.onEvent);
   }
 
-  public onDispose(): void {
+  public override onDispose(): void {
     if (this._musicController) {
       this._musicController.dispose();
       this._musicController = null;

@@ -31,12 +31,12 @@ export class FurnitureDataLoader extends EventDispatcher {
   private onFurnitureDataLoaded(data: {[index: string]: any}): void {
     if (!data) return;
 
-    if (typeof data.roomitemtypes == "undefined" || typeof data.wallitemtypes == "undefined")
+    if (typeof data["roomitemtypes"] == "undefined" || typeof data["wallitemtypes"] == "undefined")
       NitroLogger.warn("Could not find `roomitemtypes` or `wallitemtypes` in furnidata.");
 
-    if (data.roomitemtypes) this.parseFloorItems(data.roomitemtypes);
+    if (data["roomitemtypes"]) this.parseFloorItems(data["roomitemtypes"]);
 
-    if (data.wallitemtypes) this.parseWallItems(data.wallitemtypes);
+    if (data["wallitemtypes"]) this.parseWallItems(data["wallitemtypes"]);
 
     this.dispatchEvent(new NitroEvent(FurnitureDataLoader.FURNITURE_DATA_READY));
   }

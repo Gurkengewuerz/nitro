@@ -26,13 +26,13 @@ export class MovingObjectLogic extends RoomObjectLogicBase {
     this._updateInterval = MovingObjectLogic.DEFAULT_UPDATE_INTERVAL;
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._liftAmount = 0;
 
     super.onDispose();
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     const locationOffset = this.getLocationOffset();
@@ -85,13 +85,13 @@ export class MovingObjectLogic extends RoomObjectLogicBase {
     this._lastUpdateTime = this.time;
   }
 
-  public setObject(object: IRoomObjectController): void {
+  public override setObject(object: IRoomObjectController): void {
     super.setObject(object);
 
     if (object) this._location.assign(object.getLocation());
   }
 
-  public processUpdateMessage(message: IRoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: IRoomObjectUpdateMessage): void {
     if (!message) return;
 
     super.processUpdateMessage(message);

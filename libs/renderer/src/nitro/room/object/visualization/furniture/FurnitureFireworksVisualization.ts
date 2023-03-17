@@ -6,7 +6,7 @@ export class FurnitureFireworksVisualization extends FurnitureAnimatedVisualizat
   private _particleSystems: IAdvancedMap<number, FurnitureParticleSystem>;
   private _currentParticleSystem: FurnitureParticleSystem;
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     this._currentParticleSystem = null;
@@ -18,7 +18,7 @@ export class FurnitureFireworksVisualization extends FurnitureAnimatedVisualizat
     }
   }
 
-  protected updateObject(scale: number, direction: number): boolean {
+  protected override updateObject(scale: number, direction: number): boolean {
     if (super.updateObject(scale, direction)) {
       if (!this._particleSystems) {
         this.readDefinition();
@@ -43,25 +43,25 @@ export class FurnitureFireworksVisualization extends FurnitureAnimatedVisualizat
     return false;
   }
 
-  protected updateSprites(scale: number, update: boolean, animation: number): void {
+  protected override updateSprites(scale: number, update: boolean, animation: number): void {
     super.updateSprites(scale, update, animation);
 
     if (this._currentParticleSystem) this._currentParticleSystem.updateSprites();
   }
 
-  protected updateAnimation(scale: number): number {
+  protected override updateAnimation(scale: number): number {
     if (this._currentParticleSystem) this._currentParticleSystem.updateAnimation();
 
     return super.updateAnimation(scale);
   }
 
-  protected setAnimation(id: number): void {
+  protected override setAnimation(id: number): void {
     if (this._currentParticleSystem) this._currentParticleSystem.setAnimation(id);
 
     super.setAnimation(id);
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     if (this._currentParticleSystem && this._currentParticleSystem.controlsSprite(layerId)) {
       return this._currentParticleSystem.getLayerYOffset(scale, direction, layerId);
     }

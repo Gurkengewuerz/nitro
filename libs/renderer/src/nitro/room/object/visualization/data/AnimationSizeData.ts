@@ -14,7 +14,7 @@ export class AnimationSizeData extends SizeData {
     this._animationIds = [];
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     super.dispose();
 
     for (const animation of this._animations.values()) {

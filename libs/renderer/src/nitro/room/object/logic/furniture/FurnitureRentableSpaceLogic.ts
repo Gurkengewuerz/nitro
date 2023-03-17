@@ -3,13 +3,13 @@ import {RoomObjectDataRequestEvent} from "../../../../../events";
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureRentableSpaceLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectDataRequestEvent.RODRE_CURRENT_USER_ID];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (this.object && this.object.model) {
@@ -29,7 +29,7 @@ export class FurnitureRentableSpaceLogic extends FurnitureLogic {
     }
   }
 
-  public get widget(): string {
+  public override get widget(): string {
     return RoomWidgetEnum.RENTABLESPACE;
   }
 }

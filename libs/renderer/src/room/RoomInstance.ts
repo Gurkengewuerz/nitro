@@ -21,7 +21,7 @@ export class RoomInstance extends Disposable implements IRoomInstance {
     this._model = new RoomObjectModel();
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this.removeAllManagers();
 
     this.destroyRenderer();

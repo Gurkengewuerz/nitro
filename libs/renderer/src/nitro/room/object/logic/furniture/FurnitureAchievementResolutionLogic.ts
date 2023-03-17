@@ -12,7 +12,7 @@ export class FurnitureAchievementResolutionLogic extends FurnitureBadgeDisplayLo
   private static ACH_NOT_SET: string = "ach_0";
   private static BADGE_VISIBLE_IN_STATE: number = 2;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectWidgetRequestEvent.ACHIEVEMENT_RESOLUTION_OPEN,
       RoomObjectWidgetRequestEvent.ACHIEVEMENT_RESOLUTION_ENGRAVING,
@@ -23,7 +23,7 @@ export class FurnitureAchievementResolutionLogic extends FurnitureBadgeDisplayLo
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectGroupBadgeUpdateMessage) {
@@ -39,7 +39,7 @@ export class FurnitureAchievementResolutionLogic extends FurnitureBadgeDisplayLo
     }
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     let event: RoomObjectEvent = null;
@@ -60,7 +60,7 @@ export class FurnitureAchievementResolutionLogic extends FurnitureBadgeDisplayLo
     if (event) this.eventDispatcher.dispatchEvent(event);
   }
 
-  protected updateBadge(badgeId: string): void {
+  protected override updateBadge(badgeId: string): void {
     if (badgeId === FurnitureAchievementResolutionLogic.ACH_NOT_SET) return;
 
     super.updateBadge(badgeId);

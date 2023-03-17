@@ -5,7 +5,7 @@ export class Dispose extends Motion {
     super(k);
   }
 
-  public tick(k: number): void {
+  public override tick(k: number): void {
     super.tick(k);
 
     if (this.target) {

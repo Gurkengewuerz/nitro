@@ -9,7 +9,7 @@ export class FurnitureSoundMachineLogic extends FurnitureMultiStateLogic {
   private _isInitialized: boolean = false;
   private _currentState: number = -1;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectFurnitureActionEvent.SOUND_MACHINE_START,
       RoomObjectFurnitureActionEvent.SOUND_MACHINE_STOP,
@@ -20,13 +20,13 @@ export class FurnitureSoundMachineLogic extends FurnitureMultiStateLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this.requestDispose();
 
     super.onDispose();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT) !== 1) return;

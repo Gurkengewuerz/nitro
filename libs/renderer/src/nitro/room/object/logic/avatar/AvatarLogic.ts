@@ -72,7 +72,7 @@ export class AvatarLogic extends MovingObjectLogic {
     this._numberValueEndTimestamp = 0;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectMouseEvent.CLICK,
       RoomObjectMouseEvent.DOUBLE_CLICK,
@@ -86,7 +86,7 @@ export class AvatarLogic extends MovingObjectLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._selected && this.object) {
       if (this.eventDispatcher) this.eventDispatcher.dispatchEvent(new RoomObjectMoveEvent(RoomObjectMoveEvent.OBJECT_REMOVED, this.object));
     }
@@ -96,7 +96,7 @@ export class AvatarLogic extends MovingObjectLogic {
     this._reportedLocation = null;
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (this._selected && this.object) {
@@ -216,7 +216,7 @@ export class AvatarLogic extends MovingObjectLogic {
     }
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (!message || !this.object) return;
 
     super.processUpdateMessage(message);
@@ -406,7 +406,7 @@ export class AvatarLogic extends MovingObjectLogic {
     model.setValue(RoomObjectVariable.FIGURE_EFFECT, effect);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     let eventType: string = null;
 
     switch (event.type) {

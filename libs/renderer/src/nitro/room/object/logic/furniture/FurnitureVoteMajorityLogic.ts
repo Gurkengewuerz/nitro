@@ -4,7 +4,7 @@ import {ObjectDataUpdateMessage} from "../../../messages";
 import {FurnitureMultiStateLogic} from "./FurnitureMultiStateLogic";
 
 export class FurnitureVoteMajorityLogic extends FurnitureMultiStateLogic {
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (!this.object) return;

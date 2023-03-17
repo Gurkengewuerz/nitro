@@ -2,11 +2,11 @@ import {AnimationFrame, AnimationSizeData, SizeData} from "../data";
 import {FurnitureVisualizationData} from "./FurnitureVisualizationData";
 
 export class FurnitureAnimatedVisualizationData extends FurnitureVisualizationData {
-  protected createSizeData(scale: number, layerCount: number, angle: number): SizeData {
+  protected override createSizeData(scale: number, layerCount: number, angle: number): SizeData {
     return new AnimationSizeData(layerCount, angle);
   }
 
-  protected processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
+  protected override processVisualElement(sizeData: SizeData, key: string, data: any): boolean {
     if (!sizeData || !key || !data) return false;
 
     switch (key) {

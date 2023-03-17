@@ -29,13 +29,13 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     this._disposed = false;
   }
 
-  public initialize(data: IObjectVisualizationData): boolean {
+  public override initialize(data: IObjectVisualizationData): boolean {
     if (!(data instanceof FurnitureMannequinVisualizationData)) return false;
 
     return super.initialize(data);
   }
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this._disposed) return;
 
     this._disposed = true;
@@ -49,7 +49,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     super.dispose();
   }
 
-  protected updateObject(scale: number, direction: number): boolean {
+  protected override updateObject(scale: number, direction: number): boolean {
     const updateObject = super.updateObject(scale, direction);
 
     if (updateObject) {
@@ -63,7 +63,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     return updateObject;
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     let updateModel = super.updateModel(scale);
 
     if (updateModel) {
@@ -115,7 +115,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     if (figure === this._figure) this.updateAvatar(true);
   }
 
-  protected getSpriteAssetName(scale: number, layerId: number): string {
+  protected override getSpriteAssetName(scale: number, layerId: number): string {
     const tag = this.getLayerTag(scale, this.direction, layerId);
 
     if (this._figure && tag === FurnitureMannequinVisualization.AVATAR_IMAGE_SPRITE_TAG && this.avatarExists()) {
@@ -125,7 +125,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     return super.getSpriteAssetName(scale, layerId);
   }
 
-  protected getLayerXOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerXOffset(scale: number, direction: number, layerId: number): number {
     const tag = this.getLayerTag(scale, direction, layerId);
 
     if (tag === FurnitureMannequinVisualization.AVATAR_IMAGE_SPRITE_TAG && this.avatarExists()) return -this.getSprite(layerId).width / 2;
@@ -133,7 +133,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     return super.getLayerXOffset(scale, direction, layerId);
   }
 
-  protected getLayerYOffset(scale: number, direction: number, layerId: number): number {
+  protected override getLayerYOffset(scale: number, direction: number, layerId: number): number {
     const tag = this.getLayerTag(scale, direction, layerId);
 
     if (tag === FurnitureMannequinVisualization.AVATAR_IMAGE_SPRITE_TAG && this.avatarExists()) return -this.getSprite(layerId).height;
@@ -145,7 +145,7 @@ export class FurnitureMannequinVisualization extends FurnitureVisualization impl
     return this._disposed;
   }
 
-  protected get data(): FurnitureMannequinVisualizationData {
+  protected override get data(): FurnitureMannequinVisualizationData {
     return this._data as FurnitureMannequinVisualizationData;
   }
 }

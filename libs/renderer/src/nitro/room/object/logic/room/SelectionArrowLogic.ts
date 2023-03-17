@@ -3,7 +3,7 @@ import {RoomObjectLogicBase, RoomObjectUpdateMessage} from "../../../../../room"
 import {ObjectVisibilityUpdateMessage} from "../../../messages";
 
 export class SelectionArrowLogic extends RoomObjectLogicBase {
-  public initialize(data: IAssetData): void {
+  public override initialize(data: IAssetData): void {
     if (!this.object) return;
 
     this.object.model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 1);
@@ -11,7 +11,7 @@ export class SelectionArrowLogic extends RoomObjectLogicBase {
     this.object.setState(1, 0);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (!(message instanceof ObjectVisibilityUpdateMessage)) return;

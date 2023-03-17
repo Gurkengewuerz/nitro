@@ -22,7 +22,7 @@ export class AvatarVisualizationData extends Disposable implements IObjectVisual
     return true;
   }
 
-  public onDispose(): void {
+  public override onDispose(): void {
     this._avatarRenderer = null;
   }
 

@@ -17,7 +17,7 @@ export class NitroCore extends Disposable implements INitroCore {
     this._communication = new CommunicationManager();
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     if (this._communication) {
       this._communication.dispose();
 

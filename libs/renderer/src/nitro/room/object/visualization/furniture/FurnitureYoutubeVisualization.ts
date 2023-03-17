@@ -4,7 +4,7 @@ import {FurnitureDynamicThumbnailVisualization} from "./FurnitureDynamicThumbnai
 export class FurnitureYoutubeVisualization extends FurnitureDynamicThumbnailVisualization {
   protected static THUMBNAIL_URL: string = "THUMBNAIL_URL";
 
-  protected getThumbnailURL(): string {
+  protected override getThumbnailURL(): string {
     if (!this.object) return null;
 
     const furnitureData = this.object.model.getValue<{[index: string]: string}>(RoomObjectVariable.FURNITURE_DATA);

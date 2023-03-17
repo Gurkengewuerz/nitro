@@ -18,7 +18,7 @@ export class FurniturePushableLogic extends FurnitureMultiStateLogic {
     this._oldLocation = new Vector3d();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (!message) return;
 
     const isMoveMessage = message instanceof ObjectMoveUpdateMessage;
@@ -83,7 +83,7 @@ export class FurniturePushableLogic extends FurnitureMultiStateLogic {
     super.processUpdateMessage(message);
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     if (!this.object) return;
 
     this._oldLocation.assign(this.object.getLocation());

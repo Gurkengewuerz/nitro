@@ -3,7 +3,7 @@ import {RoomObjectUpdateMessage} from "../../../../../room";
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureCrackableLogic extends FurnitureLogic {
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (!this.object) return;

@@ -13,13 +13,13 @@ export class FurnitureDiceLogic extends FurnitureLogic {
     this._noTagsLastStateActivate = false;
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectFurnitureActionEvent.DICE_ACTIVATE, RoomObjectFurnitureActionEvent.DICE_OFF];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     let objectEvent: RoomObjectEvent = null;

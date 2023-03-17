@@ -15,29 +15,29 @@ export class Queue extends Motion {
     this._complete = !this._motion;
   }
 
-  public get running(): boolean {
+  public override get running(): boolean {
     return this._running && this._motion ? this._motion.running : false;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._motion.start();
   }
 
-  public update(k: number): void {
+  public override update(k: number): void {
     super.update(k);
 
     if (this._motion.running) this._motion.update(k);
   }
 
-  public stop(): void {
+  public override stop(): void {
     super.stop();
 
     this._motion.stop();
   }
 
-  public tick(k: number): void {
+  public override tick(k: number): void {
     super.tick(k);
 
     this._motion.tick(k);

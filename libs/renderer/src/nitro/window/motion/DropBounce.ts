@@ -10,7 +10,7 @@ export class DropBounce extends Interval {
     this._height = height;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._offset = 0;
@@ -18,7 +18,7 @@ export class DropBounce extends Interval {
     this.target.style.top = this._offset - this._height + "px";
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     this.target.style.top = this._offset - this._height + this.getBounceOffset(time) * this._height + "px";
@@ -44,7 +44,7 @@ export class DropBounce extends Interval {
     return 7.5625 * k * k + 0.984375;
   }
 
-  public stop(): void {
+  public override stop(): void {
     this.target.style.top = this._offset + "px";
 
     super.stop();

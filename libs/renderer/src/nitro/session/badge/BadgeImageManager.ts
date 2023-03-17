@@ -107,7 +107,7 @@ export class BadgeImageManager implements IDisposable {
         })
         .catch(err => {});
     } else if (type === BadgeImageManager.GROUP_BADGE) {
-      if (this._groupBadgesQueue.get(badgeName)) return;
+      if (this._groupBadgesQueue.get(badgeName)) return null;
 
       this._groupBadgesQueue.set(badgeName, true);
 

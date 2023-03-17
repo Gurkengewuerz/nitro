@@ -9,7 +9,7 @@ export class FurnitureJukeboxLogic extends FurnitureMultiStateLogic {
   private _isInitialized: boolean = false;
   private _currentState: number = -1;
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectFurnitureActionEvent.JUKEBOX_START,
       RoomObjectFurnitureActionEvent.JUKEBOX_MACHINE_STOP,
@@ -21,13 +21,13 @@ export class FurnitureJukeboxLogic extends FurnitureMultiStateLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this.requestDispose();
 
     super.onDispose();
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT) !== 1) return;
@@ -78,7 +78,7 @@ export class FurnitureJukeboxLogic extends FurnitureMultiStateLogic {
     this.eventDispatcher.dispatchEvent(new RoomObjectFurnitureActionEvent(RoomObjectFurnitureActionEvent.JUKEBOX_DISPOSE, this.object));
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.JUKEBOX_PLAYLIST_EDITOR, this.object));

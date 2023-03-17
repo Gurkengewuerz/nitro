@@ -11,13 +11,13 @@ export class FurniturePresentLogic extends FurnitureLogic {
   private static PURCHASER_NAME: string = "PURCHASER_NAME";
   private static PURCHASER_FIGURE: string = "PURCHASER_FIGURE";
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.PRESENT];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {
@@ -27,7 +27,7 @@ export class FurniturePresentLogic extends FurnitureLogic {
     }
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (message instanceof ObjectDataUpdateMessage) {
@@ -70,7 +70,7 @@ export class FurniturePresentLogic extends FurnitureLogic {
     this.object.model.setValue(key, value);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     switch (event.type) {
@@ -85,7 +85,7 @@ export class FurniturePresentLogic extends FurnitureLogic {
     super.mouseEvent(event, geometry);
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.PRESENT, this.object));

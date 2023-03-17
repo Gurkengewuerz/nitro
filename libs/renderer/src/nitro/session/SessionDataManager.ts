@@ -131,7 +131,7 @@ export class SessionDataManager extends NitroManager implements ISessionDataMana
     this.onNitroSettingsEvent = this.onNitroSettingsEvent.bind(this);
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     this.loadFurnitureData();
     this.loadProductData();
     this.loadBadgeImageManager();
@@ -157,7 +157,7 @@ export class SessionDataManager extends NitroManager implements ISessionDataMana
     Nitro.instance.events.addEventListener(NitroSettingsEvent.SETTINGS_UPDATED, this.onNitroSettingsEvent);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this.destroyFurnitureData();
 
     if (this._ignoredUsersManager) {
@@ -476,6 +476,7 @@ export class SessionDataManager extends NitroManager implements ISessionDataMana
 
       return item;
     }
+    return null;
   }
 
   public getWallItemData(id: number): IFurnitureData {
@@ -494,6 +495,7 @@ export class SessionDataManager extends NitroManager implements ISessionDataMana
 
       return item;
     }
+    return null;
   }
 
   public getProductData(type: string): IProductData {
@@ -519,9 +521,10 @@ export class SessionDataManager extends NitroManager implements ISessionDataMana
   }
 
   public getUserTags(roomUnitId: number): string[] {
-    if (roomUnitId < 0) return;
+    if (roomUnitId < 0) return null;
 
     this.send(new GetUserTagsComposer(roomUnitId));
+    return [] as string[];
   }
 
   public loadBadgeImage(name: string): string {

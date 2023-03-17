@@ -36,7 +36,7 @@ export class NitroCommunicationDemo extends NitroManager implements INitroCommun
     this.sendPong = this.sendPong.bind(this);
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     const connection = this._communication.connection;
 
     if (connection) {
@@ -49,7 +49,7 @@ export class NitroCommunicationDemo extends NitroManager implements INitroCommun
     this._communication.registerMessageEvent(new AuthenticatedEvent(this.onAuthenticatedEvent.bind(this)));
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     const connection = this._communication.connection;
 
     if (connection) {

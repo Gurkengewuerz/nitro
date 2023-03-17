@@ -10,11 +10,11 @@ export class FurnitureRoomBillboardLogic extends FurnitureRoomBrandingLogic {
     this._hasClickUrl = true;
   }
 
-  protected getAdClickUrl(model: IRoomObjectModel): string {
+  protected override getAdClickUrl(model: IRoomObjectModel): string {
     return model.getValue<string>(RoomObjectVariable.FURNITURE_BRANDING_URL);
   }
 
-  protected handleAdClick(objectId: number, objectType: string, clickUrl: string): void {
+  protected override handleAdClick(objectId: number, objectType: string, clickUrl: string): void {
     if (clickUrl.indexOf("http") === 0) {
       HabboWebTools.openWebPage(clickUrl);
 

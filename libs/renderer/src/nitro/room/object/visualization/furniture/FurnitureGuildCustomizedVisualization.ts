@@ -22,7 +22,7 @@ export class FurnitureGuildCustomizedVisualization extends FurnitureAnimatedVisu
     this._badgeAssetNameSmallScale = "";
   }
 
-  protected updateModel(scale: number): boolean {
+  protected override updateModel(scale: number): boolean {
     const flag = super.updateModel(scale);
 
     if (this._badgeAssetNameNormalScale === "") {
@@ -45,7 +45,7 @@ export class FurnitureGuildCustomizedVisualization extends FurnitureAnimatedVisu
     return flag;
   }
 
-  protected getLayerColor(scale: number, layerId: number, colorId: number): number {
+  protected override getLayerColor(scale: number, layerId: number, colorId: number): number {
     const tag = this.getLayerTag(scale, this._direction, layerId);
 
     switch (tag) {
@@ -58,7 +58,7 @@ export class FurnitureGuildCustomizedVisualization extends FurnitureAnimatedVisu
     return super.getLayerColor(scale, layerId, colorId);
   }
 
-  public getSpriteAssetName(scale: number, layerId: number): string {
+  public override getSpriteAssetName(scale: number, layerId: number): string {
     const tag = this.getLayerTag(scale, this._direction, layerId);
 
     if (tag === FurnitureGuildCustomizedVisualization.BADGE) {
@@ -70,7 +70,7 @@ export class FurnitureGuildCustomizedVisualization extends FurnitureAnimatedVisu
     return super.getSpriteAssetName(scale, layerId);
   }
 
-  protected getLibraryAssetNameForSprite(asset: IGraphicAsset, sprite: IRoomObjectSprite): string {
+  protected override getLibraryAssetNameForSprite(asset: IGraphicAsset, sprite: IRoomObjectSprite): string {
     if (sprite.tag === FurnitureGuildCustomizedVisualization.BADGE) {
       return "%group.badge.url%" + sprite.libraryAssetName.replace("badge_", "");
     }

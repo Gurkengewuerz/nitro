@@ -24,7 +24,7 @@ export class UserDataManager extends Disposable {
     this._userBadges = new Map();
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._connection = null;
   }
 

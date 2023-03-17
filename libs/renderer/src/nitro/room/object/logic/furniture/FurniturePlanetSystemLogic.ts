@@ -2,7 +2,7 @@ import {IAssetData, IAssetLogicPlanetSystem, RoomObjectVariable} from "../../../
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurniturePlanetSystemLogic extends FurnitureLogic {
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     super.initialize(asset);
 
     if (asset.logic) {

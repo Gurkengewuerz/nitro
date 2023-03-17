@@ -212,7 +212,7 @@ export class RoomEngine
     this.onBadgeImageReadyEvent = this.onBadgeImageReadyEvent.bind(this);
   }
 
-  public onInit(): void {
+  public override onInit(): void {
     if (this._ready) return;
 
     this._imageObjectIdBank = new NumberBank(1000);
@@ -247,7 +247,7 @@ export class RoomEngine
     document.addEventListener("visibilitychange", this.runVisibilityUpdate);
   }
 
-  public onDispose(): void {
+  public override onDispose(): void {
     if (!this._ready) return;
 
     for (const [key, value] of this._roomInstanceDatas) {
@@ -394,7 +394,7 @@ export class RoomEngine
     landscapeType: string,
     worldType: string
   ): IRoomInstance {
-    if (!this._ready || !this._roomManager) return;
+    if (!this._ready || !this._roomManager) return null;
 
     const instance = this._roomManager.createRoomInstance(this.getRoomId(roomId));
 
@@ -633,7 +633,7 @@ export class RoomEngine
     const x = ~~point.x;
     const y = ~~point.y;
 
-    if (renderingCanvas.screenOffsetX === x && renderingCanvas.screenOffsetY === y) return;
+    if (renderingCanvas.screenOffsetX === x && renderingCanvas.screenOffsetY === y) return false;
 
     this.events.dispatchEvent(new RoomDragEvent(roomId, -(renderingCanvas.screenOffsetX - x), -(renderingCanvas.screenOffsetY - y)));
 
@@ -2543,22 +2543,25 @@ export class RoomEngine
     if (!this._roomObjectEventHandler) return false;
 
     this._roomObjectEventHandler.modifyRoomObject(this._activeRoomId, objectId, category, operation);
+    return true;
   }
 
   public modifyRoomObjectDataWithMap(objectId: number, category: number, operation: string, data: Map<string, string>): boolean {
     if (!this._roomObjectEventHandler) return false;
 
-    if (category !== RoomObjectCategory.FLOOR) return;
+    if (category !== RoomObjectCategory.FLOOR) return false;
 
     this._roomObjectEventHandler.modifyRoomObjectDataWithMap(this._activeRoomId, objectId, category, operation, data);
+    return true;
   }
 
   public modifyRoomObjectData(objectId: number, category: number, colorHex: string, data: string): boolean {
     if (!this._roomObjectEventHandler) return false;
 
-    if (category !== RoomObjectCategory.WALL) return;
+    if (category !== RoomObjectCategory.WALL) return false;
 
     this._roomObjectEventHandler.modifyWallItemData(this._activeRoomId, objectId, colorHex, data);
+    return true;
   }
 
   private processRoomObjectEvent(event: RoomObjectEvent): void {
@@ -2654,7 +2657,7 @@ export class RoomEngine
   }
 
   private addOverlayIconSprite(k: NitroSprite, _arg_2: string, _arg_3: Texture<Resource>, scale: number = 1): NitroSprite {
-    if (!k || !_arg_3) return;
+    if (!k || !_arg_3) return null;
 
     let sprite = this.getOverlayIconSprite(k, _arg_2);
 

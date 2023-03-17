@@ -58,7 +58,7 @@ export class RoomObject extends Disposable implements IRoomObjectController {
     }
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._pendingLogicMessages = [];
 
     this.setVisualization(null);

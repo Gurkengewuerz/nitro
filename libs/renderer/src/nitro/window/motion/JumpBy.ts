@@ -17,14 +17,14 @@ export class JumpBy extends Interval {
     this._numJumps = numJumps;
   }
 
-  public start(): void {
+  public override start(): void {
     super.start();
 
     this._startX = this.target.offsetLeft;
     this._startY = this.target.offsetTop;
   }
 
-  public update(k: number): void {
+  public override update(k: number): void {
     super.update(k);
 
     this.target.style.left = this._startX + this._deltaX * k + "px";

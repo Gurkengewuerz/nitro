@@ -114,6 +114,6 @@ export class TextureUtils {
   }
 
   public static getExtractor(): Extract {
-    return this.getRenderer().plugins.extract as Extract;
+    return this.getRenderer().plugins["extract"] as Extract;
   }
 }

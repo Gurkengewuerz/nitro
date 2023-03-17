@@ -74,7 +74,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     }
   }
 
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [
       RoomObjectStateChangedEvent.STATE_CHANGE,
       RoomObjectMouseEvent.CLICK,
@@ -93,7 +93,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public initialize(asset: IAssetData): void {
+  public override initialize(asset: IAssetData): void {
     if (!asset) return;
 
     const model = this.object && this.object.model;
@@ -142,14 +142,14 @@ export class FurnitureLogic extends MovingObjectLogic {
     model.setValue(RoomObjectVariable.FURNITURE_ALPHA_MULTIPLIER, 1);
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this._storedRotateMessage = null;
     this._directions = null;
 
     super.onDispose();
   }
 
-  public setObject(object: IRoomObjectController): void {
+  public override setObject(object: IRoomObjectController): void {
     super.setObject(object);
 
     if (object && object.getLocation().length) this._directionInitialized = true;
@@ -165,7 +165,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     this.eventDispatcher.dispatchEvent(new RoomObjectRoomAdEvent(RoomObjectRoomAdEvent.ROOM_AD_FURNI_CLICK, this.object));
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     if (this._bouncingStep > 0) {
@@ -175,7 +175,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     }
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (message instanceof ObjectDataUpdateMessage) {
       this.processDataUpdateMessage(message);
 
@@ -249,7 +249,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     this.object.model.setValue(RoomObjectVariable.FURNITURE_ITEMDATA, message.data);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     const adUrl = this.getAdClickUrl(this.object.model);
 
     switch (event.type) {
@@ -391,7 +391,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     }
   }
 
-  protected getLocationOffset(): IVector3D {
+  protected override getLocationOffset(): IVector3D {
     if (this._bouncingStep <= 0) return null;
 
     this._locationOffset.x = 0;
@@ -414,7 +414,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     return this._locationOffset;
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     const clickUrl = this.getAdClickUrl(this.object.model);
@@ -428,7 +428,7 @@ export class FurnitureLogic extends MovingObjectLogic {
     this.eventDispatcher.dispatchEvent(new RoomObjectStateChangedEvent(RoomObjectStateChangedEvent.STATE_CHANGE, this.object));
   }
 
-  public tearDown(): void {
+  public override tearDown(): void {
     if (this.object.model.getValue<number>(RoomObjectVariable.FURNITURE_REAL_ROOM_OBJECT) === 1) {
       if (this.widget) this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.CLOSE_WIDGET, this.object));
 

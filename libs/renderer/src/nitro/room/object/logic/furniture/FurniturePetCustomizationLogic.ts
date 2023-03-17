@@ -4,13 +4,13 @@ import {RoomObjectUpdateMessage} from "../../../../../room";
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurniturePetCustomizationLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectWidgetRequestEvent.PET_PRODUCT_MENU];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     super.processUpdateMessage(message);
 
     if (!this.object) return;
@@ -20,7 +20,7 @@ export class FurniturePetCustomizationLogic extends FurnitureLogic {
     }
   }
 
-  public useObject(): void {
+  public override useObject(): void {
     if (!this.object || !this.eventDispatcher) return;
 
     this.eventDispatcher.dispatchEvent(new RoomObjectWidgetRequestEvent(RoomObjectWidgetRequestEvent.PET_PRODUCT_MENU, this.object));

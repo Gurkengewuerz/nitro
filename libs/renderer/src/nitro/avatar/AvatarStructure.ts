@@ -49,7 +49,7 @@ export class AvatarStructure extends EventDispatcher {
 
   public init(): void {}
 
-  public dispose(): void {
+  public override dispose(): void {
     if (this.disposed) return;
 
     super.dispose();

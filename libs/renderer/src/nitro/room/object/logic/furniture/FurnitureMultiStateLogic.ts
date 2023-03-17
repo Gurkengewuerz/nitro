@@ -3,13 +3,13 @@ import {RoomObjectFurnitureActionEvent, RoomSpriteMouseEvent} from "../../../../
 import {FurnitureLogic} from "./FurnitureLogic";
 
 export class FurnitureMultiStateLogic extends FurnitureLogic {
-  public getEventTypes(): string[] {
+  public override getEventTypes(): string[] {
     const types = [RoomObjectFurnitureActionEvent.MOUSE_BUTTON, RoomObjectFurnitureActionEvent.MOUSE_ARROW];
 
     return this.mergeTypes(super.getEventTypes(), types);
   }
 
-  public mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
+  public override mouseEvent(event: RoomSpriteMouseEvent, geometry: IRoomGeometry): void {
     if (!event || !geometry || !this.object) return;
 
     switch (event.type) {

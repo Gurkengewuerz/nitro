@@ -10,7 +10,7 @@ export class EventDispatcher extends Disposable implements IEventDispatcher, IDi
     this._listeners = new Map();
   }
 
-  protected onDispose(): void {
+  protected override onDispose(): void {
     this.removeAllListeners();
 
     super.onDispose();
@@ -76,9 +76,8 @@ export class EventDispatcher extends Disposable implements IEventDispatcher, IDi
 
       try {
         callback(event);
-      } catch (err) {
-        NitroLogger.error(err.stack);
-
+      } catch (e) {
+        if (e instanceof Error) NitroLogger.error(e.stack);
         return;
       }
     }

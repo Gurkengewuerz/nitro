@@ -19,7 +19,7 @@ export class ConfigurationManager extends NitroManager implements IConfiguration
     this.onConfigurationLoaded = this.onConfigurationLoaded.bind(this);
   }
 
-  protected onInit(): void {
+  protected override onInit(): void {
     NitroConfiguration.parseConfiguration(this.getDefaultConfig(), true);
 
     this._pendingUrls = NitroConfiguration.getValue<string[]>("config.urls").slice();

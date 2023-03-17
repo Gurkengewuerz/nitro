@@ -19,7 +19,7 @@ export class FurnitureScoreLogic extends FurnitureLogic {
     this._scoreTimer = 0;
   }
 
-  public processUpdateMessage(message: RoomObjectUpdateMessage): void {
+  public override processUpdateMessage(message: RoomObjectUpdateMessage): void {
     if (message instanceof ObjectDataUpdateMessage) return this.updateScore(message.state);
 
     super.processUpdateMessage(message);
@@ -43,7 +43,7 @@ export class FurnitureScoreLogic extends FurnitureLogic {
     }
   }
 
-  public update(time: number): void {
+  public override update(time: number): void {
     super.update(time);
 
     const currentScore = this.object.getState(0);
