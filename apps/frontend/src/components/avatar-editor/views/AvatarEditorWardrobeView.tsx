@@ -65,7 +65,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
             </Button>
             {figureContainer && (
               <Button variant="link" fullWidth onClick={event => wearFigureAtIndex(index)} disabled={clubLevel > GetClubMemberLevel()}>
-                {LocalizeText("generic_usable.button.use")}
+                {LocalizeText("widget.generic_usable.button.use")}
               </Button>
             )}
           </Flex>
@@ -77,7 +77,7 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
   }, [savedFigures, hcDisabled, saveFigureAtWardrobeIndex, wearFigureAtIndex]);
 
   return (
-    <AutoGrid columnCount={5} columnMinWidth={80} columnMinHeight={140}>
+    <AutoGrid columnCount={4} columnMinWidth={125} columnMinHeight={140}>
       {figures}
     </AutoGrid>
   );
