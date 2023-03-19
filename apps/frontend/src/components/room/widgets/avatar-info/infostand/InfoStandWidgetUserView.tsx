@@ -6,7 +6,7 @@ import {
   RoomSessionUserFigureUpdateEvent,
   UserRelationshipsComposer,
 } from "@nitro/renderer";
-import {Dispatch, FC, FocusEvent, KeyboardEvent, SetStateAction, useEffect, useState} from "react";
+import {Dispatch, FC, KeyboardEvent, SetStateAction, useEffect, useState} from "react";
 import {FaPencilAlt, FaTimes} from "react-icons/fa";
 
 import {
@@ -44,8 +44,6 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
 
     setIsEditingMotto(false);
   };
-
-  const onMottoBlur = (event: FocusEvent<HTMLInputElement>) => saveMotto(event.target.value);
 
   const onMottoKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     event.stopPropagation();
@@ -201,7 +199,6 @@ export const InfoStandWidgetUserView: FC<InfoStandWidgetUserViewProps> = props =
                       maxLength={GetConfiguration<number>("motto.max.length", 38)}
                       value={motto}
                       onChange={event => setMotto(event.target.value)}
-                      onBlur={onMottoBlur}
                       onKeyDown={onMottoKeyDown}
                       autoFocus={true}
                     />
