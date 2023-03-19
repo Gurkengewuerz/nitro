@@ -37,7 +37,8 @@ export const NavigatorSearchSavesResultItemView: FC<NavigatorSearchSavesResultIt
         pointer
         variant="black"
         title={LocalizeText("navigator.tooltip.open.saved.search")}
-        onClick={() => SendMessageComposer(new NavigatorSearchComposer(search.code.split(".").reverse()[0], search.filter))}>
+        onClick={() => SendMessageComposer(new NavigatorSearchComposer(search.code.split(".").reverse()[0], search.filter))}
+      >
         {search.filter !== ""
           ? LocalizeText("navigator.searchcode.title.query") + ": " + (!search.filter.split(":")[1] ? search.filter : search.filter.split(":")[1])
           : LocalizeText(`${search.code}`)}

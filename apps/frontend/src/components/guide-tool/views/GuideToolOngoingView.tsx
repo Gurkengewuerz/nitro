@@ -107,7 +107,8 @@ export const GuideToolOngoingView: FC<GuideToolOngoingViewProps> = props => {
                       key={index}
                       pointer={chat.roomId ? true : false}
                       className={chat.roomId ? "text-break text-underline" : "text-break"}
-                      onClick={() => (chat.roomId ? TryVisitRoom(chat.roomId) : null)}>
+                      onClick={() => (chat.roomId ? TryVisitRoom(chat.roomId) : null)}
+                    >
                       {chat.message}
                     </Base>
                   ))}

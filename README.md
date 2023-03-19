@@ -4,18 +4,18 @@ This is a fork of [billsonnn/nitro-react](https://github.com/billsonnn/nitro-rea
 
 ## Installation
 
--   Clone Nitro
-    -   `git clone https://git.gurkengewuerz.de/nitro/nitro.git`
--   Install the dependencies
-    -   `npm install`
--   Rename a few files
-    -   Rename `apps/frontend/public/renderer-config.json.example` to `apps/frontend/public/renderer-config.json` and edit it
-    -   Rename `apps/frontend/public/ui-config.json.example` to `apps/frontend/public/ui-config.json` and edit it
+- Clone Nitro
+  - `git clone https://git.gurkengewuerz.de/nitro/nitro.git`
+- Install the dependencies
+  - `npm install`
+- Rename a few files
+  - Rename `apps/frontend/public/renderer-config.json.example` to `apps/frontend/public/renderer-config.json` and edit it
+  - Rename `apps/frontend/public/ui-config.json.example` to `apps/frontend/public/ui-config.json` and edit it
 
 ## Usage
 
--   To use Nitro you need `.nitro` assets generated, see [nitro-converter](https://git.krews.org/nitro/nitro-converter) for instructions.
--   See [Morningstar Websockets](https://git.krews.org/nitro/ms-websockets) for instructions on configuring websockets on your server.
+- To use Nitro you need `.nitro` assets generated, see [nitro-converter](https://git.krews.org/nitro/nitro-converter) for instructions.
+- See [Morningstar Websockets](https://git.krews.org/nitro/ms-websockets) for instructions on configuring websockets on your server.
 
 See [Gurkengewuerz/nitro-docker](https://git.gurkengewuerz.de/nitro/nitro-docker) for a complete setup.
 

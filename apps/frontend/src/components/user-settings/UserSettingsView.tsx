@@ -178,12 +178,7 @@ export const UserSettingsView: FC<{}> = props => {
             <Text>{LocalizeText("memenu.settings.other.skip.purchase.confirmation")}</Text>
           </Flex>
           <Flex alignItems="center" gap={1}>
-            <input
-              className="form-check-input"
-              type="checkbox"
-              checked={uiFPSCounter}
-              onChange={event => setUiFPSCounter(event.target.checked)}
-            />
+            <input className="form-check-input" type="checkbox" checked={uiFPSCounter} onChange={event => setUiFPSCounter(event.target.checked)} />
             <Text>{LocalizeText("memenu.settings.other.ui.show.fpscounter")}</Text>
           </Flex>
         </Column>
