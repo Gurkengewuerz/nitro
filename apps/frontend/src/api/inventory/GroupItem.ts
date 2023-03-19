@@ -1,4 +1,4 @@
-import {IObjectData, IRoomEngine, TraxSongInfoMessageEvent} from "@nitro/renderer";
+import {IObjectData, IRoomEngine, SongDataEntry, TraxSongInfoMessageEvent} from "@nitro/renderer";
 
 import {GetNitroInstance} from "../nitro";
 import {LocalizeText} from "../utils";
@@ -302,6 +302,15 @@ export class GroupItem {
         this.clearTraxSongInfoEvent();
         this._name = songInfo.creator;
         return;
+      case FurniCategory.FLOOR:
+        key = "inventory.furni.item.floor.name";
+        break;
+      case FurniCategory.WALL_PAPER:
+        key = "inventory.furni.item.wallpaper.name";
+        break;
+      case FurniCategory.LANDSCAPE:
+        key = "inventory.furni.item.landscape.name";
+        break;
       default:
         if (this.isWallItem) {
           key = "wallItem.name." + k.type;
@@ -322,6 +331,7 @@ export class GroupItem {
       return;
     }
 
+    let key = "";
     switch (this._category) {
       case FurniCategory.TRAX_SONG:
         const songInfo = GetNitroInstance().soundManager.musicController.getSongInfo(k.extra) as SongDataEntry;
@@ -330,11 +340,20 @@ export class GroupItem {
         this.clearTraxSongInfoEvent();
         this._description = songInfo.name;
         return;
+      case FurniCategory.FLOOR:
+        key = "inventory.furni.item.floor.desc";
+        break;
+      case FurniCategory.WALL_PAPER:
+        key = "inventory.furni.item.wallpaper.desc";
+        break;
+      case FurniCategory.LANDSCAPE:
+        key = "inventory.furni.item.landscape.desc";
+        break;
       default:
         break;
     }
 
-    this._description = "";
+    this._description = LocalizeText(key);
   }
 
   private setIcon(): void {
