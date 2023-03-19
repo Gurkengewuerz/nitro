@@ -137,16 +137,26 @@ export class Offer implements IPurchasableOffer {
 
   public get localizationName(): string {
     const productData = GetProductDataForLocalization(this._localizationId);
-
     if (productData) return productData.name;
+
+    const product = this.product;
+    if (product) {
+      const furnitureData = GetFurnitureData(product.productClassId, product.productType);
+      return furnitureData.name;
+    }
 
     return LocalizeText(this._localizationId);
   }
 
   public get localizationDescription(): string {
     const productData = GetProductDataForLocalization(this._localizationId);
-
     if (productData) return productData.description;
+
+    const product = this.product;
+    if (product) {
+      const furnitureData = GetFurnitureData(product.productClassId, product.productType);
+      return furnitureData.description;
+    }
 
     return LocalizeText(this._localizationId);
   }
