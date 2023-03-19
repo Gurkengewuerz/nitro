@@ -350,7 +350,11 @@ export class GroupItem {
         key = "inventory.furni.item.landscape.desc";
         break;
       default:
-        break;
+        if (this.isWallItem) {
+          key = "wallItem.desc." + k.type;
+        } else {
+          key = "roomItem.desc." + k.type;
+        }
     }
 
     this._description = LocalizeText(key);
