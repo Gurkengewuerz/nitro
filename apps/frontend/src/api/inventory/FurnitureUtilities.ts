@@ -45,7 +45,7 @@ const addGroupableFurnitureItem = (set: GroupItem[], item: FurnitureItem, unseen
 
           break;
         }
-      } else if (item.category === FurniCategory.GUILD_FURNI) {
+      } else if (item.category === FurniCategory.GUILD_FURNI || item.category === FurniCategory.FLOOR || item.category === FurniCategory.WALL_PAPER || item.category === FurniCategory.LANDSCAPE) {
         if (item.stuffData.compare(groupItem.stuffData)) {
           existingGroup = groupItem;
 
