@@ -31,7 +31,7 @@ const TAB_FURNITURE: string = "inventory.furni";
 const TAB_BOTS: string = "inventory.bots";
 const TAB_PETS: string = "inventory.furni.tab.pets";
 const TAB_BADGES: string = "inventory.badges";
-const TABS = [TAB_FURNITURE, TAB_BOTS, TAB_PETS, TAB_BADGES];
+const TABS = [ TAB_FURNITURE, TAB_PETS, TAB_BADGES, TAB_BOTS ];
 const UNSEEN_CATEGORIES = [UnseenItemCategory.FURNI, UnseenItemCategory.BOT, UnseenItemCategory.PET, UnseenItemCategory.BADGE];
 
 export const InventoryView: FC<{}> = props => {

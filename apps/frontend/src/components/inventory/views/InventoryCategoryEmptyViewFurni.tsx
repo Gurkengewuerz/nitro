@@ -1,13 +1,13 @@
 import { FC } from 'react';
 import { Column, Grid, GridProps, Text } from '../../../common';
 
-export interface InventoryCategoryEmptyViewProps extends GridProps
+export interface InventoryCategoryEmptyViewFurniProps extends GridProps
 {
     title: string;
     desc: string;
 }
 
-export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = props =>
+export const InventoryCategoryEmptyViewFurni: FC<InventoryCategoryEmptyViewFurniProps> = props =>
 {
     const { title = '', desc = '', children = null, ...rest } = props;
     
@@ -16,7 +16,7 @@ export const InventoryCategoryEmptyView: FC<InventoryCategoryEmptyViewProps> = p
 			<Column justifyContent="start" center size={ 6 } overflow="hidden">
 				<div className="empty-furniimage" />
             </Column>
-            <Column justifyContent="center" size={ 6 } overflow="hidden">
+			<Column justifyContent="center" size={ 6 } overflow="hidden">
 				<div className="bubble-inventory bubble-inventory-bottom-left">
                 <Text fontSize={ 6 } overflow="unset" truncate>{ title }</Text>
 				<Text overflow="auto" fontSize={ 6 }> { desc }</Text>
