@@ -142,7 +142,7 @@ export class Offer implements IPurchasableOffer {
     const product = this.product;
     if (product) {
       const furnitureData = GetFurnitureData(product.productClassId, product.productType);
-      return furnitureData.name;
+      if (furnitureData) return furnitureData.name;
     }
 
     return LocalizeText(this._localizationId);
