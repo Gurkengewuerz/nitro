@@ -29,6 +29,9 @@ export const NitroSystemAlertView: FC<NotificationDefaultAlertViewProps> = props
             <Text>
               <b>Renderer:</b> v{GetRendererVersion()}
             </Text>
+            <Button fullWidth variant="dark" onClick={event => window.open("https://github.com/Gurkengewuerz/")}>
+              Fork of Gurkengewuerz
+            </Button>
             <Column fullWidth gap={1}>
               <Button fullWidth variant="success" onClick={event => window.open("https://discord.nitrodev.co")}>
                 Discord
