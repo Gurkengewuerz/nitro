@@ -419,7 +419,7 @@ export const InfoStandWidgetFurniView: FC<InfoStandWidgetFurniViewProps> = props
               <>
                 <hr className="m-0" />
                 <Text variant="white" small wrap>
-                  {LocalizeText("infostand.crackable_furni.hits_remaining", ["hits", "target"], [crackableHits.toString(), crackableTarget.toString()])}
+                  {LocalizeText("infostand.crackable_furni.hits_remaining", ["hits", "target"], [crackableHits?.toString(), crackableTarget?.toString()])}
                 </Text>
               </>
             )}
