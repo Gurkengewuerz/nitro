@@ -20,7 +20,7 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props => {
     const value = searchValue.toLocaleLowerCase();
 
     return items
-      .filter(item => item.name?.toLocaleLowerCase().includes(value))
+      .filter(item => item.name?.toLocaleLowerCase().includes(value) || item.id?.toString().includes(value))
       .sort(function (a, b) {
         return a.id - b.id;
       });
