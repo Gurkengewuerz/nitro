@@ -3,7 +3,7 @@ import {CSSProperties, FC, Key, MouseEvent as ReactMouseEvent, ReactNode, TouchE
 import {createPortal} from "react-dom";
 
 import {Base} from "..";
-import {GetLocalStorage, SetLocalStorage, WindowSaveOptions} from "../../api";
+import {GetLocalStorage, SetLocalStorage, WindowSaveOptions, WindowSaveScreenOptions} from "../../api";
 import {DraggableWindowPosition} from "./DraggableWindowPosition";
 
 const CURRENT_WINDOWS: HTMLElement[] = [];
@@ -141,11 +141,11 @@ export const DraggableWindow: FC<DraggableWindowProps> = props => {
     setIsDragging(false);
 
     if (uniqueKey !== null) {
-      const newStorage = {...GetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`)} as WindowSaveOptions;
-
-      newStorage.offset = {x: offsetX, y: offsetY};
-
-      SetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`, newStorage);
+      const screen = `${window.innerWidth}x${window.innerHeight}`;
+      const newStorage = {...GetLocalStorage<Partial<WindowSaveScreenOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveScreenOptions;
+      newStorage[screen] = newStorage?.[screen] || {} as WindowSaveOptions;
+      newStorage[screen].offset = {x: offsetX, y: offsetY};
+      SetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`, newStorage);
     }
   }, [dragHandler, delta, offset, uniqueKey]);
 
@@ -248,12 +248,15 @@ export const DraggableWindow: FC<DraggableWindowProps> = props => {
   useEffect(() => {
     if (!uniqueKey) return;
 
-    const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`);
+    const screen = `${window.innerWidth}x${window.innerHeight}`;
+    const localStorage = GetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`);
+    const windowOptions = localStorage?.[screen] as WindowSaveOptions;
 
-    if (!localStorage || !localStorage.offset) return;
+
+    if (!windowOptions || !windowOptions.offset) return;
 
     setDelta({x: 0, y: 0});
-    if (localStorage.offset) setOffset(localStorage.offset);
+    if (localStorage.offset) setOffset(windowOptions.offset);
   }, [uniqueKey]);
 
   return createPortal(

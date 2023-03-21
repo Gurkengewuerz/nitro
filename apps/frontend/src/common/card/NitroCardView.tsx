@@ -1,7 +1,7 @@
 import {FC, useEffect, useMemo, useRef} from "react";
 
 import {Column, ColumnProps} from "..";
-import {GetLocalStorage, SetLocalStorage, WindowSaveOptions} from "../../api";
+import {GetLocalStorage, SetLocalStorage, WindowSaveOptions, WindowSaveScreenOptions} from "../../api";
 import {DraggableWindow, DraggableWindowPosition, DraggableWindowProps} from "../draggable-window";
 import {NitroCardContextProvider} from "./NitroCardContext";
 
@@ -37,18 +37,22 @@ export const NitroCardView: FC<NitroCardViewProps> = props => {
   useEffect(() => {
     if (!uniqueKey || !elementRef || !elementRef.current) return;
 
-    const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`);
+    const screen = `${window.innerWidth}x${window.innerHeight}`;
+    const localStorage = GetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`);
+    const windowOptions = localStorage?.[screen] as WindowSaveOptions;
     const element = elementRef.current;
 
-    if (localStorage && localStorage.size && localStorage.size.width > 0 && localStorage.size.height > 0) {
-      element.style.width = `${localStorage.size.width}px`;
-      element.style.height = `${localStorage.size.height}px`;
+    if (windowOptions && windowOptions.size && windowOptions.size.width > 0 && windowOptions.size.height > 0) {
+      element.style.width = `${windowOptions.size.width}px`;
+      element.style.height = `${windowOptions.size.height}px`;
     }
 
     const observer = new ResizeObserver(event => {
-      const newStorage = {...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveOptions;
-      newStorage.size = {width: element.offsetWidth, height: element.offsetHeight};
-      SetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`, newStorage);
+      const screen = `${window.innerWidth}x${window.innerHeight}`;
+      const newStorage = {...GetLocalStorage<Partial<WindowSaveScreenOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveScreenOptions;
+      newStorage[screen] = newStorage?.[screen] || {} as WindowSaveOptions;
+      newStorage[screen].size = {width: element.offsetWidth, height: element.offsetHeight};
+      SetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`, newStorage);
     });
 
     observer.observe(element);

@@ -52,30 +52,6 @@ const useSessionInfoState = () => {
     setChatStyleId(parser.chatType);
   });
 
-  useEffect(() => {
-    const currentScreenSize = <{width: number; height: number}>GetLocalStorage("nitro.screensize");
-
-    if (currentScreenSize && (currentScreenSize.width !== window.innerWidth || currentScreenSize.height !== window.innerHeight)) {
-      let i = window.localStorage.length;
-
-      while (i > 0) {
-        const key = window.localStorage.key(i);
-
-        if (key && key.startsWith("nitro.window")) window.localStorage.removeItem(key);
-
-        i--;
-      }
-    }
-
-    const onResize = (event: UIEvent) => setScreenSize({width: window.innerWidth, height: window.innerHeight});
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    };
-  }, [setScreenSize]);
-
   return {userInfo, userFigure, chatStyleId, userRespectRemaining, petRespectRemaining, respectUser, respectPet, updateChatStyleId};
 };
 
