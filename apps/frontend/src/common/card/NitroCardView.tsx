@@ -1,6 +1,7 @@
-import {FC, useMemo, useRef} from "react";
+import {FC, useEffect, useMemo, useRef} from "react";
 
 import {Column, ColumnProps} from "..";
+import {GetLocalStorage, SetLocalStorage, WindowSaveOptions} from "../../api";
 import {DraggableWindow, DraggableWindowPosition, DraggableWindowProps} from "../draggable-window";
 import {NitroCardContextProvider} from "./NitroCardContext";
 
@@ -33,35 +34,29 @@ export const NitroCardView: FC<NitroCardViewProps> = props => {
     return newClassNames;
   }, [theme, classNames]);
 
-  /* useEffect(() =>
-    {
-        if(!uniqueKey || !elementRef || !elementRef.current) return;
+  useEffect(() => {
+    if (!uniqueKey || !elementRef || !elementRef.current) return;
 
-        const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`);
-        const element = elementRef.current;
+    const localStorage = GetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`);
+    const element = elementRef.current;
 
-        if(localStorage && localStorage.size)
-        {
-            //element.style.width = `${ localStorage.size.width }px`;
-            //element.style.height = `${ localStorage.size.height }px`;
-        }
+    if (localStorage && localStorage.size && localStorage.size.width > 0 && localStorage.size.height > 0) {
+      element.style.width = `${localStorage.size.width}px`;
+      element.style.height = `${localStorage.size.height}px`;
+    }
 
-        const observer = new ResizeObserver(event =>
-        {
-            const newStorage = { ...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${ uniqueKey }`) } as WindowSaveOptions;
+    const observer = new ResizeObserver(event => {
+      const newStorage = {...GetLocalStorage<Partial<WindowSaveOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveOptions;
+      newStorage.size = {width: element.offsetWidth, height: element.offsetHeight};
+      SetLocalStorage<WindowSaveOptions>(`nitro.windows.${uniqueKey}`, newStorage);
+    });
 
-            newStorage.size = { width: element.offsetWidth, height: element.offsetHeight };
+    observer.observe(element);
 
-            SetLocalStorage<WindowSaveOptions>(`nitro.windows.${ uniqueKey }`, newStorage);
-        });
-
-        observer.observe(element);
-
-        return () =>
-        {
-            observer.disconnect();
-        }
-    }, [ uniqueKey ]); */
+    return () => {
+      observer.disconnect();
+    };
+  }, [uniqueKey]);
 
   return (
     <NitroCardContextProvider value={{theme}}>
