@@ -246,7 +246,7 @@ export class Nitro implements INitro {
       const prefix = tracker.eventUrlPrefix;
 
       if (prefix.length > 0) {
-        if (link.substr(0, prefix.length) === prefix) tracker.linkReceived(link);
+        if (link.substring(0, 1) === "*" || link.substring(0, prefix.length) === prefix) tracker.linkReceived(link);
       } else {
         tracker.linkReceived(link);
       }

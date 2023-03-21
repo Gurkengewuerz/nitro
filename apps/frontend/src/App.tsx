@@ -76,6 +76,7 @@ export const App: FC<{}> = props => {
         setMessage("Connection Error");
         return;
       case NitroCommunicationDemoEvent.CONNECTION_CLOSED:
+        GetNitroInstance().createLinkEvent("*/hide");
         if (GetNitroInstance().roomEngine) GetNitroInstance().roomEngine.dispose();
 
         HabboWebTools.send(-1, "client.init.handshake.fail");
