@@ -1,27 +1,23 @@
-import { IMessageDataWrapper, IMessageParser } from '../../../../../../api';
+import {IMessageDataWrapper, IMessageParser} from "../../../../../../api";
 
-export class SnowStormOnStageEndingParser implements IMessageParser
-{
-    private _habboGameId: number;
+export class SnowStormOnStageEndingParser implements IMessageParser {
+  private _habboGameId: number;
 
-    public flush(): boolean
-    {
-        this._habboGameId = -1;
+  public flush(): boolean {
+    this._habboGameId = -1;
 
-        return true;
-    }
+    return true;
+  }
 
-    public parse(wrapper: IMessageDataWrapper): boolean
-    {
-        if(!wrapper) return false;
+  public parse(wrapper: IMessageDataWrapper): boolean {
+    if (!wrapper) return false;
 
-        this._habboGameId = wrapper.readInt();
+    this._habboGameId = wrapper.readInt();
 
-        return true;
-    }
+    return true;
+  }
 
-    public get habboGameId(): number
-    {
-        return this._habboGameId;
-    }
+  public get habboGameId(): number {
+    return this._habboGameId;
+  }
 }

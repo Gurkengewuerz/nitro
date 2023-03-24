@@ -1,1 +1,1 @@
-export * from './SnowStormOnStageEndingComposer';
+export * from "./SnowStormOnStageEndingComposer";

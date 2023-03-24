@@ -1,2 +1,2 @@
-export * from './CitizenshipVipOfferPromoEnabledEvent';
-export * from './PerkAllowancesMessageEvent';
+export * from "./CitizenshipVipOfferPromoEnabledEvent";
+export * from "./PerkAllowancesMessageEvent";

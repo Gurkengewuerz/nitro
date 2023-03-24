@@ -1,1 +1,1 @@
-export * from './SnowStormOnStageEndingParser';
+export * from "./SnowStormOnStageEndingParser";

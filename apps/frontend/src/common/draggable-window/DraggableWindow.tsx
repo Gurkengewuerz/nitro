@@ -143,7 +143,7 @@ export const DraggableWindow: FC<DraggableWindowProps> = props => {
     if (uniqueKey !== null) {
       const screen = `${window.innerWidth}x${window.innerHeight}`;
       const newStorage = {...GetLocalStorage<Partial<WindowSaveScreenOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveScreenOptions;
-      newStorage[screen] = newStorage?.[screen] || {} as WindowSaveOptions;
+      newStorage[screen] = newStorage?.[screen] || ({} as WindowSaveOptions);
       newStorage[screen].offset = {x: offsetX, y: offsetY};
       SetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`, newStorage);
     }
@@ -251,7 +251,6 @@ export const DraggableWindow: FC<DraggableWindowProps> = props => {
     const screen = `${window.innerWidth}x${window.innerHeight}`;
     const localStorage = GetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`);
     const windowOptions = localStorage?.[screen] as WindowSaveOptions;
-
 
     if (!windowOptions || !windowOptions.offset) return;
 
