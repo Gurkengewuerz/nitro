@@ -23,7 +23,7 @@ export const ChatHistoryView: FC<{}> = props => {
   }, [chatHistory, searchText]);
 
   useEffect(() => {
-    if (elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = elementRef.current.scrollHeight;
+    if (elementRef && elementRef.current && isVisible) elementRef.current.scrollTop = 0;
   }, [isVisible]);
 
   useEffect(() => {
@@ -68,7 +68,7 @@ export const ChatHistoryView: FC<{}> = props => {
         />
         <InfiniteScroll
           rows={filteredChatHistory}
-          scrollToBottom={true}
+          scrollToBottom={false}
           rowRender={row => {
             return (
               <Flex alignItems="center" className="p-1" gap={2}>
