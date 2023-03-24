@@ -11,7 +11,7 @@ export * from './MOTDNotificationEvent';
 export * from './NotificationDialogMessageEvent';
 export * from './PetLevelNotificationEvent';
 export * from './PetPlacingErrorEvent';
-export * from './RestoreClientMessageParser';
+export * from './RestoreClientMessageEvent';
 export * from './SimpleAlertMessageEvent';
 export * from './UnseenItemsEvent';
 export * from './OfferRewardDeliveredMessageEvent';

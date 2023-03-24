@@ -1,3 +1,2 @@
-export * from './CitizenshipVipOfferPromoEnabledMessageParser';
-export * from './common';
-export * from './PerkAllowancesMessageParser';
+export * from './CitizenshipVipOfferPromoEnabledEvent';
+export * from './PerkAllowancesMessageEvent';
