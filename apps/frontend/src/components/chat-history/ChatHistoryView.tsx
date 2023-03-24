@@ -12,13 +12,14 @@ export const ChatHistoryView: FC<{}> = props => {
   const elementRef = useRef<HTMLDivElement>(null);
 
   const filteredChatHistory = useMemo(() => {
-    if (searchText.length === 0) return chatHistory;
+    const sortedChatHistory = chatHistory.sort((a, b) => b.id - a.id);
+
+    if (searchText.length === 0) return sortedChatHistory;
 
     let text = searchText.toLowerCase();
 
-    return chatHistory
-      .filter(entry => (entry.message && entry.message.toLowerCase().includes(text)) || (entry.name && entry.name.toLowerCase().includes(text)))
-      .sort((a, b) => b.id - a.id);
+    return sortedChatHistory
+      .filter(entry => (entry.message && entry.message.toLowerCase().includes(text)) || (entry.name && entry.name.toLowerCase().includes(text)));
   }, [chatHistory, searchText]);
 
   useEffect(() => {
