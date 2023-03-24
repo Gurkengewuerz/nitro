@@ -45,7 +45,7 @@ import {
   TogglePetRidingComposer,
   UsePetProductComposer,
   UserMottoComposer,
-} from "../communication";
+  VotePollCounterMessageComposer } from "../communication";
 import {UserDataManager} from "./UserDataManager";
 
 export class RoomSession extends Disposable implements IRoomSession {
@@ -321,6 +321,11 @@ export class RoomSession extends Disposable implements IRoomSession {
   public changeQueue(targetQueue: number): void {
     this._connection.send(new ChangeQueueMessageComposer(targetQueue));
   }
+  
+  public votePoll(counter: number): void
+    {
+        this._connection.send(new VotePollCounterMessageComposer(counter));
+    }
 
   public get connection(): IConnection {
     return this._connection;
