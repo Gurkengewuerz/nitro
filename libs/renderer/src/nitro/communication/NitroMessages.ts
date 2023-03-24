@@ -71,6 +71,7 @@ import {
   CallForHelpResultMessageEvent,
   CameraPublishStatusMessageEvent,
   CameraPurchaseOKMessageEvent,
+  CameraSnapshotMessageEvent,
   CameraStorageUrlMessageEvent,
   CampaignCalendarDataMessageEvent,
   CampaignCalendarDoorOpenedMessageEvent,
@@ -108,6 +109,7 @@ import {
   ChatReviewSessionVotingStatusMessageEvent,
   CheckUserNameMessageComposer,
   CheckUserNameResultMessageEvent,
+  CitizenshipVipOfferPromoEnabledEvent,
   ClientHelloMessageComposer,
   ClientPingEvent,
   CloseIssueDefaultActionMessageComposer,
@@ -129,6 +131,8 @@ import {
   CompleteDiffieHandshakeMessageComposer,
   CompostPlantMessageComposer,
   ConcurrentUsersGoalProgressMessageEvent,
+  ConfirmBreedingRequestEvent,
+  ConfirmBreedingResultEvent,
   ConfirmPetBreedingComposer,
   ConnectionErrorEvent,
   ControlYoutubeDisplayPlaybackMessageComposer,
@@ -168,6 +172,7 @@ import {
   FigureUpdateEvent,
   FindFriendsProcessResultEvent,
   FindNewFriendsMessageComposer,
+  FireworkChargeDataEvent,
   FlatAccessDeniedMessageEvent,
   FlatControllerAddedEvent,
   FlatControllerRemovedEvent,
@@ -355,6 +360,7 @@ import {
   GetYoutubeDisplayStatusMessageComposer,
   GiftReceiverNotFoundEvent,
   GiftWrappingConfigurationEvent,
+  GoToBreedingNestFailureEvent,
   GoToFlatMessageComposer,
   GotMysteryBoxPrizeMessageEvent,
   GroupAdminGiveComposer,
@@ -388,6 +394,7 @@ import {
   GroupSettingsEvent,
   GroupUnfavoriteComposer,
   GuestRoomSearchResultEvent,
+  GuideAdvertisementReadMessageComposer,
   GuideOnDutyStatusMessageEvent,
   GuideReportingStatusMessageEvent,
   GuideSessionAttachedMessageEvent,
@@ -534,6 +541,7 @@ import {
   NavigatorSearchesEvent,
   NavigatorSettingsEvent,
   NavigatorSettingsSaveComposer,
+  NestBreedingSuccessEvent,
   NewConsoleMessageEvent,
   NewFriendRequestEvent,
   NewUserExperienceGetGiftsComposer,
@@ -548,6 +556,7 @@ import {
   NowPlayingMessageEvent,
   ObjectsDataUpdateEvent,
   ObjectsRollingEvent,
+  OfferRewardDeliveredMessageEvent,
   OfficialSongIdMessageEvent,
   OneWayDoorStatusMessageEvent,
   OpenCampaignCalendarDoorAsStaffComposer,
@@ -565,6 +574,7 @@ import {
   PerformanceLogMessageComposer,
   PerkAllowancesMessageEvent,
   PetAddedToInventoryEvent,
+  PetBreedingMessageEvent,
   PetBreedingResultEvent,
   PetExperienceEvent,
   PetFigureUpdateEvent,
@@ -668,6 +678,7 @@ import {
   ResetPhoneNumberStateMessageComposer,
   ResetResolutionAchievementMessageComposer,
   RespectReceivedEvent,
+  RestoreClientMessageEvent,
   RoomAdErrorEvent,
   RoomAdEventTabAdClickedComposer,
   RoomAdEventTabViewedComposer,
@@ -705,6 +716,7 @@ import {
   RoomNetworkOpenConnectionMessageComposer,
   RoomOccupiedTilesMessageEvent,
   RoomPaintEvent,
+  RoomPollResultEvent,
   RoomReadyMessageEvent,
   RoomRightsClearEvent,
   RoomRightsEvent,
@@ -783,7 +795,10 @@ import {
   ShowEnforceRoomCategoryDialogEvent,
   ShowMysteryBoxWaitMessageEvent,
   SimpleAlertMessageEvent,
+  SnowStormOnStageEndingComposer,
+  SnowStormOnStageEndingEvent,
   StartCampaignMessageComposer,
+  StartRoomPollEvent,
   SubmitRoomToCompetitionMessageComposer,
   TalentLevelUpEvent,
   TalentTrackComposer,
@@ -877,6 +892,7 @@ import {
   VersionCheckMessageComposer,
   VisitUserComposer,
   VoteForRoomMessageComposer,
+  VotePollCounterMessageComposer,
   VoucherRedeemErrorMessageEvent,
   VoucherRedeemOkMessageEvent,
   WardrobeMessageEvent,
@@ -950,6 +966,7 @@ export class NitroMessages implements IMessageConfiguration {
     this._events.set(IncomingHeader.COMPETITION_STATUS, CompetitionStatusMessageEvent);
     this._events.set(IncomingHeader.INIT_CAMERA, InitCameraMessageEvent);
     this._events.set(IncomingHeader.THUMBNAIL_STATUS, ThumbnailStatusMessageEvent);
+    this._events.set(IncomingHeader.CAMERA_SNAPSHOT, CameraSnapshotMessageEvent);
 
     // CAMPAIGN
     this._events.set(IncomingHeader.CAMPAIGN_CALENDAR_DATA, CampaignCalendarDataMessageEvent);
@@ -1247,6 +1264,7 @@ export class NitroMessages implements IMessageConfiguration {
     this._events.set(IncomingHeader.POLL_CONTENTS, PollContentsEvent);
     this._events.set(IncomingHeader.POLL_ERROR, PollErrorEvent);
     this._events.set(IncomingHeader.POLL_OFFER, PollOfferEvent);
+    this._events.set(IncomingHeader.POLL_START_ROOM, StartRoomPollEvent);
     this._events.set(IncomingHeader.QUESTION_ANSWERED, QuestionAnsweredEvent);
     this._events.set(IncomingHeader.QUESTION_FINISHED, QuestionFinishedEvent);
 
@@ -1426,6 +1444,9 @@ export class NitroMessages implements IMessageConfiguration {
     // NUX
     this._events.set(IncomingHeader.NEW_USER_EXPERIENCE_GIFT_OFFER, NewUserExperienceGiftOfferMessageEvent);
     this._events.set(IncomingHeader.NEW_USER_EXPERIENCE_NOT_COMPLETE, NewUserExperienceNotCompleteEvent);
+
+    // FIREWORK
+    this._events.set(IncomingHeader.FIREWORK_CHARGE_DATA, FireworkChargeDataEvent);
 
     // PHONE
     this._events.set(IncomingHeader.PHONE_COLLECTION_STATE, PhoneCollectionStateMessageEvent);

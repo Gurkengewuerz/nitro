@@ -50,7 +50,7 @@ export const NitroCardView: FC<NitroCardViewProps> = props => {
     const observer = new ResizeObserver(event => {
       const screen = `${window.innerWidth}x${window.innerHeight}`;
       const newStorage = {...GetLocalStorage<Partial<WindowSaveScreenOptions>>(`nitro.windows.${uniqueKey}`)} as WindowSaveScreenOptions;
-      newStorage[screen] = newStorage?.[screen] || {} as WindowSaveOptions;
+      newStorage[screen] = newStorage?.[screen] || ({} as WindowSaveOptions);
       newStorage[screen].size = {width: element.offsetWidth, height: element.offsetHeight};
       SetLocalStorage<WindowSaveScreenOptions>(`nitro.windows.${uniqueKey}`, newStorage);
     });

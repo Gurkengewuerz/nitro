@@ -127,6 +127,7 @@ export class IncomingHeader {
   public static CONVERTED_ROOM_ID = 1331;
   public static GUEST_ROOM_SEARCH_RESULT = 52;
   public static NOTIFICATION_LIST = 1992;
+  public static NOTIFICATION_OFFER_REWARD_DELIVERED = 2125;
   public static NOTIFICATION_SIMPLE_ALERT = 5100;
   public static NOTIFICATION_ELEMENT_POINTER = 1787;
   public static PET_FIGURE_UPDATE = 1924;
@@ -246,6 +247,7 @@ export class IncomingHeader {
   public static USER_INFO = 2725;
   public static USER_OUTFITS = 3315;
   public static USER_PERKS = 2586;
+  public static PERK_CITIZENSHIP_VIP_OFFER_PROMO_ENABLED = 2278;
   public static USER_PERMISSIONS = 411;
   public static USER_PET_ADD = 2101;
   public static USER_PET_REMOVE = 3253;
@@ -334,6 +336,7 @@ export class IncomingHeader {
   public static CAMERA_PUBLISH_STATUS = 2057;
   public static CAMERA_PURCHASE_OK = 2783;
   public static CAMERA_STORAGE_URL = 3696;
+  public static CAMERA_SNAPSHOT = 463;
   public static COMPETITION_STATUS = 133;
   public static INIT_CAMERA = 3878;
   public static THUMBNAIL_STATUS = 3595;
@@ -398,6 +401,8 @@ export class IncomingHeader {
   public static POLL_CONTENTS = 2997;
   public static POLL_ERROR = 662;
   public static POLL_OFFER = 3785;
+  public static POLL_ROOM_RESULT = 5201;
+  public static POLL_START_ROOM = 5200;
   public static QUESTION_ANSWERED = 2589;
   public static QUESTION_FINISHED = 1066;
   public static CFH_PENDING_CALLS = 1121;
@@ -463,4 +468,7 @@ export class IncomingHeader {
   public static WEEKLY_GAME2_LEADERBOARD = 2196;
   public static RENTABLE_FURNI_RENT_OR_BUYOUT_OFFER = 35;
   public static HANDSHAKE_IDENTITY_ACCOUNT = 3523;
+  public static FIREWORK_CHARGE_DATA = 5210;
+  public static SNOWSTORM_ON_STAGE_ENDING = 5025;
+  public static RESTORE_CLIENT = 426;
 }

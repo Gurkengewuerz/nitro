@@ -51,7 +51,8 @@ export const ChooserWidgetView: FC<ChooserWidgetViewProps> = props => {
                 alignItems="center"
                 className={classNames("rounded p-1", selectedItem === row && "bg-muted")}
                 pointer
-                onClick={event => setSelectedItem(row)}>
+                onClick={event => setSelectedItem(row)}
+              >
                 <Text truncate>
                   {row.name} {canSeeId && " - " + row.id}
                 </Text>
