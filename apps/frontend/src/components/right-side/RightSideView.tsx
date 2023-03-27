@@ -1,5 +1,4 @@
 import {FC} from "react";
-
 import {Column} from "../../common";
 import {OfferView} from "../catalog/views/targeted-offer/OfferView";
 import {GroupRoomInformationView} from "../groups/views/GroupRoomInformationView";
@@ -7,6 +6,7 @@ import {NotificationCenterView} from "../notification-center/NotificationCenterV
 import {PurseView} from "../purse/PurseView";
 import {MysteryBoxExtensionView} from "../room/widgets/mysterybox/MysteryBoxExtensionView";
 import {RoomPromotesWidgetView} from "../room/widgets/room-promotes/RoomPromotesWidgetView";
+import {RadioView} from "./RadioView";
 
 export const RightSideView: FC<{}> = props => {
   return (
@@ -18,6 +18,7 @@ export const RightSideView: FC<{}> = props => {
         <OfferView />
         <RoomPromotesWidgetView />
         <NotificationCenterView />
+        <RadioView />
       </Column>
     </div>
   );

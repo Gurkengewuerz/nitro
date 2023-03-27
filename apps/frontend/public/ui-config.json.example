@@ -26,6 +26,8 @@
     "game.center.enabled": false,
     "guides.enabled": true,
     "toolbar.hide.quests": true,
+	"enable.radioplayer": true,
+	"radio.stream.url": "https://www.mp3streams.nl/zender/radio-538/stream/4-mp3-128",
     "navigator.room.models": [
         { "clubLevel": 0, "tileSize": 104, "name": "a" },
         { "clubLevel": 0, "tileSize": 94, "name": "b" },
