@@ -18,8 +18,8 @@ export const RadioView = () => {
     if (resp !== undefined) {
       resp
         .then(_ => {
-          document.getElementById("startRadio").style.display = "none";
-          document.getElementById("pauseRadio").style.display = "inline-block";
+          document.getElementById("startRadio").style.display = "inline-flex";
+          document.getElementById("pauseRadio").style.display = "inline-flex";
           isPlayed = true;
         })
         .catch(error => {});
@@ -29,8 +29,8 @@ export const RadioView = () => {
   if (!testme) return console.log("Internal Nitro player is disabled in the ui-config");
 
   const pauseRadio = () => {
-    document.getElementById("startRadio").style.display = "inline-block";
-    document.getElementById("pauseRadio").style.display = "none";
+    document.getElementById("startRadio").style.display = "inline-flex";
+    document.getElementById("pauseRadio").style.display = "inline-flex";
     audio.pause();
 
     audio.src = "";
