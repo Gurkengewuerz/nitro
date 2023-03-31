@@ -6,7 +6,7 @@ import {NotificationCenterView} from "../notification-center/NotificationCenterV
 import {PurseView} from "../purse/PurseView";
 import {MysteryBoxExtensionView} from "../room/widgets/mysterybox/MysteryBoxExtensionView";
 import {RoomPromotesWidgetView} from "../room/widgets/room-promotes/RoomPromotesWidgetView";
-import {RadioView} from "./RadioView";
+import {RadioView} from "./radioview/RadioView";
 
 export const RightSideView: FC<{}> = props => {
   return (

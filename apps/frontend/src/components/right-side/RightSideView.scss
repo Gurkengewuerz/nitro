@@ -8,3 +8,17 @@
   z-index: $rightside-zindex;
   pointer-events: none;
 }
+
+.nitro-notification-radio {
+  pointer-events: all;
+  padding: 6px 5px;
+  background-image: url("@/assets/images/radio/bg.png");
+  background-repeat: no-repeat;
+  background-color: rgba($dark, 0.95);
+  box-shadow: inset 0px 5px lighten(rgba($dark, 0.6), 2.5), inset 0 -4px darken(rgba($dark, 0.6), 4);
+  font-size: $font-size-sm;
+
+  .radio-font-icons {
+    font-size: 20px;
+  }
+}
