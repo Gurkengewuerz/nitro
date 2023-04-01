@@ -1,20 +1,11 @@
-import { useState, useRef } from "react";
-import { FaPlayCircle, FaPauseCircle } from "react-icons/fa";
-import { GetConfiguration } from "../../../api";
-import {
-  Base,
-  Text,
-  Column,
-  Flex,
-  Button,
-  LayoutGridItem,
-} from "../../../common";
+import {useState} from "react";
+import {FaPauseCircle, FaPlayCircle} from "react-icons/fa";
+
+import {GetConfiguration} from "../../../api";
+import {Base, Button, Column, Flex, LayoutGridItem, Text} from "../../../common";
 
 export const RadioView = () => {
-  const [audio, setAudio] = useState(
-    new Audio(GetConfiguration<string>("radio.stream.url"))
-  );
-  const playerRef = useRef();
+  const [audio, setAudio] = useState(new Audio(GetConfiguration<string>("radio.stream.url")));
 
   const [player, setPlayer] = useState({
     playing: true,
@@ -26,19 +17,18 @@ export const RadioView = () => {
 
     if (resp !== undefined) {
       resp;
-      setPlayer({ ...player, playing: true, pause: false });
+      setPlayer({...player, playing: true, pause: false});
     }
   };
 
-  if (!GetConfiguration<boolean>("enable.radioplayer"))
-    return console.log("Internal Nitro player is disabled in the ui-config");
+  if (!GetConfiguration<boolean>("enable.radioplayer")) return console.log("Internal Nitro player is disabled in the ui-config");
 
   const PauseClick = () => {
-    setPlayer({ ...player, playing: false, pause: true });
+    setPlayer({...player, playing: false, pause: true});
     audio.pause();
   };
 
-  const updateVolume = (volume) => {
+  const updateVolume = volume => {
     let radioVolume = Math.round(volume);
 
     radioVolume = Math.max(0, radioVolume);
@@ -84,8 +74,8 @@ export const RadioView = () => {
           </>
         </Flex>
         <input
-          onChange={(e) => updateVolume(e.target.value)}
-          style={{ marginTop: "7px", display: "inline-block" }}
+          onChange={e => updateVolume(e.target.value)}
+          style={{marginTop: "7px", display: "inline-block"}}
           type="range"
           className="form-range"
           id="customRange1"
