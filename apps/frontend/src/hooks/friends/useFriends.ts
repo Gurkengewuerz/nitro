@@ -269,4 +269,3 @@ const useFriendsState = () => {
 };
 
 export const useFriends = () => useBetween(useFriendsState);
-

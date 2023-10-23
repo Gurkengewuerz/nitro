@@ -389,4 +389,3 @@ export const AvatarEditorView: FC<{}> = props => {
     </NitroCardView>
   );
 };
-

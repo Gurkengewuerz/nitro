@@ -55,4 +55,3 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
     </AutoGrid>
   );
 };
-

@@ -95,4 +95,3 @@ export const AvatarEditorModelView: FC<AvatarEditorModelViewProps> = props => {
     </Grid>
   );
 };
-

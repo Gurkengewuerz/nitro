@@ -13,7 +13,7 @@ import {FurnitureGiftOpeningView} from "./FurnitureGiftOpeningView";
 import {FurnitureHighScoreView} from "./FurnitureHighScoreView";
 import {FurnitureInternalLinkView} from "./FurnitureInternalLinkView";
 import {FurnitureMannequinView} from "./FurnitureMannequinView";
-import { FurnitureRentableSpaceView } from './FurnitureRentableSpaceView';
+import {FurnitureRentableSpaceView} from "./FurnitureRentableSpaceView";
 import {FurnitureRoomLinkView} from "./FurnitureRoomLinkView";
 import {FurnitureSpamWallPostItView} from "./FurnitureSpamWallPostItView";
 import {FurnitureStackHeightView} from "./FurnitureStackHeightView";
@@ -50,4 +50,3 @@ export const FurnitureWidgetsView: FC<{}> = props => {
     </Base>
   );
 };
-

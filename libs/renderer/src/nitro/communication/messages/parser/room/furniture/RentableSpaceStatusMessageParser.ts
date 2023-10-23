@@ -11,7 +11,7 @@ export class RentableSpaceStatusMessageParser implements IMessageParser {
   public static readonly CANT_RENT_NO_HABBO_CLUB = 203;
   public static readonly CANT_RENT = 300;
   public static readonly CANT_RENT_GENERIC = 400;
-  
+
   private _rented: boolean;
   private _renterId: number;
   private _renterName: string;

@@ -210,7 +210,8 @@ export const RoomToolsWidgetView: FC<{}> = props => {
                             bold={history.roomId === navigatorData.currentRoomId}
                             variant={history.roomId === navigatorData.currentRoomId ? "white" : "muted"}
                             pointer
-                            onClick={() => TryVisitRoom(history.roomId)}>
+                            onClick={() => TryVisitRoom(history.roomId)}
+                          >
                             {history.roomName}
                           </Text>
                         );
@@ -241,7 +242,8 @@ export const RoomToolsWidgetView: FC<{}> = props => {
                           pointer
                           variant="white"
                           className="rounded bg-primary p-1"
-                          onClick={() => handleToolClick("navigator_search_tag", tag)}>
+                          onClick={() => handleToolClick("navigator_search_tag", tag)}
+                        >
                           #{tag}
                         </Text>
                       ))}
@@ -256,4 +258,3 @@ export const RoomToolsWidgetView: FC<{}> = props => {
     </Flex>
   );
 };
-

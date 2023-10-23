@@ -37,7 +37,8 @@ export const AvatarInfoWidgetNameView: FC<AvatarInfoWidgetNameViewProps> = props
       userType={nameInfo.userType}
       fades={nameInfo.id !== GetSessionDataManager().userId}
       classNames={getClassNames}
-      onClose={onClose}>
+      onClose={onClose}
+    >
       <div className="relation-icon"></div>
       <div className="text-shadow">{nameInfo.name}</div>
     </ContextMenuView>
