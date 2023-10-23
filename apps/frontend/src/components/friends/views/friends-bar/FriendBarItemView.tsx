@@ -1,8 +1,8 @@
-import {MouseEventType} from "@nitro/renderer";
+import {FindNewFriendsMessageComposer, MouseEventType} from "@nitro/renderer";
 import {FC, useEffect, useRef, useState} from "react";
 
-import {GetUserProfile, LocalizeText, MessengerFriend, OpenMessengerChat} from "../../../../api";
-import {Base, LayoutAvatarImageView, LayoutBadgeImageView} from "../../../../common";
+import {GetUserProfile, LocalizeText, MessengerFriend, OpenMessengerChat, SendMessageComposer} from "../../../../api";
+import {Base, Button, LayoutAvatarImageView, LayoutBadgeImageView} from "../../../../common";
 import {useFriends} from "../../../../hooks";
 
 export const FriendBarItemView: FC<{friend: MessengerFriend}> = props => {
@@ -29,9 +29,19 @@ export const FriendBarItemView: FC<{friend: MessengerFriend}> = props => {
 
   if (!friend) {
     return (
-      <div ref={elementRef} className="btn btn-primary friend-bar-item friend-bar-search">
+      <div ref={elementRef} className="btn btn-primary friend-bar-item-search friend-bar-search" onClick={event => setVisible(prevValue => !prevValue)}>
         <div className="friend-bar-item-head position-absolute" />
-        <div className="text-truncate">{LocalizeText("friend.bar.find.title")}</div>
+        <div className="text-truncate left-text">{LocalizeText("friend.bar.find.title")}</div>
+        {isVisible && (
+          <>
+            <div className="search-content">
+              <div className="bg-white text-black mt-2 mb-2 px-1 py-1">{LocalizeText("friend.bar.find.text")}</div>
+              <Button variant="white" onClick={() => SendMessageComposer(new FindNewFriendsMessageComposer())}>
+                {LocalizeText("friend.bar.find.button")}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     );
   }
@@ -40,8 +50,7 @@ export const FriendBarItemView: FC<{friend: MessengerFriend}> = props => {
     <div
       ref={elementRef}
       className={"btn btn-success friend-bar-item " + (isVisible ? "friend-bar-item-active" : "")}
-      onClick={event => setVisible(prevValue => !prevValue)}
-    >
+      onClick={event => setVisible(prevValue => !prevValue)}>
       <div className={`friend-bar-item-head position-absolute ${friend.id > 0 ? "avatar" : "group"}`}>
         {friend.id > 0 && <LayoutAvatarImageView headOnly={true} figure={friend.figure} direction={2} />}
         {friend.id <= 0 && <LayoutBadgeImageView isGroup={true} badgeCode={friend.figure} />}
@@ -59,3 +68,4 @@ export const FriendBarItemView: FC<{friend: MessengerFriend}> = props => {
     </div>
   );
 };
+

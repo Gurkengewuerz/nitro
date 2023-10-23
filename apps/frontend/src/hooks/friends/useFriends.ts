@@ -1,6 +1,7 @@
 import {
   AcceptFriendMessageComposer,
   DeclineFriendMessageComposer,
+  FindFriendsProcessResultEvent,
   FollowFriendMessageComposer,
   FriendListFragmentEvent,
   FriendListUpdateComposer,
@@ -17,8 +18,9 @@ import {
 import {useEffect, useMemo, useState} from "react";
 import {useBetween} from "use-between";
 
-import {CloneObject, GetSessionDataManager, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer} from "../../api";
+import {CloneObject, GetSessionDataManager, LocalizeText, MessengerFriend, MessengerRequest, MessengerSettings, SendMessageComposer} from "../../api";
 import {useMessageEvent} from "../events";
+import {useNotification} from "../notification";
 
 const useFriendsState = () => {
   const [friends, setFriends] = useState<MessengerFriend[]>([]);
@@ -26,6 +28,7 @@ const useFriendsState = () => {
   const [sentRequests, setSentRequests] = useState<number[]>([]);
   const [dismissedRequestIds, setDismissedRequestIds] = useState<number[]>([]);
   const [settings, setSettings] = useState<MessengerSettings>(null);
+  const {simpleAlert} = useNotification();
 
   const onlineFriends = useMemo(() => {
     const onlineFriends = friends.filter(friend => friend.online);
@@ -223,6 +226,20 @@ const useFriendsState = () => {
     });
   });
 
+  useMessageEvent<FindFriendsProcessResultEvent>(FindFriendsProcessResultEvent, event => {
+    const parser = event.getParser();
+
+    if (!parser) return;
+
+    simpleAlert(
+      LocalizeText(!parser.success ? "friendbar.find.error.text" : "friendbar.find.success.text"),
+      "",
+      "",
+      "",
+      LocalizeText(!parser.success ? "friendbar.find.error.title" : "friendbar.find.success.title")
+    );
+  });
+
   useEffect(() => {
     SendMessageComposer(new MessengerInitComposer());
 
@@ -252,3 +269,4 @@ const useFriendsState = () => {
 };
 
 export const useFriends = () => useBetween(useFriendsState);
+
