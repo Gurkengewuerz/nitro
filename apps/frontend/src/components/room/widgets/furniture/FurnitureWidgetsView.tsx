@@ -7,6 +7,7 @@ import {FurnitureCraftingView} from "./FurnitureCraftingView";
 import {FurnitureDimmerView} from "./FurnitureDimmerView";
 import {FurnitureExchangeCreditView} from "./FurnitureExchangeCreditView";
 import {FurnitureExternalImageView} from "./FurnitureExternalImageView";
+import {FurnitureFootballGateView} from "./FurnitureFootballGateView";
 import {FurnitureFriendFurniView} from "./FurnitureFriendFurniView";
 import {FurnitureGiftOpeningView} from "./FurnitureGiftOpeningView";
 import {FurnitureHighScoreView} from "./FurnitureHighScoreView";
@@ -43,6 +44,8 @@ export const FurnitureWidgetsView: FC<{}> = props => {
       <FurnitureTrophyView />
       <FurnitureContextMenuView />
       <FurnitureYoutubeDisplayView />
+      <FurnitureFootballGateView />
     </Base>
   );
 };
+
