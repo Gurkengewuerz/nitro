@@ -1,7 +1,7 @@
 import {ContextMenuEnum, CustomUserNotificationMessageEvent, RoomObjectCategory} from "@nitro/renderer";
 import {FC} from "react";
 
-import {GetGroupInformation, GetSessionDataManager, LocalizeText} from "../../../../../api";
+import {GetConfiguration, GetGroupInformation, GetSessionDataManager, LocalizeText} from "../../../../../api";
 import {
   EFFECTBOX_OPEN,
   GROUP_FURNITURE,
@@ -58,7 +58,7 @@ export const FurnitureContextMenuView: FC<{}> = props => {
         simpleAlert(
           LocalizeText("viphopper.viprequired.bodytext"),
           null,
-          "catalog/open/habbo_club",
+          "catalog/open/" + GetConfiguration("catalog.links")["hc.buy_hc"]),
           LocalizeText("viprequired.buy.vip"),
           LocalizeText("viprequired.header"),
           null
@@ -68,7 +68,7 @@ export const FurnitureContextMenuView: FC<{}> = props => {
         simpleAlert(
           LocalizeText("gate.viprequired.bodytext"),
           null,
-          "catalog/open/habbo_club",
+          "catalog/open/" + GetConfiguration("catalog.links")["hc.buy_hc"]),
           LocalizeText("viprequired.buy.vip"),
           LocalizeText("gate.viprequired.title"),
           null
