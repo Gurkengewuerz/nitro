@@ -58,7 +58,7 @@ export const FurnitureContextMenuView: FC<{}> = props => {
         simpleAlert(
           LocalizeText("viphopper.viprequired.bodytext"),
           null,
-          "catalog/open/" + GetConfiguration("catalog.links")["hc.buy_hc"]),
+          "catalog/open/" + (GetConfiguration<any>("catalog.links")["hc.buy_hc"]),
           LocalizeText("viprequired.buy.vip"),
           LocalizeText("viprequired.header"),
           null
@@ -68,7 +68,7 @@ export const FurnitureContextMenuView: FC<{}> = props => {
         simpleAlert(
           LocalizeText("gate.viprequired.bodytext"),
           null,
-          "catalog/open/" + GetConfiguration("catalog.links")["hc.buy_hc"]),
+          "catalog/open/" + GetConfiguration<any>("catalog.links")["hc.buy_hc"],
           LocalizeText("viprequired.buy.vip"),
           LocalizeText("gate.viprequired.title"),
           null
