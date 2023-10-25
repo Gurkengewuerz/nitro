@@ -1,7 +1,16 @@
-import {IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer} from "@nitro/renderer";
+import {HabboClubLevelEnum, IAvatarFigureContainer, SaveWardrobeOutfitMessageComposer} from "@nitro/renderer";
 import {Dispatch, FC, SetStateAction, useCallback, useMemo} from "react";
 
-import {FigureData, GetAvatarRenderManager, GetClubMemberLevel, GetConfiguration, LocalizeText, SendMessageComposer} from "../../../api";
+import {
+  CreateLinkEvent,
+  FigureData,
+  GetAvatarRenderManager,
+  GetClubMemberLevel,
+  GetConfiguration,
+  GetSessionDataManager,
+  LocalizeText,
+  SendMessageComposer,
+} from "../../../api";
 import {AutoGrid, Base, Button, Flex, LayoutAvatarImageView, LayoutCurrencyIcon, LayoutGridItem} from "../../../common";
 
 export interface AvatarEditorWardrobeViewProps {
@@ -30,6 +39,8 @@ export const AvatarEditorWardrobeView: FC<AvatarEditorWardrobeViewProps> = props
   const saveFigureAtWardrobeIndex = useCallback(
     (index: number) => {
       if (!figureData || index >= savedFigures.length || index < 0) return;
+
+      if (GetSessionDataManager().clubLevel === HabboClubLevelEnum.NO_CLUB) return CreateLinkEvent("habboUI/open/hccenter");
 
       const newFigures = [...savedFigures];
 

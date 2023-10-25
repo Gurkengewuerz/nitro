@@ -1,6 +1,7 @@
+import {HabboClubLevelEnum} from "@nitro/renderer";
 import {Dispatch, FC, SetStateAction, useCallback, useEffect, useRef} from "react";
 
-import {AvatarEditorGridPartItem, CategoryData, IAvatarEditorCategoryModel} from "../../../../api";
+import {AvatarEditorGridPartItem, CategoryData, CreateLinkEvent, GetSessionDataManager, IAvatarEditorCategoryModel} from "../../../../api";
 import {AutoGrid} from "../../../../common";
 import {AvatarEditorFigureSetItemView} from "./AvatarEditorFigureSetItemView";
 
@@ -25,6 +26,8 @@ export const AvatarEditorFigureSetView: FC<AvatarEditorFigureSetViewProps> = pro
       const index = category.parts.indexOf(item);
 
       if (index === -1) return;
+
+      if (item.isHC && GetSessionDataManager().clubLevel === HabboClubLevelEnum.NO_CLUB) return CreateLinkEvent("habboUI/open/hccenter");
 
       model.selectPart(category.name, index);
 

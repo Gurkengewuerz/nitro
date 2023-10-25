@@ -649,6 +649,12 @@
     height: 38px;
   }
 
+  &.icon-hc_mini {
+    background-image: url("@/assets/images/catalog/hc_mini.png");
+    width: 18px;
+    height: 18px;
+  }
+
   &.spin {
     animation: rotating 1s linear infinite;
   }

@@ -130,13 +130,6 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
     const priceCredits = currentOffer.priceInCredits * purchaseOptions.quantity;
     const pricePoints = currentOffer.priceInActivityPoints * purchaseOptions.quantity;
 
-    if (GetClubMemberLevel() < currentOffer.clubLevel)
-      return (
-        <Button variant="danger" disabled>
-          {LocalizeText("catalog.alert.hc.required")}
-        </Button>
-      );
-
     if (isLimitedSoldOut)
       return (
         <Button variant="danger" disabled>
@@ -197,6 +190,7 @@ export const CatalogPurchaseWidgetView: FC<CatalogPurchaseWidgetViewProps> = pro
             purchaseOptions.quantity > 1 ||
             !currentOffer.giftable ||
             isLimitedSoldOut ||
+            GetClubMemberLevel() < currentOffer.clubLevel ||
             (purchaseOptions.extraParamRequired && (!purchaseOptions.extraData || !purchaseOptions.extraData.length))
           }
           onClick={event => purchase(true)}

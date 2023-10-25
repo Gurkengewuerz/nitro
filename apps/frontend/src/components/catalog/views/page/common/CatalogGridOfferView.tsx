@@ -1,8 +1,8 @@
-import {MouseEventType} from "@nitro/renderer";
+import {HabboClubLevelEnum, MouseEventType} from "@nitro/renderer";
 import {FC, MouseEvent, useMemo, useState} from "react";
 
 import {IPurchasableOffer, Offer, ProductTypeEnum} from "../../../../../api";
-import {LayoutAvatarImageView, LayoutGridItem, LayoutGridItemProps} from "../../../../../common";
+import {Base, LayoutAvatarImageView, LayoutGridItem, LayoutGridItemProps} from "../../../../../common";
 import {useCatalog, useInventoryFurni} from "../../../../../hooks";
 
 interface CatalogGridOfferViewProps extends LayoutGridItemProps {
@@ -55,8 +55,8 @@ export const CatalogGridOfferView: FC<CatalogGridOfferViewProps> = props => {
       onMouseDown={onMouseEvent}
       onMouseUp={onMouseEvent}
       onMouseOut={onMouseEvent}
-      {...rest}
-    >
+      {...rest}>
+      {offer.clubLevel !== HabboClubLevelEnum.NO_CLUB && <Base className="icon icon-hc_mini position-absolute top-0 end-1" />}
       {offer.product.productType === ProductTypeEnum.ROBOT && <LayoutAvatarImageView figure={offer.product.extraParam} headOnly={true} direction={3} />}
     </LayoutGridItem>
   );

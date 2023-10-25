@@ -1,6 +1,7 @@
+import {HabboClubLevelEnum} from "@nitro/renderer";
 import {FC, useCallback, useEffect, useRef} from "react";
 
-import {AvatarEditorGridColorItem, CategoryData, IAvatarEditorCategoryModel} from "../../../../api";
+import {AvatarEditorGridColorItem, CategoryData, CreateLinkEvent, GetSessionDataManager, IAvatarEditorCategoryModel} from "../../../../api";
 import {AutoGrid} from "../../../../common";
 import {AvatarEditorPaletteSetItem} from "./AvatarEditorPaletteSetItemView";
 
@@ -20,6 +21,8 @@ export const AvatarEditorPaletteSetView: FC<AvatarEditorPaletteSetViewProps> = p
       const index = paletteSet.indexOf(item);
 
       if (index === -1) return;
+
+      if (item.isHC && GetSessionDataManager().clubLevel === HabboClubLevelEnum.NO_CLUB) return CreateLinkEvent("habboUI/open/hccenter");
 
       model.selectColor(category.name, index, paletteIndex);
     },
