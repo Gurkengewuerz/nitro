@@ -1,4 +1,10 @@
-import {GetOfficialSongIdMessageComposer, MusicPriorities, OfficialSongIdMessageEvent} from "@nitro/renderer";
+import {
+  GetOfficialSongIdMessageComposer,
+  ISongInfo,
+  MusicPriorities,
+  OfficialSongIdMessageEvent,
+  TraxSongInfoMessageEvent,
+} from "@nitro/renderer";
 import {FC, useEffect, useState} from "react";
 
 import {GetConfiguration, GetNitroInstance, LocalizeText, ProductTypeEnum, SendMessageComposer} from "../../../../../api";
@@ -15,21 +21,49 @@ import {CatalogViewProductWidgetView} from "../widgets/CatalogViewProductWidgetV
 import {CatalogLayoutProps} from "./CatalogLayout.types";
 
 export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
+  let _traxSongInfoEvent: TraxSongInfoMessageEvent;
+
   const {page = null} = props;
   const [songId, setSongId] = useState(-1);
   const [officialSongId, setOfficialSongId] = useState("");
+  const [songName, setSongName] = useState("");
   const {currentOffer = null, currentPage = null} = useCatalog();
 
   const previewSong = (previewSongId: number) =>
     GetNitroInstance().soundManager.musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0);
+
+  const displaySongName = (songData: ISongInfo): void => {
+    setSongName(`${songData.creator} - ${songData.name}`);
+  };
 
   useMessageEvent<OfficialSongIdMessageEvent>(OfficialSongIdMessageEvent, event => {
     const parser = event.getParser();
 
     if (parser.officialSongId !== officialSongId) return;
 
-    setSongId(parser.songId);
+    const thisSongId = parser.songId;
+    setSongId(thisSongId);
+
+    _traxSongInfoEvent = new TraxSongInfoMessageEvent((event: TraxSongInfoMessageEvent): void => {
+      const parser = event.getParser();
+
+      for (const song of parser.songs) {
+        if (thisSongId !== song.id) continue;
+        displaySongName(song as unknown as ISongInfo);
+        break;
+      }
+
+      clearTraxSongInfoEvent();
+    });
+    GetNitroInstance().communication.connection.addMessageEvent(_traxSongInfoEvent);
+
+    const songData = GetNitroInstance().soundManager.musicController?.getSongInfo(thisSongId);
+    if (songData) displaySongName(songData);
   });
+
+  const clearTraxSongInfoEvent = (): void => {
+    if (_traxSongInfoEvent) GetNitroInstance().communication.connection.removeMessageEvent(_traxSongInfoEvent);
+  };
 
   useEffect(() => {
     if (!currentOffer) return;
@@ -56,7 +90,10 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
   }, [currentOffer]);
 
   useEffect(() => {
-    return () => GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+    return () => {
+      GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+      clearTraxSongInfoEvent();
+    };
   }, []);
 
   return (
@@ -70,7 +107,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
           {!currentOffer && (
             <>
               {!!page.localization.getImage(1) && <LayoutImage imageUrl={page.localization.getImage(1)} />}
-              <Text center dangerouslySetInnerHTML={{__html: page.localization.getText(0)}} />
+              <Text center dangerouslySetInnerHTML={{__html: songName ?? page.localization.getText(0)}} />
             </>
           )}
           {currentOffer && (
@@ -87,7 +124,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
               <Column grow gap={1}>
                 <CatalogLimitedItemWidgetView fullWidth />
                 <Text grow truncate>
-                  {currentOffer.localizationName}
+                  {songName ?? currentOffer.localizationName}
                 </Text>
                 {songId > -1 && <Button onClick={() => previewSong(songId)}>{LocalizeText("play_preview_button")}</Button>}
                 <Flex justifyContent="between">
