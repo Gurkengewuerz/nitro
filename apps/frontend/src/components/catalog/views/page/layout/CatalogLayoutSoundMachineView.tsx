@@ -1,10 +1,4 @@
-import {
-  GetOfficialSongIdMessageComposer,
-  ISongInfo,
-  MusicPriorities,
-  OfficialSongIdMessageEvent,
-  TraxSongInfoMessageEvent,
-} from "@nitro/renderer";
+import {GetOfficialSongIdMessageComposer, ISongInfo, MusicPriorities, OfficialSongIdMessageEvent, TraxSongInfoMessageEvent} from "@nitro/renderer";
 import {FC, useEffect, useState} from "react";
 
 import {GetConfiguration, GetNitroInstance, LocalizeText, ProductTypeEnum, SendMessageComposer} from "../../../../../api";
@@ -25,14 +19,24 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
 
   const {page = null} = props;
   const [songId, setSongId] = useState(-1);
+  const [duration, setDuration] = useState("");
+  const [isPlaying, setIsPlaying] = useState(false);
   const [officialSongId, setOfficialSongId] = useState("");
   const [songName, setSongName] = useState("");
   const {currentOffer = null, currentPage = null} = useCatalog();
 
-  const previewSong = (previewSongId: number) =>
-    GetNitroInstance().soundManager.musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0);
+  const previewSong = (previewSongId: number) => (
+    GetNitroInstance().soundManager.musicController?.playSong(previewSongId, MusicPriorities.PRIORITY_PURCHASE_PREVIEW, 15, 0, 0, 0), setIsPlaying(true)
+  );
+  const stopPreviewSong = () => (GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW), setIsPlaying(false));
 
   const displaySongName = (songData: ISongInfo): void => {
+    const duration = songData.length;
+    const seconds = Math.floor((duration / 1000) % 60);
+    const minutes = Math.floor((duration / 1000 / 60) % 60);
+
+    setDuration([minutes.toString(), seconds.toString().padStart(2, "0")].join(":"));
+
     setSongName(`${songData.creator} - ${songData.name}`);
   };
 
@@ -86,12 +90,12 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
       setSongId(-1);
     }
 
-    return () => GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+    return () => (GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW), setIsPlaying(false));
   }, [currentOffer]);
 
   useEffect(() => {
     return () => {
-      GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW);
+      GetNitroInstance().soundManager.musicController?.stop(MusicPriorities.PRIORITY_PURCHASE_PREVIEW), setIsPlaying(false);
       clearTraxSongInfoEvent();
     };
   }, []);
@@ -107,7 +111,7 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
           {!currentOffer && (
             <>
               {!!page.localization.getImage(1) && <LayoutImage imageUrl={page.localization.getImage(1)} />}
-              <Text center dangerouslySetInnerHTML={{__html: songName ?? page.localization.getText(0)}} />
+              <Text center dangerouslySetInnerHTML={{__html: page.localization.getText(0)}} />
             </>
           )}
           {currentOffer && (
@@ -126,7 +130,14 @@ export const CatalogLayoutSoundMachineView: FC<CatalogLayoutProps> = props => {
                 <Text grow truncate>
                   {songName ?? currentOffer.localizationName}
                 </Text>
-                {songId > -1 && <Button onClick={() => previewSong(songId)}>{LocalizeText("play_preview_button")}</Button>}
+                <Text>
+                  {LocalizeText("catalog.song.length", ["min", "sec"], [duration.split(":")[0], duration.split(":")[1]])}
+                </Text>
+                {songId > -1 && (
+                  <Button onClick={() => (!isPlaying ? previewSong(songId) : stopPreviewSong())}>
+                    {LocalizeText(!isPlaying ? "play_preview_button" : "playlist.editor.button.preview.stop")}
+                  </Button>
+                )}
                 <Flex justifyContent="between">
                   <Column gap={1}>
                     <CatalogSpinnerWidgetView />
