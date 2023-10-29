@@ -255,7 +255,8 @@ export const DraggableWindow: FC<DraggableWindowProps> = props => {
     if (!windowOptions || !windowOptions.offset) return;
 
     setDelta({x: 0, y: 0});
-    if (localStorage.offset) setOffset(windowOptions.offset);
+
+    if (windowOptions.offset) setOffset(windowOptions.offset);
   }, [uniqueKey]);
 
   return createPortal(
