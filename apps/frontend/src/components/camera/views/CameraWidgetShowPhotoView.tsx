@@ -1,7 +1,8 @@
+import {RoomObjectCategory, RoomObjectVariable} from "@nitro/renderer";
 import {FC, useEffect, useState} from "react";
 import {FaArrowLeft, FaArrowRight} from "react-icons/fa";
 
-import {GetUserProfile, IPhotoData, LocalizeText} from "../../../api";
+import {GetRoomEngine, GetUserProfile, IPhotoData, LocalizeText} from "../../../api";
 import {Flex, Grid, Text} from "../../../common";
 
 export interface CameraWidgetShowPhotoViewProps {
@@ -35,6 +36,16 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
     });
   };
 
+  const getUserData = (roomId: number, objectId: number, type: string): number | string => {
+    const roomObject = GetRoomEngine().getRoomObject(roomId, objectId, RoomObjectCategory.WALL);
+
+    if (!roomObject) return;
+
+    return type == "username"
+      ? roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_NAME)
+      : roomObject.model.getValue<number>(RoomObjectVariable.FURNITURE_OWNER_ID);
+  };
+
   useEffect(() => {
     setImageIndex(currentIndex);
   }, [currentIndex]);
@@ -54,8 +65,8 @@ export const CameraWidgetShowPhotoView: FC<CameraWidgetShowPhotoViewProps> = pro
       {currentPhotos.length > 1 && (
         <Flex className="picture-preview-buttons">
           <FaArrowLeft className="cursor-pointer picture-preview-buttons-previous fa-icon" onClick={previous} />
-          <Text underline className="cursor-pointer" onClick={event => GetUserProfile(currentImage.oi)}>
-            {currentImage.o}
+          <Text underline className="cursor-pointer" onClick={() => GetUserProfile(Number(getUserData(currentImage.s, Number(currentImage.u), "id")))}>
+            {getUserData(currentImage.s, Number(currentImage.u), "username")}
           </Text>
           <FaArrowRight className="cursor-pointer picture-preview-buttons-next fa-icon" onClick={next} />
         </Flex>
