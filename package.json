@@ -38,7 +38,7 @@
     "@pixi/tilemap": "^3.2.2",
     "@pixi/utils": "~6.5.0",
     "@swc/helpers": "~0.5.3",
-    "@tanstack/react-virtual": "^3.0.0-alpha.0",
+    "@tanstack/react-virtual": "3.0.0-alpha.0",
     "gifuct-js": "^2.1.2",
     "howler": "^2.2.3",
     "pako": "^2.0.4",
